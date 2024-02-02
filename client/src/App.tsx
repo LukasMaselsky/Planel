@@ -1,7 +1,8 @@
 import "./App.css";
+import Calculator from "./components/Calculator/Calculator";
 
 function App() {
-  return <div className="flex bg-red-500 px-8 text-red-800 ">Hello</div>;
+  return <Calculator />;
 }
 
 export default App;
