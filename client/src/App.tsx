@@ -1,8 +1,14 @@
 import "./App.css";
-import Calculator from "./components/Calculator/Calculator";
+import Clock from "./components/Clock/Clock";
+import { QueryClient, QueryClientProvider } from "react-query";
+const queryClient = new QueryClient();
 
 function App() {
-  return <Calculator />;
+    return (
+        <QueryClientProvider client={queryClient}>
+            <Clock />
+        </QueryClientProvider>
+    );
 }
 
 export default App;
