@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
-
-interface Time {
+export interface Time {
     hours: number;
     minutes: number;
     seconds: number;
