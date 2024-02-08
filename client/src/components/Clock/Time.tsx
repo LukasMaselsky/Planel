@@ -4,7 +4,7 @@ export default function Time() {
     const time = useTime();
 
     return (
-        <div className="text-5xl">
+        <div className="flex justify-center text-5xl">
             {(time.hours < 10 ? "0" + time.hours : time.hours) +
                 ":" +
                 (time.minutes < 10 ? "0" + time.minutes : time.minutes) +

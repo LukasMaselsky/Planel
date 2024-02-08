@@ -14,6 +14,7 @@ export default function useStopwatch() {
     const resetStopwatch = () => {
         setOn(false);
         setTime(convertToMillis(0, 0, 0));
+        setStrTime(["00", "00", "00"]);
     };
 
     const toggleStopwatch = () => {

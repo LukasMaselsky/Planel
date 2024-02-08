@@ -45,13 +45,15 @@ export default function useTimer() {
     };
 
     const toggleTimer = () => {
-        setOn((prev) => !prev);
-        setReferenceTime(Date.now());
+        if (time != 0) {
+            setOn((prev) => !prev);
+            setReferenceTime(Date.now());
+        }
     };
 
     const incHours = () => {
         const times = convertFromMillis(time);
-        if (Number(times[0]) < 100 && !on) {
+        if (Number(times[0]) < 99 && !on) {
             let newHours = Number(times[0]) + 1;
 
             const newTime = convertToMillis(
@@ -144,7 +146,10 @@ export default function useTimer() {
         if (on) {
             const countDownUntilZero = () => {
                 setTime((prevTime) => {
-                    if (prevTime <= 0) return 0;
+                    if (prevTime <= 0) {
+                        setOn(false);
+                        return 0;
+                    }
 
                     const now = Date.now();
                     const interval = now - referenceTime;
