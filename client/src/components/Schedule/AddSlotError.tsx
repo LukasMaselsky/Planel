@@ -1,18 +1,17 @@
-import { FieldErrors, FieldValues } from "react-hook-form";
+import { FieldErrors } from "react-hook-form";
+import { Values } from "./AddSlot";
 
 interface Props {
-    errors: FieldErrors<FieldValues>;
-    msg: string;
-    type: string;
-    name: string;
+    errors: FieldErrors<Values>;
+    name: keyof Values;
 }
 
-export default function AddSlotError({ errors, msg, type, name }: Props) {
+export default function AddSlotError({ errors, name }: Props) {
     return (
-        <>
-            {errors?.[name]?.type === type && (
-                <p className="text-red-500">{msg}</p>
+        <div className="h-5 w-full">
+            {errors[name] && (
+                <p className="text-sm text-red-500">{errors[name]?.message}</p>
             )}
-        </>
+        </div>
     );
 }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import ScheduleItem from "./ScheduleItem";
 import AddSlot from "./AddSlot";
 import { useQuery } from "react-query";
+import { Values } from "./AddSlot";
 
 type Day = "M" | "T" | "W" | "F" | "S";
 
@@ -19,9 +20,10 @@ export interface Schedule {
     day: string;
     alias: Day;
     classes?: {
+        id: number;
         name: string;
-        time: string;
-        length: number; // hours
+        startTime: string;
+        endTime: string;
         color: string;
         location: string;
     }[];
@@ -31,7 +33,9 @@ export default function Schedule() {
     const [selectedDay, setSelectedDay] = useState<string>("Monday");
     const [addSlotOpen, setAddSlotOpen] = useState(false);
 
-    const cancel = () => [setAddSlotOpen(false)];
+    const closeAddSlot = () => {
+        setAddSlotOpen(false);
+    };
 
     const initialSchedule: Schedule[] = [
         {
@@ -39,9 +43,10 @@ export default function Schedule() {
             alias: "M",
             classes: [
                 {
+                    id: 1,
                     name: "maths",
-                    time: "12:00",
-                    length: 1,
+                    startTime: "12:00",
+                    endTime: "13:00",
                     color: "red",
                     location: "building 1",
                 },
@@ -81,7 +86,56 @@ export default function Schedule() {
         return initialSchedule;
     };
 
-    const updateSchedule = () => {};
+    const updateSchedule = (data: Values) => {
+        let schedule: Schedule[] = getSchedule();
+        const slots = schedule.find((slots) => slots.day == data.day);
+
+        const startTime = `${data.startTimeHour}:${data.startTimeMinute}`;
+        const endTime = `${data.endTimeHour}:${data.endTimeMinute}`;
+        const clone = (({
+            startTimeHour,
+            startTimeMinute,
+            endTimeHour,
+            endTimeMinute,
+            ...o
+        }) => o)(data); // remove hours and minutes
+
+        let id;
+        let newSlot;
+        if (slots) {
+            if (slots.classes) {
+                id = slots.classes[slots.classes.length - 1].id + 1;
+
+                newSlot = {
+                    ...clone,
+                    id: id,
+                    color: "red",
+                    startTime: startTime,
+                    endTime: endTime,
+                };
+
+                slots.classes = [...slots.classes, newSlot];
+            } else {
+                id = 1;
+                newSlot = {
+                    ...clone,
+                    id: id,
+                    color: "red",
+                    startTime: startTime,
+                    endTime: endTime,
+                };
+
+                slots.classes = [newSlot];
+            }
+        }
+
+        //! figure out some way to check if new slot overlaps with an existing slot
+
+        localStorage.setItem("schedule", JSON.stringify(schedule));
+        refetch(); // manually call react query refresh
+    };
+
+    const deleteSlot = () => {};
 
     const { data, isLoading, error, refetch } = useQuery({
         queryFn: getSchedule,
@@ -125,7 +179,9 @@ export default function Schedule() {
                         );
                     })}
 
-            {addSlotOpen ? <AddSlot cancel={cancel} /> : null}
+            {addSlotOpen ? (
+                <AddSlot close={closeAddSlot} updateSchedule={updateSchedule} />
+            ) : null}
 
             <div className="flex w-full justify-center">
                 <button onClick={() => setAddSlotOpen(true)}>Add slot</button>
@@ -133,3 +189,5 @@ export default function Schedule() {
         </div>
     );
 }
+
+//! sort the data by start time
