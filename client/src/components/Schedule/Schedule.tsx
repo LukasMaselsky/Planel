@@ -41,16 +41,6 @@ export default function Schedule() {
         {
             day: "Monday",
             alias: "M",
-            classes: [
-                {
-                    id: 1,
-                    name: "maths",
-                    startTime: "12:00",
-                    endTime: "13:00",
-                    color: "red",
-                    location: "building 1",
-                },
-            ],
         },
         {
             day: "Tuesday",
@@ -104,12 +94,13 @@ export default function Schedule() {
         let newSlot;
         if (slots) {
             if (slots.classes) {
+                //! figure out some way to check if new slot overlaps with an existing slot
+
                 id = slots.classes[slots.classes.length - 1].id + 1;
 
                 newSlot = {
                     ...clone,
                     id: id,
-                    color: "red",
                     startTime: startTime,
                     endTime: endTime,
                 };
@@ -120,7 +111,6 @@ export default function Schedule() {
                 newSlot = {
                     ...clone,
                     id: id,
-                    color: "red",
                     startTime: startTime,
                     endTime: endTime,
                 };
@@ -129,13 +119,27 @@ export default function Schedule() {
             }
         }
 
-        //! figure out some way to check if new slot overlaps with an existing slot
-
         localStorage.setItem("schedule", JSON.stringify(schedule));
         refetch(); // manually call react query refresh
     };
 
-    const deleteSlot = () => {};
+    const deleteSlot = (id: number, day: string) => {
+        let schedule: Schedule[] = getSchedule();
+        const slots = schedule.find((slots) => slots.day == day);
+
+        if (slots) {
+            if (slots.classes) {
+                let newClasses = slots.classes.filter((c) => c.id != id);
+                slots.classes = newClasses;
+            }
+        }
+
+        localStorage.setItem("schedule", JSON.stringify(schedule));
+        //! add delay/animation here
+        setTimeout(function () {
+            refetch();
+        }, 500);
+    };
 
     const { data, isLoading, error, refetch } = useQuery({
         queryFn: getSchedule,
@@ -173,8 +177,8 @@ export default function Schedule() {
                             <ScheduleItem
                                 key={i}
                                 day={day.day}
-                                alias={day.alias}
                                 classes={day.classes}
+                                deleteSlot={deleteSlot}
                             />
                         );
                     })}

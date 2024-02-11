@@ -4,11 +4,13 @@ import AddSlotError from "./AddSlotError";
 import TimeInput from "./TimeInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { GithubPicker } from "react-color";
 
 const schema = z.object({
     name: z.string().min(1).max(20),
     location: z.string().min(1).max(30),
     day: z.string(),
+    color: z.string(),
     startTimeHour: z.string().min(2).max(2),
     startTimeMinute: z.string().min(2).max(2),
     endTimeHour: z.string().min(2).max(2),
@@ -26,12 +28,14 @@ export default function AddSlot({ close, updateSchedule }: Props) {
         register,
         handleSubmit,
         setValue,
+        watch,
         formState: { errors },
     } = useForm<Values>({
         defaultValues: {
             name: "",
             location: "",
             day: "Monday",
+            color: "#B80000",
             startTimeHour: "00",
             startTimeMinute: "00",
             endTimeHour: "00",
@@ -39,6 +43,7 @@ export default function AddSlot({ close, updateSchedule }: Props) {
         },
         resolver: zodResolver(schema),
     });
+    const color = watch("color");
 
     const onSubmit = (data: Values) => {
         close();
@@ -52,7 +57,7 @@ export default function AddSlot({ close, updateSchedule }: Props) {
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div></div>
-                <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-6">
                     <div>
                         <div className="flex w-full justify-between gap-2">
                             <input
@@ -102,6 +107,19 @@ export default function AddSlot({ close, updateSchedule }: Props) {
                             })}
                         ></input>
                         <AddSlotError name="location" errors={errors} />
+                    </div>
+                    <div className="w-full">
+                        <GithubPicker
+                            width="100%"
+                            color={color}
+                            triangle="hide"
+                            {...(register("color"),
+                            {
+                                onChange: (col) => {
+                                    setValue("color", col.hex);
+                                },
+                            })}
+                        />
                     </div>
                 </div>
                 <div className="flex w-full justify-center gap-4">
