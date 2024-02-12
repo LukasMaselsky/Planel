@@ -29,6 +29,9 @@ export interface Schedule {
     }[];
 }
 
+type ArrayElement<T> = T extends (infer U)[] ? U : never;
+type ClassType = ArrayElement<Schedule["classes"]>;
+
 export default function Schedule() {
     const [selectedDay, setSelectedDay] = useState<string>("Monday");
     const [addSlotOpen, setAddSlotOpen] = useState(false);
@@ -95,8 +98,10 @@ export default function Schedule() {
         if (slots) {
             if (slots.classes) {
                 //! figure out some way to check if new slot overlaps with an existing slot
-
-                id = slots.classes[slots.classes.length - 1].id + 1;
+                id =
+                    slots.classes.length > 0
+                        ? slots.classes[slots.classes.length - 1].id + 1
+                        : 1;
 
                 newSlot = {
                     ...clone,
@@ -117,6 +122,7 @@ export default function Schedule() {
 
                 slots.classes = [newSlot];
             }
+            slots.classes.sort(sortClasses());
         }
 
         localStorage.setItem("schedule", JSON.stringify(schedule));
@@ -139,6 +145,26 @@ export default function Schedule() {
         setTimeout(function () {
             refetch();
         }, 500);
+    };
+
+    const sortClasses = () => {
+        return function (a: ClassType, b: ClassType): number {
+            const dateA = new Date(
+                0,
+                0,
+                0,
+                Number(a.startTime.slice(0, 2)),
+                Number(a.startTime.slice(3, 5)),
+            );
+            const dateB = new Date(
+                0,
+                0,
+                0,
+                Number(b.startTime.slice(0, 2)),
+                Number(b.startTime.slice(3, 5)),
+            );
+            return Number(dateA) - Number(dateB);
+        };
     };
 
     const { data, isLoading, error, refetch } = useQuery({
