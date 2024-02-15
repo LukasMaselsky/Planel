@@ -36,7 +36,7 @@ const validate = (e: FormEvent<HTMLInputElement>, type: "hour" | "minute") => {
     // String(Number(value)) to prevent 020 or something like that
     return Number(value) < 10 ? "0" + String(Number(value)) : String(value);
 };
-
+//! validate that start < end time
 export default function TimeInput({ register, name, setValue }: Props) {
     return (
         <>

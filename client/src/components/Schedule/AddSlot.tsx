@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { GithubPicker } from "react-color";
 
+
+
 const schema = z.object({
     name: z.string().min(1).max(20),
     location: z.string().min(1).max(30),

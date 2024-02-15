@@ -79,6 +79,52 @@ export default function Schedule() {
         return initialSchedule;
     };
 
+    const strToDate = (str: string): Date => {
+        return new Date(
+            0,
+            0,
+            0,
+            Number(str.slice(0, 2)),
+            Number(str.slice(3, 5)),
+        );
+    };
+
+    const checkScheduleOverlap = (
+        newStartTime: string,
+        newEndTime: string,
+        oldSlotTimes: { startTime: string; endTime: string }[],
+    ): boolean => {
+        const newStartTimeDate = strToDate(newStartTime);
+        const newEndTimeDate = strToDate(newEndTime);
+
+        for (let i = 0; i < oldSlotTimes.length; i++) {
+            const oldStartTimeDate = strToDate(oldSlotTimes[i].startTime);
+            const oldEndTimeDate = strToDate(oldSlotTimes[i].endTime);
+
+            if (
+                newEndTimeDate > oldStartTimeDate &&
+                newEndTimeDate < oldEndTimeDate
+            )
+                return true;
+
+            if (
+                newStartTimeDate > oldStartTimeDate &&
+                newStartTimeDate < oldEndTimeDate
+            )
+                return true;
+
+            if (
+                newStartTimeDate <= oldStartTimeDate &&
+                newEndTimeDate >= oldEndTimeDate
+            )
+                return true;
+        }
+
+        return false;
+    };
+
+    //! don't close add slot if overlap
+
     const updateSchedule = (data: Values) => {
         let schedule: Schedule[] = getSchedule();
         const slots = schedule.find((slots) => slots.day == data.day);
@@ -97,20 +143,29 @@ export default function Schedule() {
         let newSlot;
         if (slots) {
             if (slots.classes) {
-                //! figure out some way to check if new slot overlaps with an existing slot
-                id =
-                    slots.classes.length > 0
-                        ? slots.classes[slots.classes.length - 1].id + 1
-                        : 1;
+                //* check if new slot overlaps with an existing slot
+                const oldSlotTimes = slots.classes.map(
+                    ({ startTime, endTime }) => ({
+                        startTime,
+                        endTime,
+                    }),
+                );
 
-                newSlot = {
-                    ...clone,
-                    id: id,
-                    startTime: startTime,
-                    endTime: endTime,
-                };
+                if (!checkScheduleOverlap(startTime, endTime, oldSlotTimes)) {
+                    id =
+                        slots.classes.length > 0
+                            ? slots.classes[slots.classes.length - 1].id + 1
+                            : 1;
 
-                slots.classes = [...slots.classes, newSlot];
+                    newSlot = {
+                        ...clone,
+                        id: id,
+                        startTime: startTime,
+                        endTime: endTime,
+                    };
+
+                    slots.classes = [...slots.classes, newSlot];
+                }
             } else {
                 id = 1;
                 newSlot = {
@@ -149,20 +204,8 @@ export default function Schedule() {
 
     const sortClasses = () => {
         return function (a: ClassType, b: ClassType): number {
-            const dateA = new Date(
-                0,
-                0,
-                0,
-                Number(a.startTime.slice(0, 2)),
-                Number(a.startTime.slice(3, 5)),
-            );
-            const dateB = new Date(
-                0,
-                0,
-                0,
-                Number(b.startTime.slice(0, 2)),
-                Number(b.startTime.slice(3, 5)),
-            );
+            const dateA = strToDate(a.startTime);
+            const dateB = strToDate(b.startTime);
             return Number(dateA) - Number(dateB);
         };
     };
