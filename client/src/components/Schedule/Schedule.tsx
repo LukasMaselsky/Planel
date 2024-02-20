@@ -2,7 +2,7 @@ import { useState } from "react";
 import ScheduleItem from "./ScheduleItem";
 import AddSlot from "./AddSlot";
 import { useQuery } from "react-query";
-import { Values } from "./AddSlot";
+import { ScheduleValues } from "./AddSlot";
 
 type Day = "M" | "T" | "W" | "F" | "S";
 
@@ -125,7 +125,7 @@ export default function Schedule() {
 
     //! don't close add slot if overlap
 
-    const updateSchedule = (data: Values) => {
+    const updateSchedule = (data: ScheduleValues): boolean => {
         let schedule: Schedule[] = getSchedule();
         const slots = schedule.find((slots) => slots.day == data.day);
 
@@ -151,21 +151,22 @@ export default function Schedule() {
                     }),
                 );
 
-                if (!checkScheduleOverlap(startTime, endTime, oldSlotTimes)) {
-                    id =
-                        slots.classes.length > 0
-                            ? slots.classes[slots.classes.length - 1].id + 1
-                            : 1;
+                if (checkScheduleOverlap(startTime, endTime, oldSlotTimes))
+                    return false;
 
-                    newSlot = {
-                        ...clone,
-                        id: id,
-                        startTime: startTime,
-                        endTime: endTime,
-                    };
+                id =
+                    slots.classes.length > 0
+                        ? slots.classes[slots.classes.length - 1].id + 1
+                        : 1;
 
-                    slots.classes = [...slots.classes, newSlot];
-                }
+                newSlot = {
+                    ...clone,
+                    id: id,
+                    startTime: startTime,
+                    endTime: endTime,
+                };
+
+                slots.classes = [...slots.classes, newSlot];
             } else {
                 id = 1;
                 newSlot = {
@@ -182,6 +183,7 @@ export default function Schedule() {
 
         localStorage.setItem("schedule", JSON.stringify(schedule));
         refetch(); // manually call react query refresh
+        return true;
     };
 
     const deleteSlot = (id: number, day: string) => {

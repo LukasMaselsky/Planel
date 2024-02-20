@@ -1,12 +1,12 @@
 import "./App.css";
-import Schedule from "./components/Schedule/Schedule";
+import Grades from "./components/Grades/Grades";
 import { QueryClient, QueryClientProvider } from "react-query";
 const queryClient = new QueryClient();
 
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <Schedule />
+            <Grades />
         </QueryClientProvider>
     );
 }

@@ -1,11 +1,11 @@
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { Values } from "./AddSlot";
+import { ScheduleValues } from "./AddSlot";
 import { FormEvent } from "react";
 
 interface Props {
-    register: UseFormRegister<Values>;
+    register: UseFormRegister<ScheduleValues>;
     name: "start" | "end";
-    setValue: UseFormSetValue<Values>;
+    setValue: UseFormSetValue<ScheduleValues>;
 }
 
 const validate = (e: FormEvent<HTMLInputElement>, type: "hour" | "minute") => {
@@ -36,7 +36,7 @@ const validate = (e: FormEvent<HTMLInputElement>, type: "hour" | "minute") => {
     // String(Number(value)) to prevent 020 or something like that
     return Number(value) < 10 ? "0" + String(Number(value)) : String(value);
 };
-//! validate that start < end time
+
 export default function TimeInput({ register, name, setValue }: Props) {
     return (
         <>

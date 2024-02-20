@@ -8,7 +8,7 @@ interface Props {
 
 export default function ScheduleItem({ classes, day, deleteSlot }: Props) {
     return (
-        <div className="overflow-y-aut flex h-full w-full flex-col gap-2">
+        <div className="flex h-full w-full flex-col gap-2 overflow-y-auto pb-1">
             {classes?.length == 0 || !classes ? (
                 <div className="flex h-full w-full items-center justify-center">
                     <p>No classes yet</p>
@@ -20,7 +20,7 @@ export default function ScheduleItem({ classes, day, deleteSlot }: Props) {
                     className={
                         "flex w-full flex-col gap-1 rounded-lg border-[1px] border-text bg-bg px-2 py-1 text-text"
                     }
-                    style={{ boxShadow: `1px 3px 0px 0px ${c.color}` }}
+                    style={{ boxShadow: `0px 3px 0px 0px ${c.color}` }}
                 >
                     <div className="flex justify-between">
                         <p className="text-xl">{c.name}</p>

@@ -1,16 +1,20 @@
 import { days } from "./Schedule";
 import { useForm } from "react-hook-form";
-import AddSlotError from "./AddSlotError";
+import AddError from "../AddError";
 import TimeInput from "./TimeInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { GithubPicker } from "react-color";
 
-
-
 const schema = z.object({
-    name: z.string().min(1).max(20),
-    location: z.string().min(1).max(30),
+    name: z
+        .string()
+        .min(1, { message: "Name is required" })
+        .max(20, { message: "Name must be under 20 characters" }),
+    location: z
+        .string()
+        .min(1, { message: "Location is required" })
+        .max(30, { message: "Location must be under 20 characters" }),
     day: z.string(),
     color: z.string(),
     startTimeHour: z.string().min(2).max(2),
@@ -19,10 +23,10 @@ const schema = z.object({
     endTimeMinute: z.string().min(2).max(2),
 });
 
-export type Values = z.infer<typeof schema>;
+export type ScheduleValues = z.infer<typeof schema>;
 interface Props {
     close: () => void;
-    updateSchedule: (data: Values) => void;
+    updateSchedule: (data: ScheduleValues) => boolean;
 }
 
 export default function AddSlot({ close, updateSchedule }: Props) {
@@ -31,8 +35,9 @@ export default function AddSlot({ close, updateSchedule }: Props) {
         handleSubmit,
         setValue,
         watch,
+        setError,
         formState: { errors },
-    } = useForm<Values>({
+    } = useForm<ScheduleValues>({
         defaultValues: {
             name: "",
             location: "",
@@ -47,32 +52,41 @@ export default function AddSlot({ close, updateSchedule }: Props) {
     });
     const color = watch("color");
 
-    const onSubmit = (data: Values) => {
-        close();
-        updateSchedule(data);
+    const onSubmit = (data: ScheduleValues) => {
+        const isValid = updateSchedule(data);
+        if (isValid) {
+            close();
+        } else {
+            setError("root.overlap", {
+                type: "overlap",
+                message: "You have an overlap in your schedule",
+            });
+        }
     };
 
     return (
-        <div className="absolute left-0 top-0 h-full w-full rounded-lg bg-gray-200 p-2">
+        <div className="absolute left-0 top-0 h-full w-full rounded-lg bg-gray-100 p-2">
             <form
                 className="grid h-full grid-rows-[1fr_auto_1fr]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div></div>
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-5">
+                    <div
+                        className="h-3 w-full rounded-md"
+                        style={{ backgroundColor: color }}
+                    ></div>
                     <div>
                         <div className="flex w-full justify-between gap-2">
                             <input
                                 className="w-full rounded-lg px-2 py-1 focus:outline-none"
                                 placeholder="Name of slot"
                                 type="text"
-                                {...register("name", {
-                                    required: true,
-                                })}
+                                {...register("name")}
                             ></input>
 
                             <select
-                                className="w-full px-2 py-1"
+                                className="w-full rounded-lg bg-white px-2 py-1"
                                 {...register("day")}
                             >
                                 {days.map((day, i: number) => (
@@ -80,35 +94,35 @@ export default function AddSlot({ close, updateSchedule }: Props) {
                                 ))}
                             </select>
                         </div>
-                        <AddSlotError name="name" errors={errors} />
+                        <AddError error={errors.name} />
                     </div>
-                    <div className="flex w-full gap-8">
-                        <div className="flex w-[50%] items-center gap-2">
-                            <TimeInput
-                                register={register}
-                                setValue={setValue}
-                                name="start"
-                            />
+                    <div className="flex flex-col">
+                        <div className="flex w-full gap-8">
+                            <div className="flex w-[50%] items-center gap-2">
+                                <TimeInput
+                                    register={register}
+                                    setValue={setValue}
+                                    name="start"
+                                />
+                            </div>
+                            <div className="flex w-[50%] items-center gap-2">
+                                <TimeInput
+                                    register={register}
+                                    setValue={setValue}
+                                    name="end"
+                                />
+                            </div>
                         </div>
-                        <div className="flex w-[50%] items-center gap-2">
-                            <TimeInput
-                                register={register}
-                                setValue={setValue}
-                                name="end"
-                            />
-                        </div>
+                        <AddError error={errors.root?.overlap} />
                     </div>
                     <div className="w-full">
                         <input
                             className="w-full rounded-lg px-2 py-1 focus:outline-none"
                             placeholder="Location"
                             type="text"
-                            {...register("location", {
-                                required: true,
-                                maxLength: 30,
-                            })}
+                            {...register("location")}
                         ></input>
-                        <AddSlotError name="location" errors={errors} />
+                        <AddError error={errors.location} />
                     </div>
                     <div className="w-full">
                         <GithubPicker
