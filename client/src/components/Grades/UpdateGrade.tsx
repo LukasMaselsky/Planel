@@ -4,10 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { GithubPicker } from "react-color";
 import AddError from "../AddError";
+import { useEffect } from "react";
 
 interface Props {
     close: () => void;
-    addGrade: (data: Grades) => boolean;
+    updateGrade: (data: Grades) => boolean;
+    editing: boolean;
+    defaultValues?: GradeValues;
 }
 
 const schema = z.object({
@@ -27,7 +30,12 @@ const schema = z.object({
 
 export type GradeValues = z.infer<typeof schema>;
 
-export default function AddGrade({ close, addGrade }: Props) {
+export default function UpdateGrade({
+    close,
+    updateGrade,
+    defaultValues,
+    editing,
+}: Props) {
     const {
         register,
         handleSubmit,
@@ -35,16 +43,9 @@ export default function AddGrade({ close, addGrade }: Props) {
         watch,
         control,
         setError,
-        formState: { errors },
+        formState: { errors, isValid },
     } = useForm<GradeValues>({
-        defaultValues: {
-            name: "",
-            color: "#B80000",
-            grade: "",
-            passingPercentage: 40,
-            gradeAsPercentage: 80,
-            gradeAsPercentageSlider: 80,
-        },
+        defaultValues: defaultValues,
         resolver: zodResolver(schema),
     });
     const color = watch("color");
@@ -52,11 +53,13 @@ export default function AddGrade({ close, addGrade }: Props) {
     const passingValue = watch("passingPercentage");
 
     const onSubmit = (data: GradeValues) => {
+        console.log("here1");
         const clone = (({ gradeAsPercentageSlider, ...o }) => o)(data);
-        const isValid = addGrade(clone);
+        const isValid = updateGrade(clone);
         if (isValid) {
             close();
         } else {
+            console.log("here");
             setError("root.exists", {
                 type: "exists",
                 message: "You already have a grade for this class",
@@ -108,6 +111,7 @@ export default function AddGrade({ close, addGrade }: Props) {
                                     placeholder="Name of class"
                                     id="name"
                                     type="text"
+                                    disabled={editing}
                                     {...register("name")}
                                 ></input>
                             </div>
@@ -145,7 +149,9 @@ export default function AddGrade({ close, addGrade }: Props) {
                                         }}
                                         {...field}
                                         onChange={(e) => {
-                                            field.onChange(e.target.value);
+                                            field.onChange(
+                                                Number(e.target.value),
+                                            );
                                             handleRangeChange(
                                                 Number(e.target.value),
                                             );
@@ -221,6 +227,7 @@ export default function AddGrade({ close, addGrade }: Props) {
                                 />
                             </div>
                         </div>
+
                         <AddError error={errors.root?.exists} />
                     </div>
                     <div className="w-full">
