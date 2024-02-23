@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { GithubPicker } from "react-color";
 import AddError from "../AddError";
-import { useEffect } from "react";
 
 interface Props {
     close: () => void;
@@ -43,7 +42,7 @@ export default function UpdateGrade({
         watch,
         control,
         setError,
-        formState: { errors, isValid },
+        formState: { errors },
     } = useForm<GradeValues>({
         defaultValues: defaultValues,
         resolver: zodResolver(schema),
