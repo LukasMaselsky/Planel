@@ -166,6 +166,7 @@ export default function useTimer() {
     return {
         strTime,
         on,
+        time,
         resetTimer,
         toggleTimer,
         incHours,

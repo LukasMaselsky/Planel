@@ -2,13 +2,21 @@ import useTimer from "../../hooks/useTimer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons";
 import useLongPress from "../../hooks/useLongPress";
+import { TimerState } from "./Clock";
+import { useEffect } from "react";
 
-export default function Timer() {
+type Props = {
+    setTimerState: React.Dispatch<React.SetStateAction<TimerState>>;
+    setTimerDuration: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export default function Timer({ setTimerState, setTimerDuration }: Props) {
     const {
         resetTimer,
         toggleTimer,
         strTime,
         on,
+        time,
         incHours,
         decHours,
         incMinutes,
@@ -18,6 +26,31 @@ export default function Timer() {
     } = useTimer();
 
     const pressSpeed = 100;
+
+    const toggle = () => {
+        toggleTimer();
+    };
+
+    useEffect(() => {
+        if (on) {
+            setTimerState("start");
+        } else {
+            if (time == 0) {
+                setTimerState("reset");
+            } else {
+                setTimerState("stop");
+            }
+        }
+    }, [on]);
+
+    useEffect(() => {
+        setTimerDuration(time / 1000);
+    }, [time]);
+
+    const reset = () => {
+        setTimerState("reset");
+        resetTimer();
+    };
 
     return (
         <>
@@ -74,7 +107,7 @@ export default function Timer() {
             <div className="flex items-center justify-center gap-1">
                 <button
                     className="h-8 w-14 rounded-lg px-2 py-1"
-                    onClick={resetTimer}
+                    onClick={reset}
                 >
                     Reset
                 </button>
@@ -83,7 +116,7 @@ export default function Timer() {
                         "h-8 w-14 rounded-lg px-2 py-1 " +
                         (on ? "bg-red-300" : "bg-green-300")
                     }
-                    onClick={toggleTimer}
+                    onClick={toggle}
                 >
                     {on ? "Stop" : "Start"}
                 </button>

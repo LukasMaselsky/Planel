@@ -1,8 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
-const days = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
+const daysShort = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
 const months = [
     "January",
     "February",
@@ -22,8 +23,30 @@ export default function Calendar() {
     const [date, setDate] = useState({
         year: new Date().getFullYear(),
         month: new Date().getMonth(),
-        day: new Date().getDay(),
+        day: 1,
     });
+
+    const [days, setDays] = useState({
+        days: new Date(
+            new Date().getFullYear(),
+            new Date().getMonth() + 1,
+            0,
+        ).getDate(),
+        startDay:
+            (new Date(
+                new Date().getFullYear(),
+                new Date().getMonth(),
+                1,
+            ).getDay() +
+                6) %
+            7,
+    });
+
+    const getDaysInMonth = (year: number, month: number) => {
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDayOfWeek = (new Date(year, month, 1).getDay() + 6) % 7;
+        return { daysInMonth, firstDayOfWeek };
+    };
 
     const incrementMonth = () => {
         setDate((prev) => ({
@@ -32,6 +55,14 @@ export default function Calendar() {
             day: 1,
         }));
     };
+
+    useEffect(() => {
+        const { daysInMonth, firstDayOfWeek } = getDaysInMonth(
+            date.year,
+            date.month,
+        );
+        setDays({ days: daysInMonth, startDay: firstDayOfWeek });
+    }, [date]);
 
     const decrementMonth = () => {
         setDate((prev) => ({
@@ -42,8 +73,8 @@ export default function Calendar() {
     };
 
     return (
-        <div className="flex w-[300px] flex-col gap-4 p-2">
-            <div className="flex items-center justify-between">
+        <div className="flex w-[300px] flex-col gap-4 rounded-lg border-[1px] border-black p-2">
+            <div className="flex items-center justify-between px-1.5">
                 <div className="">
                     <p className="text-xl">{`${months[date.month]} ${date.year}`}</p>
                 </div>
@@ -61,11 +92,46 @@ export default function Calendar() {
                 </div>
             </div>
             <div className="grid grid-cols-7 justify-between">
-                {days.map((day) => (
-                    <div className="flex items-center justify-center">
+                {daysShort.map((day, i) => (
+                    <div
+                        key={i}
+                        className="flex aspect-square items-center justify-center"
+                    >
                         <p>{day}</p>
                     </div>
                 ))}
+                {[...Array(days.days + days.startDay)].map((_, i) => {
+                    if (i >= days.startDay) {
+                        return (
+                            <div
+                                key={i}
+                                onClick={() =>
+                                    setDate((prev) => ({
+                                        ...prev,
+                                        day: i - days.startDay + 1,
+                                    }))
+                                }
+                                className={twMerge(
+                                    "relative flex aspect-square cursor-pointer items-center justify-center after:absolute after:left-[50%] after:top-[50%] after:z-[-1] after:size-7 after:translate-x-[-50%] after:translate-y-[-50%] after:rounded-[50%] after:bg-red-500",
+                                    i - days.startDay + 1 == date.day
+                                        ? "after:visible"
+                                        : "after:hidden",
+                                )}
+                            >
+                                <p className="select-none">
+                                    {i - days.startDay + 1}
+                                </p>
+                            </div>
+                        );
+                    } else {
+                        return (
+                            <div
+                                key={i}
+                                className="flex aspect-square items-center justify-center"
+                            ></div>
+                        );
+                    }
+                })}
             </div>
         </div>
     );
