@@ -52,13 +52,11 @@ export default function UpdateGrade({
     const passingValue = watch("passingPercentage");
 
     const onSubmit = (data: GradeValues) => {
-        console.log("here1");
         const clone = (({ gradeAsPercentageSlider, ...o }) => o)(data);
         const isValid = updateGrade(clone);
         if (isValid) {
             close();
         } else {
-            console.log("here");
             setError("root.exists", {
                 type: "exists",
                 message: "You already have a grade for this class",

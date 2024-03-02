@@ -19,7 +19,7 @@ const months = [
     "December",
 ];
 
-export default function Calendar() {
+export default function Calendar({ size } : {size: number}) {
     const [date, setDate] = useState({
         year: new Date().getFullYear(),
         month: new Date().getMonth(),
@@ -73,7 +73,7 @@ export default function Calendar() {
     };
 
     return (
-        <div className="flex w-[300px] flex-col gap-4 rounded-lg border-[1px] border-black p-2">
+        <div style={{width: `${size}px`}}className="flex flex-col gap-4 rounded-lg border-[1px] border-black p-2">
             <div className="flex items-center justify-between px-1.5">
                 <div className="">
                     <p className="text-xl">{`${months[date.month]} ${date.year}`}</p>
