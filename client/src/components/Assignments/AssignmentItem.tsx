@@ -24,6 +24,9 @@ export default function AssignmentItem({
             color: props.color,
             class: props.class,
             dueDate: props.dueDate,
+            day: props.dueDate.slice(0, 2),
+            month: props.dueDate.slice(3, 5),
+            year: props.dueDate.slice(6, 10),
         });
         setEditing(true);
         setAdding(true);

@@ -26,6 +26,9 @@ const baseDefaults = {
     color: "#B80000",
     class: "",
     dueDate: dateToString(new Date()),
+    day: "",
+    month: "",
+    year: "",
 };
 
 export default function Assignments() {
