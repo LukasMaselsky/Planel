@@ -26,9 +26,6 @@ const baseDefaults = {
     color: "#B80000",
     class: "",
     dueDate: dateToString(new Date()),
-    day: "",
-    month: "",
-    year: "",
 };
 
 export default function Assignments() {
@@ -75,7 +72,7 @@ export default function Assignments() {
             );
         }
 
-        localStorage.setItem("grades", JSON.stringify(assignments));
+        localStorage.setItem("assignments", JSON.stringify(assignments));
         //! add delay/animation here
         setTimeout(function () {
             refetch();

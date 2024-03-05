@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Assignments } from "./Assignments";
 import { AssignmentValues } from "./UpdateAssignment";
 import { faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { getDate } from "./UpdateAssignment";
 
 interface Props {
     props: Assignments;
@@ -10,6 +11,16 @@ interface Props {
     setDefaults: React.Dispatch<React.SetStateAction<AssignmentValues>>;
     setEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+const calculateTimeLeft = (dueDate: string) => {
+    const date = getDate(dueDate);
+    const diffInMs = date.getTime() - new Date().getTime();
+
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+    if (Math.floor(diffInDays) != 0)
+        return `${Math.floor(diffInDays)} days left`;
+    return `${Math.floor(diffInMs / (1000 * 60 * 60))} hours left`;
+};
 
 export default function AssignmentItem({
     props,
@@ -24,13 +35,12 @@ export default function AssignmentItem({
             color: props.color,
             class: props.class,
             dueDate: props.dueDate,
-            day: props.dueDate.slice(0, 2),
-            month: props.dueDate.slice(3, 5),
-            year: props.dueDate.slice(6, 10),
         });
         setEditing(true);
         setAdding(true);
     };
+
+    const timeLeft = calculateTimeLeft(props.dueDate);
 
     return (
         <div className="flex w-full flex-col gap-2">
@@ -58,6 +68,10 @@ export default function AssignmentItem({
                     <p className="flex items-center text-base">
                         {props.dueDate}
                     </p>
+                </div>
+                <div className="flex justify-between">
+                    <p className="flex items-center text-base">{props.class}</p>
+                    <p className="flex items-center text-base">{timeLeft}</p>
                 </div>
             </div>
         </div>

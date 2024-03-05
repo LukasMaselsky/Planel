@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { DateValues } from "../Assignments/UpdateAssignment";
 
 const daysShort = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
 const months = [
@@ -19,13 +20,13 @@ const months = [
     "December",
 ];
 
-export default function Calendar({ size } : {size: number}) {
-    const [date, setDate] = useState({
-        year: new Date().getFullYear(),
-        month: new Date().getMonth(),
-        day: 1,
-    });
+type Props = {
+    size: number;
+    date: DateValues;
+    setDate: React.Dispatch<React.SetStateAction<DateValues>>;
+};
 
+export default function Calendar({ date, setDate, size }: Props) {
     const [days, setDays] = useState({
         days: new Date(
             new Date().getFullYear(),
@@ -43,40 +44,66 @@ export default function Calendar({ size } : {size: number}) {
     });
 
     const getDaysInMonth = (year: number, month: number) => {
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const firstDayOfWeek = (new Date(year, month, 1).getDay() + 6) % 7;
+        const daysInMonth = new Date(year, month - 1, 0).getDate();
+        const firstDayOfWeek = (new Date(year, month - 1, 1).getDay() + 6) % 7;
         return { daysInMonth, firstDayOfWeek };
     };
 
     const incrementMonth = () => {
         setDate((prev) => ({
-            year: prev.month == 11 ? prev.year + 1 : prev.year,
-            month: prev.month == 11 ? 0 : prev.month + 1,
-            day: 1,
+            day: "01",
+            month: String(
+                Number(prev.month) == 12
+                    ? "01"
+                    : Number(prev.month) + 1 < 10
+                      ? "0" + (Number(prev.month) + 1)
+                      : Number(prev.month) + 1,
+            ),
+            year: String(
+                Number(prev.month) == 12 ? Number(prev.year) + 1 : prev.year,
+            ),
         }));
     };
 
     useEffect(() => {
         const { daysInMonth, firstDayOfWeek } = getDaysInMonth(
-            date.year,
-            date.month,
+            Number(date.year),
+            Number(date.month),
         );
         setDays({ days: daysInMonth, startDay: firstDayOfWeek });
     }, [date]);
 
     const decrementMonth = () => {
         setDate((prev) => ({
-            year: prev.month == 0 ? prev.year - 1 : prev.year,
-            month: prev.month == 0 ? 11 : prev.month - 1,
-            day: 1,
+            day: "01",
+            month: String(
+                Number(prev.month) == 1
+                    ? 12
+                    : Number(prev.month) - 1 < 10
+                      ? "0" + (Number(prev.month) - 1)
+                      : Number(prev.month) - 1,
+            ),
+            year: String(
+                Number(prev.month) == 1 ? Number(prev.year) - 1 : prev.year,
+            ),
+        }));
+    };
+
+    const setDay = (day: number) => {
+        setDate((prev) => ({
+            ...prev,
+            day: day < 10 ? "0" + day : String(day),
         }));
     };
 
     return (
-        <div style={{width: `${size}px`}}className="flex flex-col gap-4 rounded-lg border-[1px] border-black p-2">
+        <div
+            style={{ width: `${size}px` }}
+            className="flex flex-col gap-4 rounded-lg border-[1px] border-black bg-gray-100 p-2"
+        >
             <div className="flex items-center justify-between px-1.5">
                 <div className="">
-                    <p className="text-xl">{`${months[date.month]} ${date.year}`}</p>
+                    <p className="line-clamp-1 text-xl">{`${months[Number(date.month) - 1]} ${date.year}`}</p>
                 </div>
                 <div className="flex gap-2">
                     <FontAwesomeIcon
@@ -105,15 +132,10 @@ export default function Calendar({ size } : {size: number}) {
                         return (
                             <div
                                 key={i}
-                                onClick={() =>
-                                    setDate((prev) => ({
-                                        ...prev,
-                                        day: i - days.startDay + 1,
-                                    }))
-                                }
+                                onClick={() => setDay(i - days.startDay + 1)}
                                 className={twMerge(
-                                    "relative flex aspect-square cursor-pointer items-center justify-center after:absolute after:left-[50%] after:top-[50%] after:z-[-1] after:size-7 after:translate-x-[-50%] after:translate-y-[-50%] after:rounded-[50%] after:bg-red-500",
-                                    i - days.startDay + 1 == date.day
+                                    "relative flex aspect-square cursor-pointer items-center justify-center after:absolute after:left-[50%] after:top-[50%] after:z-[0] after:size-7 after:translate-x-[-50%] after:translate-y-[-50%] after:rounded-[50%] after:border-[1px] after:border-red-500",
+                                    i - days.startDay + 1 == Number(date.day)
                                         ? "after:visible"
                                         : "after:hidden",
                                 )}

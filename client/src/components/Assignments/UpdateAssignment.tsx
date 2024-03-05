@@ -8,6 +8,7 @@ import Calendar from "../Calendar/Calendar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import DateInput from "./DateInput";
+import { useState } from "react";
 
 interface Props {
     close: () => void;
@@ -26,20 +27,17 @@ const schema = z.object({
         .string()
         .min(1, { message: "Class is required" })
         .max(20, { message: "Class must be under 20 characters" }),
-    day: z.string().min(2).max(2),
-    month: z.string().min(2).max(2),
-    year: z.string().min(4).max(4),
     dueDate: z.string().min(10).max(10),
 });
 
 export type AssignmentValues = z.infer<typeof schema>;
 
-const getDate = (date: string) => {
+export const getDate = (date: string) => {
     const dateArr = date.split("/");
     return new Date(
         Number(dateArr[2]),
         Number(dateArr[1]) - 1,
-        Number(dateArr[1]),
+        Number(dateArr[0]),
     );
 };
 
@@ -47,11 +45,17 @@ const isDateAfterToday = (dateStr: string) => {
     // make sure date is not before current date
     const date = getDate(dateStr);
     const today = new Date();
-    console.log(date, today);
+
     if (date < today) {
         return false;
     }
     return true;
+};
+
+export type DateValues = {
+    day: string;
+    month: string;
+    year: string;
 };
 
 export default function UpdateAssignment({
@@ -60,6 +64,8 @@ export default function UpdateAssignment({
     defaultValues,
     editing,
 }: Props) {
+    const [calendarOpen, setCalendarOpen] = useState(false);
+
     const {
         register,
         handleSubmit,
@@ -73,12 +79,19 @@ export default function UpdateAssignment({
     });
     const color = watch("color");
 
+    const [date, setDate] = useState<DateValues>({
+        day: defaultValues?.dueDate ? defaultValues.dueDate.split("/")[0] : "",
+        month: defaultValues?.dueDate
+            ? defaultValues.dueDate.split("/")[1]
+            : "",
+        year: defaultValues?.dueDate ? defaultValues.dueDate.split("/")[2] : "",
+    });
+
     const onSubmit = (data: AssignmentValues) => {
-        data["dueDate"] = `${data.day}/${data.month}/${data.year}`;
-        console.log(data["dueDate"]);
+        data["dueDate"] = `${date.day}/${date.month}/${date.year}`;
+
         if (isDateAfterToday(data["dueDate"])) {
-            const clone = (({ day, month, year, ...o }) => o)(data);
-            const isValid = updateGrade(clone);
+            const isValid = updateGrade(data);
             if (isValid) {
                 close();
             } else {
@@ -140,23 +153,34 @@ export default function UpdateAssignment({
                     </div>
                     <div>
                         <div className="flex w-full justify-center gap-2">
-                            <div className="flex w-[70%] flex-col">
+                            <div className="relative flex w-[70%] flex-col gap-1">
                                 <label htmlFor="name" className="text-sm">
                                     Due date
                                 </label>
                                 <div className="flex items-center gap-1 rounded-lg bg-white">
                                     <div className="flex items-center">
                                         <DateInput
-                                            register={register}
-                                            setValue={setValue}
-                                            watch={watch}
+                                            date={date}
+                                            setDate={setDate}
                                         />
                                     </div>
                                     <FontAwesomeIcon
-                                        className="pr-2 text-lg"
+                                        className="cursor-pointer pr-2 text-lg"
                                         icon={faCalendar}
+                                        onClick={() =>
+                                            setCalendarOpen((prev) => !prev)
+                                        }
                                     />
                                 </div>
+                                {calendarOpen && (
+                                    <div className="absolute top-[100%] z-[1]">
+                                        <Calendar
+                                            date={date}
+                                            setDate={setDate}
+                                            size={200}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <AddError error={errors.dueDate} />

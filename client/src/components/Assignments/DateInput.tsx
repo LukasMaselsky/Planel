@@ -1,16 +1,10 @@
-import {
-    UseFormRegister,
-    UseFormSetValue,
-    UseFormWatch,
-} from "react-hook-form";
-import { AssignmentValues } from "./UpdateAssignment";
 import { z } from "zod";
-import { useEffect } from "react";
+import { DateValues } from "./UpdateAssignment";
+import { useEffect, useState } from "react";
 
 interface Props {
-    register: UseFormRegister<AssignmentValues>;
-    setValue: UseFormSetValue<AssignmentValues>;
-    watch: UseFormWatch<AssignmentValues>;
+    date: DateValues;
+    setDate: React.Dispatch<React.SetStateAction<DateValues>>;
 }
 
 const getDaysInMonth = (month: number, year: number) => {
@@ -51,17 +45,18 @@ const yearTransform = z.string().transform((value) => {
     return String(Number(Math.max(new Date().getFullYear(), numericValue)));
 });
 
+export default function DateInput({ date, setDate }: Props) {
+    const [day, setDay] = useState(date.day);
+    const [month, setMonth] = useState(date.month);
+    const [year, setYear] = useState(date.year);
 
-export default function DateInput({ register, setValue, watch }: Props) {
-    const day = watch("day");
-    const month = watch("month");
-    const year = watch("year");
+    useEffect(() => {
+        setDay(date.day);
+        setMonth(date.month);
+        setYear(date.year);
+    }, [date]);
 
-    const validateDay = (
-        value: string,
-        month: number,
-        year: number,
-    ): string => {
+    const validateDay = (value: string, month: number, year: number) => {
         const val = dayTransform.parse(value);
         const maxDay = getDaysInMonth(month, year);
         const n = Number(val) > maxDay ? maxDay : Number(val);
@@ -70,26 +65,43 @@ export default function DateInput({ register, setValue, watch }: Props) {
         return day;
     };
 
-    const validateMonth = (
-        value: string,
-        day: number,
-        year: number,
-    ): string => {
+    const validateMonth = (value: string, day: number, year: number) => {
         let month = monthTransform.parse(value);
-        setValue("day", validateDay(String(day), Number(month), year));
+        let newDay = validateDay(String(day), Number(month), year);
 
-        return month;
+        return { newDay, month };
     };
 
-    const validateYear = (
-        value: string,
-        day: number,
-        month: number,
-    ): string => {
+    const validateYear = (value: string, day: number, month: number) => {
         let year = yearTransform.parse(value);
-        setValue("day", validateDay(String(day), month, Number(year)));
+        let newDay = validateDay(String(day), month, Number(year));
 
-        return year;
+        return { newDay, year };
+    };
+
+    const handleDay = (val: string, month: number, year: number) => {
+        setDate((prev) => ({
+            ...prev,
+            day: validateDay(val, month, year),
+        }));
+    };
+
+    const handleMonth = (val: string, day: number, year: number) => {
+        const { newDay, month } = validateMonth(val, day, year);
+        setDate((prev) => ({
+            ...prev,
+            month: month,
+            day: newDay,
+        }));
+    };
+
+    const handleYear = (val: string, day: number, month: number) => {
+        const { newDay, year } = validateYear(val, day, month);
+        setDate((prev) => ({
+            ...prev,
+            day: newDay,
+            year: year,
+        }));
     };
 
     return (
@@ -97,52 +109,46 @@ export default function DateInput({ register, setValue, watch }: Props) {
             <input
                 className="w-full flex-[1] rounded-lg px-2 py-1 text-center focus:outline-none"
                 type="text"
-                {...register(`day`, {
-                    required: true,
-                    onBlur: (e) =>
-                        setValue(
-                            `day`,
-                            validateDay(
-                                e.target.value,
-                                Number(month),
-                                Number(year),
-                            ),
-                        ),
-                })}
+                value={day}
+                required={true}
+                onChange={(e) => setDay(e.target.value)}
+                onBlur={(e) =>
+                    handleDay(
+                        e.target.value,
+                        Number(date.month),
+                        Number(date.year),
+                    )
+                }
             ></input>
             /
             <input
                 className="w-full flex-[1] rounded-lg px-2 py-1 text-center focus:outline-none"
                 type="text"
-                {...register(`month`, {
-                    required: true,
-                    onBlur: (e) =>
-                        setValue(
-                            `month`,
-                            validateMonth(
-                                e.target.value,
-                                Number(day),
-                                Number(year),
-                            ),
-                        ),
-                })}
+                value={month}
+                required={true}
+                onChange={(e) => setMonth(e.target.value)}
+                onBlur={(e) =>
+                    handleMonth(
+                        e.target.value,
+                        Number(date.day),
+                        Number(date.year),
+                    )
+                }
             ></input>
             /
             <input
                 className="w-full flex-[2] rounded-lg px-2 py-1 text-center focus:outline-none"
                 type="text"
-                {...register(`year`, {
-                    required: true,
-                    onBlur: (e) =>
-                        setValue(
-                            `year`,
-                            validateYear(
-                                e.target.value,
-                                Number(day),
-                                Number(month),
-                            ),
-                        ),
-                })}
+                value={year}
+                required={true}
+                onChange={(e) => setYear(e.target.value)}
+                onBlur={(e) =>
+                    handleYear(
+                        e.target.value,
+                        Number(date.day),
+                        Number(date.month),
+                    )
+                }
             ></input>
         </>
     );
