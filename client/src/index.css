@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --color-bg: 247 243 245;
+        --color-text: 10 18 31;
+        --color-primary: 43 58 103;
+        --color-secondary: 65 128 217;
+        --color-accent: 58 190 207;
+    }
+
+    :root[data-theme="dark"] {
+        --color-bg: 10 18 31;
+        --color-text: 247 243 245;
+        --color-primary: 43 58 103;
+        --color-secondary: 65 128 217;
+        --color-accent: 58 190 207;
+    }
+}

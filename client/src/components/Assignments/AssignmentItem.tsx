@@ -16,10 +16,11 @@ const calculateTimeLeft = (dueDate: string) => {
     const date = getDate(dueDate);
     const diffInMs = date.getTime() - new Date().getTime();
 
-    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-    if (Math.floor(diffInDays) != 0)
-        return `${Math.floor(diffInDays)} days left`;
-    return `${Math.floor(diffInMs / (1000 * 60 * 60))} hours left`;
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    if (diffInDays != 0)
+        return `${diffInDays} days left`;
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60))
+    return `${diffInHours} hours left`;
 };
 
 export default function AssignmentItem({
