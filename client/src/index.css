@@ -4,17 +4,68 @@
 
 @layer base {
     :root {
+        /* default red with light */
         --color-bg: 247 243 245;
         --color-text: 10 18 31;
-        --color-primary: 43 58 103;
+        --color-primary: 204 49 40;
         --color-secondary: 65 128 217;
         --color-accent: 58 190 207;
     }
 
-    :root[data-theme="dark"] {
+    :root[data-light="light"] {
+        --color-bg: 247 243 245;
+        --color-text: 10 18 31;
+    }
+
+    :root[data-light="dark"] {
         --color-bg: 10 18 31;
         --color-text: 247 243 245;
-        --color-primary: 43 58 103;
+    }
+
+    :root[data-theme="crimson"] {
+        --color-primary: 204 49 40;
+        --color-secondary: 65 128 217;
+        --color-accent: 58 190 207;
+    }
+
+    :root[data-theme="forest"] {
+        --color-primary: 134 185 39;
+        --color-secondary: 65 128 217;
+        --color-accent: 58 190 207;
+    }
+
+    :root[data-theme="sun"] {
+        --color-primary: 248 196 98;
+        --color-secondary: 65 128 217;
+        --color-accent: 58 190 207;
+    }
+
+    :root[data-theme="cocoa"] {
+        --color-primary: 123 61 61;
+        --color-secondary: 65 128 217;
+        --color-accent: 58 190 207;
+    }
+
+    :root[data-theme="dusk"] {
+        --color-primary: 143 0 140;
+        --color-secondary: 65 128 217;
+        --color-accent: 58 190 207;
+    }
+
+    :root[data-theme="amber"] {
+        --color-primary: 219 124 38;
+        --color-secondary: 65 128 217;
+        --color-accent: 58 190 207;
+    }
+
+    :root[data-theme="ocean"] {
+        --color-primary: 112 138 255;
+        --color-secondary: 65 128 217;
+        --color-accent: 58 190 207;
+    }
+
+    :root[data-theme="blossom"] {
+        --color-primary: 255 145 175;
         --color-secondary: 65 128 217;
         --color-accent: 58 190 207;
     }

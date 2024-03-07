@@ -23,6 +23,13 @@ declare module "@tanstack/react-router" {
 const rootElement = document.getElementById("root")!;
 if (!rootElement.innerHTML) {
     const root = ReactDOM.createRoot(rootElement);
+
+    //* theme
+    const theme = localStorage.getItem("theme");
+    if (theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+    }
+
     root.render(
         <QueryClientProvider client={queryClient}>
             <RouterProvider router={router} />

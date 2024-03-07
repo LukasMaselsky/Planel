@@ -5,7 +5,7 @@ import { QueryClient } from "react-query";
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     {
         component: () => (
-            <div className="flex">
+            <div className="flex overflow-y-hidden">
                 <Navbar />
                 <Outlet />
             </div>
