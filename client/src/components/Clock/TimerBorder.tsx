@@ -19,6 +19,13 @@ export default function TimerBorder({
 
     const controls = useAnimation();
 
+    const root = document.querySelector(":root");
+    let color = "";
+    if (root) {
+        color = getComputedStyle(root).getPropertyValue("--color-primary");
+        color = `rgb(${color.split(" ").join(",")})`;
+    }
+
     const startAnimation = () => {
         controls.start({
             strokeDashoffset: -2 * Math.PI * radius,
@@ -54,16 +61,16 @@ export default function TimerBorder({
         <motion.svg
             width={`${size}`}
             height={`${size}`}
-            className="absolute z-[-1] rotate-[270deg]"
+            className="absolute z-[0] rotate-[270deg]"
             initial={{ strokeDashoffset: 0 }}
             animate={controls}
         >
             <motion.circle
                 cx="50%"
                 cy="50%"
-                r={`${radius}`}
-                stroke="blue"
-                strokeWidth={`${strokeWidth}`}
+                r={radius}
+                stroke={color}
+                strokeWidth={strokeWidth}
                 fill="none"
                 strokeDasharray={2 * Math.PI * radius}
             ></motion.circle>
