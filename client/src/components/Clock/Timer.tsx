@@ -1,9 +1,11 @@
-import useTimer from "../../hooks/useTimer";
+import useTimer, { convertFromMillis } from "../../hooks/useTimer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons";
 import useLongPress from "../../hooks/useLongPress";
 import { TimerState } from "./Clock";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { ActivityContext } from "../../context/activityContext";
+import { getCurrentDate } from "../../utils/getCurrentDate";
 
 type Props = {
     setTimerState: React.Dispatch<React.SetStateAction<TimerState>>;
@@ -11,6 +13,8 @@ type Props = {
 };
 
 export default function Timer({ setTimerState, setTimerDuration }: Props) {
+    const activity = useContext(ActivityContext);
+
     const {
         resetTimer,
         toggleTimer,
@@ -18,6 +22,7 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
         on,
         time,
         timeElapsed,
+        timerFinished,
         incHours,
         decHours,
         incMinutes,
@@ -48,10 +53,22 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
         setTimerDuration(time / 1000);
     }, [time]);
 
+    useEffect(() => {
+        if (timerFinished) {
+            //* save activity
+            if (activity) {
+                const [h, m, s] = convertFromMillis(timeElapsed);
+
+                activity.updateActivity({
+                    name: `${h}:${m}:${s}`,
+                    date: getCurrentDate(),
+                });
+            }
+        }
+    }, [timerFinished]);
+
     const reset = () => {
         setTimerState("reset");
-        //* update activity
-
         resetTimer();
     };
 

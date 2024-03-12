@@ -1,7 +1,26 @@
+import { useContext } from "react";
 import useStopwatch from "../../hooks/useStopwatch";
+import { ActivityContext } from "../../context/activityContext";
+import { convertFromMillis } from "../../hooks/useTimer";
+import { getCurrentDate } from "../../utils/getCurrentDate";
 
 export default function Stopwatch() {
-    const { strTime, on, resetStopwatch, toggleStopwatch } = useStopwatch();
+    const { strTime, on, timeElapsed, resetStopwatch, toggleStopwatch } = useStopwatch();
+    const activity = useContext(ActivityContext)
+
+    const reset = () => {
+        resetStopwatch();
+        //* save activity
+        if (activity) {
+            const [h, m, s] = convertFromMillis(timeElapsed);
+
+            activity.updateActivity({
+                name: `${h}:${m}:${s}`,
+                date: getCurrentDate(),
+            });
+        }
+
+    };
 
     return (
         <>
@@ -21,7 +40,7 @@ export default function Stopwatch() {
             <div className="flex items-center justify-center gap-1">
                 <button
                     className="h-8 w-14 rounded-lg px-2 py-1"
-                    onClick={resetStopwatch}
+                    onClick={reset}
                 >
                     Reset
                 </button>

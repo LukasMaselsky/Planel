@@ -10,6 +10,7 @@ export default function useStopwatch() {
     const [time, setTime] = useState(convertToMillis(0, 0, 0));
     const [referenceTime, setReferenceTime] = useState(Date.now());
     const [strTime, setStrTime] = useState(["00", "00", "00"]);
+    const [timeElapsed, setTimeElapsed] = useState(convertToMillis(0, 0, 0));
 
     const resetStopwatch = () => {
         setOn(false);
@@ -32,6 +33,7 @@ export default function useStopwatch() {
                     const interval = now - referenceTime;
                     setReferenceTime(now);
                     setStrTime([...convertFromMillis(prevTime + interval)]);
+                    setTimeElapsed((prev) => prev + interval);
                     return prevTime + interval;
                 });
             };
@@ -43,6 +45,7 @@ export default function useStopwatch() {
     return {
         strTime,
         on,
+        timeElapsed,
         resetStopwatch,
         toggleStopwatch,
     };

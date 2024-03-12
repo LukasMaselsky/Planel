@@ -33,6 +33,7 @@ export default function useTimer() {
     const [referenceTime, setReferenceTime] = useState(Date.now());
     const [strTime, setStrTime] = useState(["00", "00", "00"]);
     const [timeElapsed, setTimeElapsed] = useState(convertToMillis(0, 0, 0));
+    const [timerFinished, setTimerFinished] = useState(false)
 
     const setTimer = (hours: number, minutes: number, seconds: number) => {
         const millis = convertToMillis(hours, minutes, seconds);
@@ -43,6 +44,7 @@ export default function useTimer() {
     const resetTimer = () => {
         setTimer(0, 0, 0);
         setOn(false);
+        setTimerFinished(false)
     };
 
     const toggleTimer = () => {
@@ -149,6 +151,7 @@ export default function useTimer() {
                 setTime((prevTime) => {
                     if (prevTime <= 0) {
                         setOn(false);
+                        setTimerFinished(true);
                         return 0;
                     }
 
@@ -170,6 +173,7 @@ export default function useTimer() {
         on,
         time,
         timeElapsed,
+        timerFinished,
         resetTimer,
         toggleTimer,
         incHours,
