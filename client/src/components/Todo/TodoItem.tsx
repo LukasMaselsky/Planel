@@ -29,7 +29,7 @@ export default function TodoItem({ id, text, deleteTodo, updateTodo }: Props) {
             ></input>
             <input
                 type="text"
-                className="flex items-center px-2 focus:outline-none"
+                className="flex items-center px-2 text-black focus:outline-none"
                 value={todoText}
                 onBlur={handleUpdate}
                 onChange={(e) => setTodoText(e.target.value)}

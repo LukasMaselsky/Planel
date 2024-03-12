@@ -17,6 +17,7 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
         strTime,
         on,
         time,
+        timeElapsed,
         incHours,
         decHours,
         incMinutes,
@@ -49,6 +50,8 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
 
     const reset = () => {
         setTimerState("reset");
+        //* update activity
+
         resetTimer();
     };
 
@@ -74,6 +77,7 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
                 </div>
                 <div className="flex flex-col items-center border-l-0 border-r-0 border-black text-xl">
                     <div
+                        {...useLongPress(incMinutes, pressSpeed)}
                         onClick={incMinutes}
                         className="flex items-center justify-center px-4 pt-2 hover:cursor-pointer"
                     >
@@ -81,6 +85,7 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
                     </div>
                     {strTime[1]}
                     <div
+                        {...useLongPress(decMinutes, pressSpeed)}
                         onClick={decMinutes}
                         className="flex items-center justify-center px-4 pb-2 hover:cursor-pointer"
                     >
@@ -89,6 +94,7 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
                 </div>
                 <div className="flex flex-col items-center border-black text-xl">
                     <div
+                        {...useLongPress(incSeconds, pressSpeed)}
                         onClick={incSeconds}
                         className="flex items-center justify-center px-4 pt-2 hover:cursor-pointer"
                     >
@@ -96,6 +102,7 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
                     </div>
                     {strTime[2]}
                     <div
+                        {...useLongPress(decSeconds, pressSpeed)}
                         onClick={decSeconds}
                         className="flex items-center justify-center px-4 pb-2 hover:cursor-pointer"
                     >

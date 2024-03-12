@@ -145,6 +145,7 @@ export default function UpdateAssignment({
                                     placeholder="Class"
                                     id="class"
                                     type="text"
+                                    disabled={editing}
                                     {...register("class")}
                                 ></input>
                             </div>

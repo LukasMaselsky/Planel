@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useQuery } from "react-query";
 import { AssignmentValues } from "./UpdateAssignment";
 import UpdateAssignment from "./UpdateAssignment";
 import AssignmentItem from "./AssignmentItem";
+import { getCurrentDate } from "../../utils/getCurrentDate";
+import { ActivityContext } from "../../context/activityContext";
 
 const dateToString = (date: Date) => {
     const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
@@ -29,6 +31,8 @@ const baseDefaults = {
 };
 
 export default function Assignments() {
+    const activity = useContext(ActivityContext);
+
     const [adding, setAdding] = useState(false);
     const [defaults, setDefaults] = useState<AssignmentValues>(baseDefaults);
     const [editing, setEditing] = useState(false);
@@ -67,6 +71,15 @@ export default function Assignments() {
         let assignments: Assignments[] = getAssignments();
 
         if (assignments) {
+            //* add to activity
+            let assignment = assignments.filter((a) => a.name == name);
+            if (activity && assignment) {
+                activity.updateActivity({
+                    name: assignment[0].name,
+                    date: getCurrentDate(),
+                });
+            }
+
             assignments = assignments.filter(
                 (assignment) => assignment.name != name,
             );
@@ -91,13 +104,13 @@ export default function Assignments() {
     if (error) return <div>Error</div>;
 
     return (
-        <div className="relative flex h-[400px] w-[300px] flex-col gap-2 rounded-lg border-[1px] border-black p-1">
+        <div className="relative flex h-[400px] w-[300px] flex-col gap-2 rounded-lg border-[1px] border-text p-1">
             <div className="flex h-full w-full flex-col gap-2 overflow-y-auto pb-1">
                 {data &&
                     data.map((item: Assignments, i: number) => (
                         <AssignmentItem
                             key={i}
-                            deleteGrade={deleteAssignment}
+                            deleteAssignment={deleteAssignment}
                             props={item}
                             setAdding={setAdding}
                             setDefaults={setDefaults}
@@ -112,8 +125,13 @@ export default function Assignments() {
                         editing={editing}
                     />
                 )}
+                {data && data.length == 0 ? (
+                    <div className="flex w-full grow items-center justify-center p-2 text-text">
+                        No assignments yet
+                    </div>
+                ) : null}
             </div>
-            <div className="flex w-full justify-center">
+            <div className="flex w-full justify-center text-text">
                 <button
                     onClick={() => {
                         setEditing(false);

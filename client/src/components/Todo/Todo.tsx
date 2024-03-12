@@ -1,9 +1,14 @@
 import { useQuery } from "react-query";
 import TodoItem from "./TodoItem";
 import { useState } from "react";
+import { useContext } from "react";
+import { ActivityContext } from "../../context/activityContext";
+import { getCurrentDate } from "../../utils/getCurrentDate";
 
 export default function Todo() {
     const [inputValue, setInputValue] = useState<string>("");
+
+    const activity = useContext(ActivityContext);
 
     const getTodos = (): { id: number; text: string }[] => {
         let todos = localStorage.getItem("todos");
@@ -29,6 +34,16 @@ export default function Todo() {
         let todos = getTodos();
         let newTodos = todos.filter((todo) => todo.id != id);
         localStorage.setItem("todos", JSON.stringify(newTodos));
+
+        //* add to activity
+        let todo = todos.filter((todo) => todo.id == id);
+        if (activity && todo) {
+            activity.updateActivity({
+                name: todo[0].text,
+                date: getCurrentDate(),
+            });
+        }
+
         //! add delay/animation here
         setTimeout(function () {
             refetch();
@@ -78,7 +93,7 @@ export default function Todo() {
                     />
                 ))}
             {data && data.length == 0 ? (
-                <div className="flex w-full grow items-center justify-center p-2">
+                <div className="flex w-full grow items-center justify-center p-2 text-text">
                     No todos yet
                 </div>
             ) : null}
