@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Time from "./Time";
 import Timer from "./Timer";
 import Stopwatch from "./Stopwatch";
@@ -6,13 +6,17 @@ import TimerBorder from "./TimerBorder";
 
 export type TimerState = "start" | "stop" | "reset" | undefined;
 
-export default function Clock() {
+type Props = {
+    size: string;
+};
+
+export default function Clock({ size }: Props) {
     const [select, setSelect] = useState("clock");
     const [timerState, setTimerState] = useState<TimerState>();
     const [timerDuration, setTimerDuration] = useState(0);
 
     return (
-        <div className="relative h-[300px] w-[300px]">
+        <div className="relative" style={{ height: size, width: size }}>
             <TimerBorder
                 size={300}
                 strokeWidth={7}

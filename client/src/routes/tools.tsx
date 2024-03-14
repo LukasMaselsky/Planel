@@ -9,8 +9,8 @@ export const Route = createFileRoute("/tools")({
 function Tools() {
     return (
         <div className="flex h-[100vh] w-full items-center bg-bg p-4 transition-colors">
-            <Todo />
-            <Clock />
+            <Todo height={"300px"} width={"300px"} />
+            <Clock size={"300px"} />
         </div>
     );
 }

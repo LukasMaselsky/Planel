@@ -21,7 +21,12 @@ const baseDefaults = {
     gradeAsPercentageSlider: 80,
 };
 
-export default function Grades() {
+type Props = {
+    width: string;
+    height: string;
+};
+
+export default function Grades({ width, height }: Props) {
     const [adding, setAdding] = useState(false);
     const [defaults, setDefaults] = useState<GradeValues>(baseDefaults);
     const [editing, setEditing] = useState(false);
@@ -84,7 +89,10 @@ export default function Grades() {
     //! weird box shadow not moving horizontally
 
     return (
-        <div className="relative flex h-[400px] w-[300px] flex-col gap-2 rounded-lg border-[1px] border-black p-1">
+        <div
+            className="relative flex flex-col gap-2 rounded-lg border-[1px] border-black p-1"
+            style={{ width: width, height: height }}
+        >
             <div className="flex h-full w-full flex-col gap-2 overflow-y-auto pb-1">
                 {data &&
                     data.map((item: Grades, i: number) => (

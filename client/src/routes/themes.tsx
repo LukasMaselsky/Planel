@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleHalfStroke } from "@fortawesome/free-solid-svg-icons";
 
 export const Route = createFileRoute("/themes")({
     component: Themes,
@@ -35,13 +37,27 @@ function Themes() {
         localStorage.setItem("theme", theme);
     };
 
+    const [darkMode, setDarkMode] = useState(
+        localStorage.getItem("mode") == "dark" ? true : false,
+    );
+
+    const toggleLightDark = () => {
+        setDarkMode((prev) => {
+            const lightOrDark = !prev ? "dark" : "light";
+            document.documentElement.setAttribute("data-light", lightOrDark);
+            localStorage.setItem("mode", lightOrDark);
+
+            return !prev;
+        });
+    };
+
     return (
         <div className="flex h-[100vh] w-full items-center bg-bg p-4 transition-colors">
-            <div className="grid h-full w-full grid-cols-4 grid-rows-2 gap-1">
+            <div className="relative grid h-full w-full grid-cols-4 grid-rows-2 gap-1">
                 {Object.keys(themes).map((theme: string, i: number) => (
                     <div
                         key={i}
-                        className="cursor-pointer rounded-xl p-2 text-lg"
+                        className="flex cursor-pointer items-center justify-center overflow-x-hidden rounded-xl p-2 text-lg"
                         style={{ backgroundColor: themes[theme] }}
                         onClick={() => handleClick(theme)}
                     >
@@ -56,6 +72,18 @@ function Themes() {
                         </p>
                     </div>
                 ))}
+                <div
+                    style={{ containerType: "inline-size" }}
+                    className="absolute left-[50%] top-[50%] flex aspect-square w-[clamp(100px,_20%,_300px)] translate-x-[-50%] translate-y-[-50%] items-center justify-center rounded-[50%] bg-bg transition-colors"
+                >
+                    <FontAwesomeIcon
+                        icon={faCircleHalfStroke}
+                        className={twMerge(
+                            "absolute cursor-pointer text-[95cqw] text-text transition-colors",
+                        )}
+                        onClick={toggleLightDark}
+                    />
+                </div>
             </div>
         </div>
     );

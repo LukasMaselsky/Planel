@@ -30,7 +30,12 @@ const baseDefaults = {
     dueDate: dateToString(new Date()),
 };
 
-export default function Assignments() {
+type Props = {
+    height: string;
+    width: string;
+};
+
+export default function Assignments({ height, width }: Props) {
     const activity = useContext(ActivityContext);
 
     const [adding, setAdding] = useState(false);
@@ -104,7 +109,10 @@ export default function Assignments() {
     if (error) return <div>Error</div>;
 
     return (
-        <div className="relative flex h-[400px] w-[300px] flex-col gap-2 rounded-lg border-[1px] border-text p-1">
+        <div
+            className="relative flex flex-col gap-2 rounded-lg border-[1px] border-text p-1"
+            style={{ height: height, width: width }}
+        >
             <div className="flex h-full w-full flex-col gap-2 overflow-y-auto pb-1">
                 {data &&
                     data.map((item: Assignments, i: number) => (

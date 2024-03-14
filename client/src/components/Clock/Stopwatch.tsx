@@ -5,8 +5,9 @@ import { convertFromMillis } from "../../hooks/useTimer";
 import { getCurrentDate } from "../../utils/getCurrentDate";
 
 export default function Stopwatch() {
-    const { strTime, on, timeElapsed, resetStopwatch, toggleStopwatch } = useStopwatch();
-    const activity = useContext(ActivityContext)
+    const { strTime, on, timeElapsed, resetStopwatch, toggleStopwatch } =
+        useStopwatch();
+    const activity = useContext(ActivityContext);
 
     const reset = () => {
         resetStopwatch();
@@ -19,27 +20,26 @@ export default function Stopwatch() {
                 date: getCurrentDate(),
             });
         }
-
     };
 
     return (
         <>
-            <div className="flex justify-center">
-                <div className="flex flex-col items-center border-black px-1 py-2 text-xl">
+            <div className="flex justify-center text-xl text-text">
+                <div className="flex flex-col items-center border-black px-1 py-2 text-2xl">
                     {strTime[0]}
                 </div>
                 <div className="flex items-center">:</div>
-                <div className="flex flex-col items-center border-l-0 border-r-0 border-black px-1 py-2 text-xl">
+                <div className="flex flex-col items-center border-l-0 border-r-0 border-black px-1 py-2 text-2xl">
                     {strTime[1]}
                 </div>
                 <div className="flex items-center">:</div>
-                <div className="flex flex-col items-center border-black px-1 py-2 text-xl">
+                <div className="flex flex-col items-center border-black px-1 py-2 text-2xl">
                     {strTime[2]}
                 </div>
             </div>
             <div className="flex items-center justify-center gap-1">
                 <button
-                    className="h-8 w-14 rounded-lg px-2 py-1"
+                    className="h-8 w-14 rounded-lg px-2 py-1 text-text"
                     onClick={reset}
                 >
                     Reset

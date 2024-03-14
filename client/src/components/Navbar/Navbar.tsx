@@ -6,50 +6,69 @@ import {
     faCalculator,
     faBook,
     faCircleHalfStroke,
+    faGear,
+    faBars,
+    faX,
     IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import { twMerge } from "tailwind-merge";
 import { Link } from "@tanstack/react-router";
+import { capitalise } from "../../utils/capitalise";
 
 export default function Navbar() {
     const icons = [faBook, faCalculator, faClockRotateLeft, faPalette];
     const links = ["/organise", "/tools", "/activity", "/themes"];
+    const [navOpen, setNavOpen] = useState(false);
 
-    const [darkMode, setDarkMode] = useState(
-        localStorage.getItem("mode") == "dark" ? true : false,
-    );
-
-    const toggleLightDark = () => {
-        setDarkMode((prev) => {
-            const lightOrDark = !prev ? "dark" : "light";
-            document.documentElement.setAttribute("data-light", lightOrDark);
-            localStorage.setItem("mode", lightOrDark);
-
-            return !prev;
-        });
+    const toggleNav = () => {
+        setNavOpen((prev) => !prev);
     };
 
     return (
-        <div className="flex h-[100svh] h-[100vh] w-[10vw] flex-col bg-bg p-2 transition-colors">
+        <div
+            className={twMerge(
+                "flex h-[100svh] h-[100vh] flex-shrink-[0] flex-col bg-bg py-2 pl-6 transition-all",
+                navOpen ? "w-[180px] " : "w-[80px] ",
+            )}
+        >
+            <div className={twMerge("flex items-center py-2 text-2xl")}>
+                <FontAwesomeIcon
+                    className="cursor-pointer text-text"
+                    onClick={toggleNav}
+                    icon={navOpen ? faX : faBars}
+                />
+            </div>
             <div className="flex h-full flex-col py-2">
                 {icons.map((icon: IconDefinition, i: number) => (
                     <div
                         key={i}
-                        className="flex flex-1 items-center justify-center text-2xl"
+                        className={twMerge(
+                            "flex flex-1 items-center justify-start text-2xl",
+                        )}
                     >
                         <Link
                             to={links[i]}
-                            className="text-text [&.active]:text-primary"
+                            className="flex items-center gap-4 font-light text-text [&.active]:font-medium [&.active]:text-primary"
                         >
                             <FontAwesomeIcon
                                 className="cursor-pointer transition-colors"
                                 icon={icon}
                             />
+                            {navOpen && (
+                                <p className="transition-all">
+                                    {capitalise(links[i].slice(1))}
+                                </p>
+                            )}
                         </Link>
                     </div>
                 ))}
             </div>
-            <div className="flex items-center justify-center py-2 text-lg">
+            <div className={twMerge("flex items-center gap-2 py-2 text-2xl")}>
+                <FontAwesomeIcon
+                    icon={faGear}
+                    className="cursor-pointer text-text"
+                />
+                {/* 
                 <FontAwesomeIcon
                     icon={faCircleHalfStroke}
                     className={twMerge(
@@ -58,6 +77,7 @@ export default function Navbar() {
                     )}
                     onClick={toggleLightDark}
                 />
+                */}
             </div>
         </div>
     );

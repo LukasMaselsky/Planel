@@ -29,7 +29,11 @@ type unit = {
     to: CombinedMeasuresUnits;
 };
 
-export default function Converter() {
+type Props = {
+    width: string;
+};
+
+export default function Converter({ width }: Props) {
     const convert = configureMeasurements<
         AllMeasures,
         AllMeasuresSystems,
@@ -200,7 +204,10 @@ export default function Converter() {
     };
 
     return (
-        <div className="flex w-[300px] flex-col gap-4 bg-gray-100 p-4">
+        <div
+            className="flex flex-col gap-4 bg-gray-100 p-4"
+            style={{ width: width }}
+        >
             <div className="flex justify-center">
                 <select
                     className="h-full rounded-lg bg-white px-2 py-1 text-center"

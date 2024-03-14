@@ -5,7 +5,12 @@ import { useContext } from "react";
 import { ActivityContext } from "../../context/activityContext";
 import { getCurrentDate } from "../../utils/getCurrentDate";
 
-export default function Todo() {
+type Props = {
+    width: string;
+    height: string;
+};
+
+export default function Todo({ width, height }: Props) {
     const [inputValue, setInputValue] = useState<string>("");
 
     const activity = useContext(ActivityContext);
@@ -72,7 +77,10 @@ export default function Todo() {
     if (error) return <div>Error</div>;
 
     return (
-        <div className="flex h-[50vh] w-[300px] flex-col overflow-y-auto rounded-lg border-[1px] border-gray-400 p-4">
+        <div
+            className="flex flex-col overflow-y-auto rounded-lg border-[1px] border-gray-400 p-4"
+            style={{ height: height, width: width }}
+        >
             <input
                 className="w-full rounded-lg border-none bg-gray-100 p-2 focus:outline-none"
                 placeholder="Add todo"

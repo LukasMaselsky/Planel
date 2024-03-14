@@ -32,7 +32,12 @@ export interface Schedule {
 type ArrayElement<T> = T extends (infer U)[] ? U : never;
 type ClassType = ArrayElement<Schedule["classes"]>;
 
-export default function Schedule() {
+type Props = {
+    width: string;
+    height: string;
+};
+
+export default function Schedule({ width, height }: Props) {
     const [selectedDay, setSelectedDay] = useState<string>("Monday");
     const [addSlotOpen, setAddSlotOpen] = useState(false);
 
@@ -224,7 +229,10 @@ export default function Schedule() {
     if (error) return <div>Error</div>;
 
     return (
-        <div className="relative flex h-[400px] w-[300px] flex-col gap-2 rounded-lg border-[1px] border-black p-1">
+        <div
+            className="relative flex flex-col gap-2 rounded-lg border-[1px] border-black p-1"
+            style={{ width: width, height: height }}
+        >
             <div className="flex w-full">
                 {initialSchedule.map((day, i: number) => (
                     <div

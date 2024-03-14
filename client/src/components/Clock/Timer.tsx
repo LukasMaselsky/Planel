@@ -74,7 +74,7 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
 
     return (
         <>
-            <div className="flex justify-center">
+            <div className="flex items-center justify-center text-xl text-text">
                 <div className="flex flex-col items-center border-black text-xl">
                     <div
                         {...useLongPress(incHours, pressSpeed)}
@@ -92,6 +92,7 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
                         <FontAwesomeIcon icon={faSortDown} />
                     </div>
                 </div>
+                :
                 <div className="flex flex-col items-center border-l-0 border-r-0 border-black text-xl">
                     <div
                         {...useLongPress(incMinutes, pressSpeed)}
@@ -109,6 +110,7 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
                         <FontAwesomeIcon icon={faSortDown} />
                     </div>
                 </div>
+                :
                 <div className="flex flex-col items-center border-black text-xl">
                     <div
                         {...useLongPress(incSeconds, pressSpeed)}
@@ -130,7 +132,7 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
 
             <div className="flex items-center justify-center gap-1">
                 <button
-                    className="h-8 w-14 rounded-lg px-2 py-1"
+                    className="h-8 w-14 rounded-lg px-2 py-1 text-text"
                     onClick={reset}
                 >
                     Reset
