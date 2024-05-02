@@ -1,5 +1,7 @@
 import CalculatorButton from "./CalculatorButton";
+import { getTheme } from "../../utils/getTheme";
 import { SyntheticEvent, useState } from "react";
+import { calculateTextColor } from "../../utils/calculateTextColor";
 
 interface Calc {
     sign: string;
@@ -105,7 +107,6 @@ export default function Calculator() {
         //! this doesn't work when using =
 
         if (newResult == "Can't divide by 0") {
-            console.log("here");
             setCalc({
                 ...calc,
                 history: newResult,
@@ -277,10 +278,16 @@ export default function Calculator() {
         },
     ];
 
+    const color = getTheme("primary");
+    const textColor = calculateTextColor(color);
+
     return (
         <div className="flex h-[400px] w-[250px] rounded-xl bg-gray-200 p-4">
             <div className="flex flex-col gap-4">
-                <div className="flex grow flex-col rounded-md bg-red-300 p-2">
+                <div
+                    className="flex grow flex-col rounded-md p-2"
+                    style={{ backgroundColor: color, color: textColor }}
+                >
                     <div className="text-base font-light">{calc.history}</div>
                     <div className="text-lg">
                         {!(calc.number == 0) ? calc.number : calc.result}
@@ -293,6 +300,8 @@ export default function Calculator() {
                             sign={obj.sign}
                             onClick={obj.onClick}
                             off={calc.divideByZero}
+                            color={color}
+                            textColor={textColor}
                         />
                     ))}
                 </div>
@@ -300,3 +309,5 @@ export default function Calculator() {
         </div>
     );
 }
+
+//TODO: 53-5= +5 doesnt work, - remains

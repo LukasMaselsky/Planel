@@ -72,7 +72,7 @@ export default function Assignments({ height, width }: Props) {
         return true;
     };
 
-    const deleteAssignment = (name: string) => {
+    const completeAssignment = (name: string) => {
         let assignments: Assignments[] = getAssignments();
 
         if (assignments) {
@@ -85,6 +85,22 @@ export default function Assignments({ height, width }: Props) {
                 });
             }
 
+            assignments = assignments.filter(
+                (assignment) => assignment.name != name,
+            );
+        }
+
+        localStorage.setItem("assignments", JSON.stringify(assignments));
+        //! add delay/animation here
+        setTimeout(function () {
+            refetch();
+        }, 100);
+    };
+
+    const deleteAssignment = (name: string) => {
+        let assignments: Assignments[] = getAssignments();
+
+        if (assignments) {
             assignments = assignments.filter(
                 (assignment) => assignment.name != name,
             );
@@ -119,6 +135,7 @@ export default function Assignments({ height, width }: Props) {
                         <AssignmentItem
                             key={i}
                             deleteAssignment={deleteAssignment}
+                            completeAssignment={completeAssignment}
                             props={item}
                             setAdding={setAdding}
                             setDefaults={setDefaults}

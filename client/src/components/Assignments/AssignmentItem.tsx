@@ -1,12 +1,17 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Assignments } from "./Assignments";
 import { AssignmentValues } from "./UpdateAssignment";
-import { faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+    faPencil,
+    faTrash,
+    faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { getDate } from "./UpdateAssignment";
 
 interface Props {
     props: Assignments;
     deleteAssignment: (name: string) => void;
+    completeAssignment: (name: string) => void;
     setAdding: React.Dispatch<React.SetStateAction<boolean>>;
     setDefaults: React.Dispatch<React.SetStateAction<AssignmentValues>>;
     setEditing: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,6 +32,7 @@ const calculateTimeLeft = (dueDate: string) => {
 export default function AssignmentItem({
     props,
     deleteAssignment,
+    completeAssignment,
     setAdding,
     setDefaults,
     setEditing,
@@ -64,6 +70,11 @@ export default function AssignmentItem({
                             onClick={handleEdit}
                             icon={faPencil}
                         />
+                        <FontAwesomeIcon
+                            className="cursor-pointer text-sm"
+                            onClick={() => deleteAssignment(props.name)}
+                            icon={faTrash}
+                        />
                     </div>
                     <p className="flex items-center text-base">
                         {props.dueDate}
@@ -75,7 +86,7 @@ export default function AssignmentItem({
                     </p>
                     <div className="flex items-center gap-1">
                         <input
-                            onClick={() => deleteAssignment(props.name)}
+                            onClick={() => completeAssignment(props.name)}
                             type="checkbox"
                             className="h-5 w-5 cursor-pointer appearance-none bg-gray-300 outline-0 after:relative after:left-[37%] after:top-[15%] after:hidden after:h-[50%] after:w-[30%] after:rotate-45 after:border-b-2 after:border-l-0 after:border-r-2 after:border-t-0 after:border-black after:content-[''] checked:bg-green-300 checked:after:block"
                         ></input>

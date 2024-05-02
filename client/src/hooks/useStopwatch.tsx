@@ -27,7 +27,7 @@ export default function useStopwatch() {
         if (on) {
             const countUp = () => {
                 setTime((prevTime) => {
-                    //! add upper limit
+                    // TODO: add upper limit
 
                     const now = Date.now();
                     const interval = now - referenceTime;

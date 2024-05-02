@@ -10,6 +10,7 @@ interface Props {
 export default function TodoItem({ id, text, deleteTodo, updateTodo }: Props) {
     const [todoText, setTodoText] = useState<string>(text);
 
+    // TODO: get prev value if multiple updates and set to that instead of prop text value from when page was oroginally loaded
     const handleUpdate = () => {
         if (todoText == "") {
             setTodoText(text);
@@ -29,7 +30,7 @@ export default function TodoItem({ id, text, deleteTodo, updateTodo }: Props) {
             ></input>
             <input
                 type="text"
-                className="flex items-center px-2 text-black focus:outline-none"
+                className="flex w-full items-center px-2 text-black focus:outline-none"
                 value={todoText}
                 onBlur={handleUpdate}
                 onChange={(e) => setTodoText(e.target.value)}
@@ -38,4 +39,4 @@ export default function TodoItem({ id, text, deleteTodo, updateTodo }: Props) {
     );
 }
 
-//! fix input starting value scrolling to end instead of start
+// TODO: fix input starting value scrolling to end instead of start (input.scrollLeft)

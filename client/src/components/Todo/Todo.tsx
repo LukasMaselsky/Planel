@@ -78,7 +78,7 @@ export default function Todo({ width, height }: Props) {
 
     return (
         <div
-            className="flex flex-col overflow-y-auto rounded-lg border-[1px] border-gray-400 p-4"
+            className="flex flex-col overflow-y-auto rounded-lg border-[1px] border-text p-4"
             style={{ height: height, width: width }}
         >
             <input
