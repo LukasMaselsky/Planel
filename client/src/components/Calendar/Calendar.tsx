@@ -134,13 +134,13 @@ export default function Calendar({ date, setDate, size }: Props) {
                                 key={i}
                                 onClick={() => setDay(i - days.startDay + 1)}
                                 className={twMerge(
-                                    "relative flex aspect-square cursor-pointer items-center justify-center after:absolute after:left-[50%] after:top-[50%] after:z-[0] after:size-7 after:translate-x-[-50%] after:translate-y-[-50%] after:rounded-[50%] after:border-[1px] after:border-red-500",
+                                    "relative flex aspect-square cursor-pointer items-center justify-center after:absolute after:left-[50%] after:top-[50%] after:z-[0] after:size-7 after:translate-x-[-50%] after:translate-y-[-50%] after:rounded-[50%] after:border-[1px] after:bg-red-500",
                                     i - days.startDay + 1 == Number(date.day)
                                         ? "after:visible"
                                         : "after:hidden",
                                 )}
                             >
-                                <p className="select-none">
+                                <p className="z-10 select-none">
                                     {i - days.startDay + 1}
                                 </p>
                             </div>

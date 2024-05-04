@@ -109,7 +109,7 @@ export default function UpdateAssignment({
     };
 
     return (
-        <div className="absolute left-0 top-0 h-full w-full rounded-lg bg-gray-100 p-2">
+        <div className="absolute left-0 top-0 h-full w-full rounded-lg bg-bg p-2 text-text">
             <form
                 className="grid h-full grid-rows-[1fr_auto_1fr]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -153,9 +153,12 @@ export default function UpdateAssignment({
                         <AddError error={errors.name || errors.class} />
                     </div>
                     <div>
-                        <div className="flex w-full justify-center gap-2">
+                        <div className="flex w-full justify-center gap-2 text-black">
                             <div className="relative flex w-[70%] flex-col gap-1">
-                                <label htmlFor="name" className="text-sm">
+                                <label
+                                    htmlFor="name"
+                                    className="text-sm text-text"
+                                >
                                     Due date
                                 </label>
                                 <div className="flex items-center gap-1 rounded-lg bg-white">

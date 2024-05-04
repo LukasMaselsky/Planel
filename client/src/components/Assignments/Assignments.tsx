@@ -5,16 +5,7 @@ import UpdateAssignment from "./UpdateAssignment";
 import AssignmentItem from "./AssignmentItem";
 import { getCurrentDate } from "../../utils/getCurrentDate";
 import { ActivityContext } from "../../context/activityContext";
-
-const dateToString = (date: Date) => {
-    const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-    const month =
-        date.getMonth() + 1 < 10
-            ? "0" + (date.getMonth() + 1)
-            : date.getMonth() + 1;
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-};
+import { dateToString } from "../../utils/dateToString";
 
 export interface Assignments {
     name: string;

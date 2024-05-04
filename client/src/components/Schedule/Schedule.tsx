@@ -128,7 +128,7 @@ export default function Schedule({ width, height }: Props) {
         return false;
     };
 
-    //! don't close add slot if overlap
+    // TODO: don't close add slot if overlap
 
     const updateSchedule = (data: ScheduleValues): boolean => {
         let schedule: Schedule[] = getSchedule();
@@ -230,7 +230,7 @@ export default function Schedule({ width, height }: Props) {
 
     return (
         <div
-            className="relative flex flex-col gap-2 rounded-lg border-[1px] border-black p-1"
+            className="relative flex flex-col gap-2 rounded-lg border-[1px] border-text p-1 text-text"
             style={{ width: width, height: height }}
         >
             <div className="flex w-full">
@@ -273,4 +273,4 @@ export default function Schedule({ width, height }: Props) {
     );
 }
 
-//! sort the data by start time
+// TODO: sort the data by start time
