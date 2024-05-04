@@ -2,7 +2,7 @@ import { useContext } from "react";
 import useStopwatch from "../../hooks/useStopwatch";
 import { ActivityContext } from "../../context/activityContext";
 import { convertFromMillis } from "../../hooks/useTimer";
-import { getCurrentDate } from "../../utils/getCurrentDate";
+import { getCurrentDate } from "../../utils/date";
 
 export default function Stopwatch() {
     const { strTime, on, timeElapsed, resetStopwatch, toggleStopwatch } =

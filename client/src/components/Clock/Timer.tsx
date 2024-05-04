@@ -5,7 +5,7 @@ import useLongPress from "../../hooks/useLongPress";
 import { TimerState } from "./Clock";
 import { useContext, useEffect } from "react";
 import { ActivityContext } from "../../context/activityContext";
-import { getCurrentDate } from "../../utils/getCurrentDate";
+import { getCurrentDate } from "../../utils/date";
 
 type Props = {
     setTimerState: React.Dispatch<React.SetStateAction<TimerState>>;

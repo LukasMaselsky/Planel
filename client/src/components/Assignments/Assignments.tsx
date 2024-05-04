@@ -3,9 +3,9 @@ import { useQuery } from "react-query";
 import { AssignmentValues } from "./UpdateAssignment";
 import UpdateAssignment from "./UpdateAssignment";
 import AssignmentItem from "./AssignmentItem";
-import { getCurrentDate } from "../../utils/getCurrentDate";
+import { getCurrentDate } from "../../utils/date";
 import { ActivityContext } from "../../context/activityContext";
-import { dateToString } from "../../utils/dateToString";
+import { dateToString } from "../../utils/date";
 
 export interface Assignments {
     name: string;

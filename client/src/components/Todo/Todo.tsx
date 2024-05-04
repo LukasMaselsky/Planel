@@ -3,7 +3,7 @@ import TodoItem from "./TodoItem";
 import { useState } from "react";
 import { useContext } from "react";
 import { ActivityContext } from "../../context/activityContext";
-import { getCurrentDate } from "../../utils/getCurrentDate";
+import { getCurrentDate } from "../../utils/date";
 
 type Props = {
     width: string;
