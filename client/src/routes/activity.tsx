@@ -9,7 +9,6 @@ export const Route = createFileRoute("/activity")({
 function Activity() {
     return (
         <div className="flex h-[100vh] w-full items-center bg-bg p-4 transition-colors">
-            <ActivityFeed />
             <ActivityGraph />
         </div>
     );
