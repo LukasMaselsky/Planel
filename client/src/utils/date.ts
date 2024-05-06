@@ -7,6 +7,14 @@ export const stringToDate = (date: string) => {
     );
 };
 
+export const monthDigitsToWord = (month: string) => {
+    const monthNum = Number(month) - 1;
+    const d = new Date();
+    d.setMonth(monthNum);
+    const m = d.toLocaleString("default", { month: "short" });
+    return m;
+};
+
 export const dateToString = (date: Date) => {
     const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
     const month =
@@ -17,9 +25,12 @@ export const dateToString = (date: Date) => {
     return `${day}/${month}/${year}`;
 };
 
-export const dateAddition = (date: Date, offset: number) => {
-    if (offset == 0) return date;
-    const newDate = new Date(new Date().setDate(date.getDate() + offset));
+export const dateAddition = (date: Date, days: number) => {
+    // TODO: THIS DOESNT WORK
+    if (days == 0) return date;
+    const newDate = new Date(date.valueOf());
+    newDate.setDate(newDate.getDate() + days);
+
     return newDate;
 };
 
