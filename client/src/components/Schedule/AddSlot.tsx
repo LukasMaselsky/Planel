@@ -65,7 +65,7 @@ export default function AddSlot({ close, updateSchedule }: Props) {
     };
 
     return (
-        <div className="absolute left-0 top-0 h-full w-full rounded-lg bg-gray-100 p-2">
+        <div className="absolute left-0 top-0 h-full w-full rounded-lg bg-bg p-2 text-black">
             <form
                 className="grid h-full grid-rows-[1fr_auto_1fr]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -138,7 +138,7 @@ export default function AddSlot({ close, updateSchedule }: Props) {
                         />
                     </div>
                 </div>
-                <div className="flex w-full justify-center gap-4">
+                <div className="flex w-full justify-center gap-4 text-text">
                     <button type="button" onClick={close}>
                         Cancel
                     </button>

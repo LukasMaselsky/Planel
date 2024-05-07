@@ -49,7 +49,7 @@ export default function TimeInput({ register, name, setValue }: Props) {
                         setValue(`${name}TimeHour`, validate(e, "hour")),
                 })}
             ></input>
-            :
+            <p className="font-bold text-text">:</p>
             <input
                 className="w-full rounded-lg px-2 py-1 text-center focus:outline-none"
                 type="text"

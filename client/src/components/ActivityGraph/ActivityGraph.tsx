@@ -5,6 +5,7 @@ import {
     dateAddition,
     dateToString,
     monthDigitsToWord,
+    dayWithSuffix,
 } from "../../utils/date";
 import { ActivityType } from "../../context/activityContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -77,11 +78,11 @@ export default function ActivityGraph() {
         <div className="size-[400px]">
             <div className="flex items-center justify-between p-2">
                 <div className="flex gap-2">
-                    <select className="px-2 py-1">
+                    <select className="rounded-lg px-2 py-1">
                         <option onClick={() => setInterval(7)}>Week</option>
                         <option onClick={() => setInterval(30)}>Month</option>
                     </select>
-                    <select className="px-2 py-1">
+                    <select className="rounded-lg px-2 py-1">
                         <option onClick={() => setGraphType("line")}>
                             Line
                         </option>
@@ -212,7 +213,7 @@ function ActivityGraphWrapper(props: GraphWrapperProps) {
                     >
                         <line stroke={labelColor} y2="6"></line>
                         <text fill={labelColor} y="9" dy="0.5rem">
-                            {date.slice(0, 2)}
+                            {dayWithSuffix(date.slice(0, 2))}
                         </text>
                     </g>
                 ))}
