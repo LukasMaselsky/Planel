@@ -68,17 +68,9 @@ export default function Navbar() {
                     icon={faGear}
                     className="cursor-pointer text-text"
                 />
-                {/* 
-                <FontAwesomeIcon
-                    icon={faCircleHalfStroke}
-                    className={twMerge(
-                        "cursor-pointer text-text",
-                        darkMode && "rotate-180",
-                    )}
-                    onClick={toggleLightDark}
-                />
-                */}
             </div>
         </div>
     );
 }
+
+// TODO: move settings together with all other icons and link it to setting page and add "settings" text
