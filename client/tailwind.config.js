@@ -10,6 +10,7 @@ export default {
                     light: "rgb(var(--color-bg-light) / <alpha-value>)",
                     DEFAULT: "rgb(var(--color-bg) / <alpha-value>)",
                     dark: "rgb(var(--color-bg-dark) / <alpha-value>)",
+                    vis: "rgb(var(--color-bg-vis) / <alpha-value>)",
                 },
                 text: {
                     light: "rgb(var(--color-text-light) / <alpha-value>)",

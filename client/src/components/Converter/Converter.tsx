@@ -33,6 +33,16 @@ type Props = {
     width: string;
 };
 
+export const copyToClipboard = async (ref: RefObject<HTMLInputElement>) => {
+    if (ref.current) {
+        try {
+            await navigator.clipboard.writeText(ref.current.value);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+};
+
 export default function Converter({ width }: Props) {
     const convert = configureMeasurements<
         AllMeasures,
@@ -191,16 +201,6 @@ export default function Converter({ width }: Props) {
             from: prev.to,
             to: prev.from,
         }));
-    };
-
-    const copyToClipboard = async (ref: RefObject<HTMLInputElement>) => {
-        if (ref.current) {
-            try {
-                await navigator.clipboard.writeText(ref.current.value);
-            } catch (err) {
-                console.log(err);
-            }
-        }
     };
 
     return (
