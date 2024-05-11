@@ -12,7 +12,7 @@ import { useState } from "react";
 
 interface Props {
     close: () => void;
-    updateGrade: (data: Assignments) => boolean;
+    updateAssignment: (data: Assignments) => boolean;
     editing: boolean;
     defaultValues?: AssignmentValues;
 }
@@ -60,7 +60,7 @@ export type DateValues = {
 
 export default function UpdateAssignment({
     close,
-    updateGrade,
+    updateAssignment,
     defaultValues,
     editing,
 }: Props) {
@@ -91,13 +91,14 @@ export default function UpdateAssignment({
         data["dueDate"] = `${date.day}/${date.month}/${date.year}`;
 
         if (isDateAfterToday(data["dueDate"])) {
-            const isValid = updateGrade(data);
+            const isValid = updateAssignment(data);
             if (isValid) {
                 close();
             } else {
+                console.log("here");
                 setError("root.exists", {
                     type: "exists",
-                    message: "You already have a assignment of this name",
+                    message: "An an assignment of this name already exists",
                 });
             }
         } else {
@@ -128,7 +129,7 @@ export default function UpdateAssignment({
                                 </label>
                                 <input
                                     className="w-full rounded-lg px-2 py-1 focus:outline-none"
-                                    placeholder="Name of class"
+                                    placeholder="Name"
                                     id="name"
                                     type="text"
                                     disabled={editing}
@@ -150,7 +151,13 @@ export default function UpdateAssignment({
                                 ></input>
                             </div>
                         </div>
-                        <AddError error={errors.name || errors.class} />
+                        <AddError
+                            error={
+                                errors.name ||
+                                errors.class ||
+                                errors.root?.exists
+                            }
+                        />
                     </div>
                     <div>
                         <div className="flex w-full justify-center gap-2 text-black">

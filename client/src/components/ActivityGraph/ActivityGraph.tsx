@@ -6,6 +6,7 @@ import {
     dateToString,
     monthDigitsToWord,
     dayWithSuffix,
+    getDayDiff,
 } from "../../utils/date";
 import { ActivityType } from "../../context/activityContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -78,11 +79,11 @@ export default function ActivityGraph() {
         <div className="size-[400px]">
             <div className="flex items-center justify-between p-2">
                 <div className="flex gap-2">
-                    <select className="rounded-lg px-2 py-1">
+                    <select className="rounded-lg bg-bg-vis px-2 py-1 text-text">
                         <option onClick={() => setInterval(7)}>Week</option>
                         <option onClick={() => setInterval(30)}>Month</option>
                     </select>
-                    <select className="rounded-lg px-2 py-1">
+                    <select className="rounded-lg bg-bg-vis px-2 py-1 text-text">
                         <option onClick={() => setGraphType("line")}>
                             Line
                         </option>
@@ -161,10 +162,10 @@ function ActivityGraphWrapper(props: GraphWrapperProps) {
     const keys = Object.keys(data);
     const dataLength = keys.length;
 
-    // TODO: swap 5 for label spacing interval calculation thingy
     const maxValue = Math.max(5, ...values) + 1; // +1 to leave gap at top
 
     const yCoords: number[] = [];
+    // TODO: swap ygap spacing interval calculation thingy
     const ygap = (props.height - labelSize) / maxValue;
     for (let i = 0; i < maxValue; i++) {
         yCoords.push(ygap * (maxValue - i));
@@ -213,7 +214,9 @@ function ActivityGraphWrapper(props: GraphWrapperProps) {
                     >
                         <line stroke={labelColor} y2="6"></line>
                         <text fill={labelColor} y="9" dy="0.5rem">
-                            {dayWithSuffix(date.slice(0, 2))}
+                            {props.interval <= 7
+                                ? dayWithSuffix(date.slice(0, 2))
+                                : date.slice(0, 2)}
                         </text>
                     </g>
                 ))}

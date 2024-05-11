@@ -26,7 +26,7 @@ export default function Clock({ size }: Props) {
 
             <div className="absolute z-10 grid h-[100%] w-[100%] grid-rows-[1fr_auto_1fr] rounded-[50%]">
                 <div className="flex items-center justify-center">
-                    <select className="w-25 h-10 rounded-lg border-black bg-white p-2 hover:cursor-pointer">
+                    <select className="w-25 h-10 rounded-lg border-black bg-bg-vis p-2 text-text hover:cursor-pointer">
                         <option onClick={() => setSelect("clock")}>
                             Clock
                         </option>

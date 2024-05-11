@@ -44,10 +44,10 @@ function App() {
 
     const activity = useContext(ActivityContext);
     if (activity) {
-        let savedActivity = localStorage.getItem("activity")
+        let savedActivity = localStorage.getItem("activity");
         if (savedActivity) {
-            let savedActivityJSON: ActivityType[] = JSON.parse(savedActivity)
-            activity.setCompleted(savedActivityJSON)
+            let savedActivityJSON: ActivityType[] = JSON.parse(savedActivity);
+            activity.setCompleted(savedActivityJSON);
         }
     }
 

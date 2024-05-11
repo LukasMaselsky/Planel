@@ -1,4 +1,5 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
+import { getItem } from "../utils/localStorage";
 
 type Props = {
     children: ReactNode;
@@ -12,6 +13,7 @@ export type ActivityType = {
 type ActivityContextType = {
     completed: ActivityType[];
     updateActivity: (newActivity: ActivityType) => void;
+    setCompleted: React.Dispatch<React.SetStateAction<ActivityType[]>>;
 };
 
 export const ActivityContext = createContext<ActivityContextType | null>(null);
@@ -19,16 +21,8 @@ export const ActivityContext = createContext<ActivityContextType | null>(null);
 export const ActivityContextProvider = ({ children }: Props) => {
     const [completed, setCompleted] = useState<ActivityType[]>([]);
 
-    const getActivity = (): ActivityType[] => {
-        const activity = localStorage.getItem("activity");
-        if (activity) {
-            return JSON.parse(activity);
-        }
-        return [];
-    };
-
     const updateActivity = (newActivity: ActivityType) => {
-        const activity = getActivity();
+        const activity = getItem("activity");
         if (activity.length > 0) {
             const updatedActivity = [...activity, newActivity];
             setCompleted(updatedActivity);
@@ -40,7 +34,7 @@ export const ActivityContextProvider = ({ children }: Props) => {
     };
 
     useEffect(() => {
-        setCompleted(getActivity());
+        setCompleted(getItem("activity"));
     }, []);
 
     return (
@@ -48,6 +42,7 @@ export const ActivityContextProvider = ({ children }: Props) => {
             value={{
                 completed: completed,
                 updateActivity: updateActivity,
+                setCompleted: setCompleted,
             }}
         >
             {children}

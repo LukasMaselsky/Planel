@@ -4,10 +4,16 @@ import { useState } from "react";
 import { useContext } from "react";
 import { ActivityContext } from "../../context/activityContext";
 import { getCurrentDate } from "../../utils/date";
+import { getItem } from "../../utils/localStorage";
 
 type Props = {
     width: string;
     height: string;
+};
+
+type Todo = {
+    id: number;
+    text: string;
 };
 
 export default function Todo({ width, height }: Props) {
@@ -15,17 +21,9 @@ export default function Todo({ width, height }: Props) {
 
     const activity = useContext(ActivityContext);
 
-    const getTodos = (): { id: number; text: string }[] => {
-        let todos = localStorage.getItem("todos");
-        if (todos) {
-            return JSON.parse(todos);
-        }
-        return [];
-    };
-
     const addTodo = () => {
         if (inputValue != "") {
-            let todos = getTodos();
+            let todos: Todo[] = getItem("todos");
             const id = todos.length > 0 ? todos[todos.length - 1].id + 1 : 1;
             const todo = { id: id, text: inputValue };
             setInputValue("");
@@ -36,7 +34,7 @@ export default function Todo({ width, height }: Props) {
     };
 
     const deleteTodo = (id: number) => {
-        let todos = getTodos();
+        let todos: Todo[] = getItem("todos");
         let newTodos = todos.filter((todo) => todo.id != id);
         localStorage.setItem("todos", JSON.stringify(newTodos));
 
@@ -56,7 +54,7 @@ export default function Todo({ width, height }: Props) {
     };
 
     const updateTodo = (id: number, text: string) => {
-        let todos = getTodos();
+        let todos: Todo[] = getItem("todos");
         const todo = todos.find((todo) => todo.id == id);
         if (todo) {
             todo.text = text;
@@ -66,7 +64,7 @@ export default function Todo({ width, height }: Props) {
     };
 
     const { data, isLoading, error, refetch } = useQuery({
-        queryFn: getTodos,
+        queryFn: () => getItem("todos"),
         queryKey: ["todos"],
         staleTime: Infinity,
         cacheTime: 0,
@@ -82,7 +80,7 @@ export default function Todo({ width, height }: Props) {
             style={{ height: height, width: width }}
         >
             <input
-                className="w-full rounded-lg border-none bg-gray-100 p-2 focus:outline-none"
+                className="w-full rounded-lg border-none bg-bg-vis p-2 text-text focus:outline-none"
                 placeholder="Add todo"
                 value={inputValue}
                 onChange={(e) => {
@@ -91,7 +89,7 @@ export default function Todo({ width, height }: Props) {
                 onKeyUp={(e) => e.key === "Enter" && addTodo()}
             ></input>
             {data &&
-                data.map((todo: { id: number; text: string }) => (
+                data.map((todo: Todo) => (
                     <TodoItem
                         key={todo.id}
                         text={todo.text}

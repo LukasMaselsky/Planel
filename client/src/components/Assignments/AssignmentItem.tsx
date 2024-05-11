@@ -1,11 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Assignments } from "./Assignments";
 import { AssignmentValues } from "./UpdateAssignment";
-import {
-    faPencil,
-    faTrash,
-    faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { getDate } from "./UpdateAssignment";
 
 interface Props {

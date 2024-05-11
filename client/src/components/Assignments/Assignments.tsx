@@ -6,6 +6,7 @@ import AssignmentItem from "./AssignmentItem";
 import { getCurrentDate } from "../../utils/date";
 import { ActivityContext } from "../../context/activityContext";
 import { dateToString } from "../../utils/date";
+import { getItem } from "../../utils/localStorage";
 
 export interface Assignments {
     name: string;
@@ -37,16 +38,8 @@ export default function Assignments({ height, width }: Props) {
         setAdding(false);
     };
 
-    const getAssignments = () => {
-        let assignments = localStorage.getItem("assignments");
-        if (assignments) {
-            return JSON.parse(assignments);
-        }
-        return [];
-    };
-
     const updateAssignment = (data: Assignments): boolean => {
-        let assignments: Assignments[] = getAssignments();
+        let assignments: Assignments[] = getItem("assignments");
         const slot = assignments.find((item) => item.name == data.name);
 
         if (slot && editing) {
@@ -64,7 +57,7 @@ export default function Assignments({ height, width }: Props) {
     };
 
     const completeAssignment = (name: string) => {
-        let assignments: Assignments[] = getAssignments();
+        let assignments: Assignments[] = getItem("assignments");
 
         if (assignments) {
             //* add to activity
@@ -89,7 +82,7 @@ export default function Assignments({ height, width }: Props) {
     };
 
     const deleteAssignment = (name: string) => {
-        let assignments: Assignments[] = getAssignments();
+        let assignments: Assignments[] = getItem("assignments");
 
         if (assignments) {
             assignments = assignments.filter(
@@ -105,7 +98,7 @@ export default function Assignments({ height, width }: Props) {
     };
 
     const { data, isLoading, error, refetch } = useQuery({
-        queryFn: getAssignments,
+        queryFn: () => getItem("assignments"),
         queryKey: ["assignments"],
         staleTime: Infinity,
         cacheTime: 0,
@@ -136,7 +129,7 @@ export default function Assignments({ height, width }: Props) {
                 {adding && (
                     <UpdateAssignment
                         defaultValues={defaults}
-                        updateGrade={updateAssignment}
+                        updateAssignment={updateAssignment}
                         close={close}
                         editing={editing}
                     />

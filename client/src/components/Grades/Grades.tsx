@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import GradeItem from "./GradeItem";
 import UpdateGrade from "./UpdateGrade";
 import { GradeValues } from "./UpdateGrade";
+import { getItem } from "../../utils/localStorage";
 
 export interface Grades {
     name: string;
@@ -35,16 +36,8 @@ export default function Grades({ width, height }: Props) {
         setAdding(false);
     };
 
-    const getGrades = () => {
-        let grades = localStorage.getItem("grades");
-        if (grades) {
-            return JSON.parse(grades);
-        }
-        return [];
-    };
-
     const updateGrade = (data: Grades): boolean => {
-        let grades: Grades[] = getGrades();
+        let grades: Grades[] = getItem("grades");
         const slot = grades.find((item) => item.name == data.name);
 
         if (slot && editing) {
@@ -62,7 +55,7 @@ export default function Grades({ width, height }: Props) {
     };
 
     const deleteGrade = (name: string) => {
-        let grades: Grades[] = getGrades();
+        let grades: Grades[] = getItem("grades");
 
         if (grades) {
             grades = grades.filter((grade) => grade.name != name);
@@ -76,7 +69,7 @@ export default function Grades({ width, height }: Props) {
     };
 
     const { data, isLoading, error, refetch } = useQuery({
-        queryFn: getGrades,
+        queryFn: () => getItem("grades"),
         queryKey: ["grades"],
         staleTime: Infinity,
         cacheTime: 0,
@@ -113,6 +106,11 @@ export default function Grades({ width, height }: Props) {
                         editing={editing}
                     />
                 )}
+                {data && data.length == 0 ? (
+                    <div className="flex w-full grow items-center justify-center p-2 text-text">
+                        No grades yet
+                    </div>
+                ) : null}
             </div>
             <div className="flex w-full justify-center">
                 <button

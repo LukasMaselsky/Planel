@@ -3,6 +3,7 @@ import ScheduleItem from "./ScheduleItem";
 import AddSlot from "./AddSlot";
 import { useQuery } from "react-query";
 import { ScheduleValues } from "./AddSlot";
+import { getItem } from "../../utils/localStorage";
 
 type Day = "M" | "T" | "W" | "F" | "S";
 
@@ -76,14 +77,6 @@ export default function Schedule({ width, height }: Props) {
         },
     ];
 
-    const getSchedule = () => {
-        let schedule = localStorage.getItem("schedule");
-        if (schedule) {
-            return JSON.parse(schedule);
-        }
-        return initialSchedule;
-    };
-
     const strToDate = (str: string): Date => {
         return new Date(
             0,
@@ -131,7 +124,7 @@ export default function Schedule({ width, height }: Props) {
     // TODO: don't close add slot if overlap
 
     const updateSchedule = (data: ScheduleValues): boolean => {
-        let schedule: Schedule[] = getSchedule();
+        let schedule: Schedule[] = getItem("schedule");
         const slots = schedule.find((slots) => slots.day == data.day);
 
         const startTime = `${data.startTimeHour}:${data.startTimeMinute}`;
@@ -183,6 +176,7 @@ export default function Schedule({ width, height }: Props) {
 
                 slots.classes = [newSlot];
             }
+
             slots.classes.sort(sortClasses());
         }
 
@@ -192,7 +186,7 @@ export default function Schedule({ width, height }: Props) {
     };
 
     const deleteSlot = (id: number, day: string) => {
-        let schedule: Schedule[] = getSchedule();
+        let schedule: Schedule[] = getItem("schedule");
         const slots = schedule.find((slots) => slots.day == day);
 
         if (slots) {
@@ -218,7 +212,7 @@ export default function Schedule({ width, height }: Props) {
     };
 
     const { data, isLoading, error, refetch } = useQuery({
-        queryFn: getSchedule,
+        queryFn: () => getItem("schedule"),
         queryKey: ["schedule"],
         staleTime: Infinity,
         cacheTime: 0,

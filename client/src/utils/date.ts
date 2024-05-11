@@ -7,6 +7,10 @@ export const stringToDate = (date: string) => {
     );
 };
 
+export const getDayDiff = () => {
+    
+}
+
 export const dayWithSuffix = (day: string) => {
     const number = Number(day);
 

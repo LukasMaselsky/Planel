@@ -97,13 +97,16 @@ export default function Calculator() {
         const input = e.target as HTMLElement;
         const value = input.innerHTML;
 
+        const justHitEquals = String(calc.history).includes("="); // FIXES: //*: 53-5= +5 doesnt work, - remains
         // remove "="
         const history = String(calc.history).includes("=")
             ? String(calc.history).slice(0, String(calc.history).length - 1) +
               calc.sign
             : String(calc.history);
 
-        const newResult = compute(calc.sign == "" ? value : calc.sign); // previous sign if mixing signs inputted
+        const newResult = compute(
+            calc.sign == "" || justHitEquals ? value : calc.sign,
+        ); // previous sign if mixing signs inputted
         //! this doesn't work when using =
 
         if (newResult == "Can't divide by 0") {
@@ -282,7 +285,7 @@ export default function Calculator() {
     const textColor = calculateTextColor(color);
 
     return (
-        <div className="flex h-[400px] w-[250px] rounded-xl bg-gray-200 p-4">
+        <div className="flex h-[400px] w-[250px] rounded-xl bg-bg-vis p-4">
             <div className="flex flex-col gap-4">
                 <div
                     className="flex grow flex-col rounded-md p-2"
@@ -309,5 +312,3 @@ export default function Calculator() {
         </div>
     );
 }
-
-//TODO: 53-5= +5 doesnt work, - remains
