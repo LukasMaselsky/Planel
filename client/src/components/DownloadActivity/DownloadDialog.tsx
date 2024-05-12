@@ -115,10 +115,11 @@ const DownloadDialog = forwardRef<HTMLDialogElement, Props>(
                 <div className="flex h-full w-full flex-col overflow-hidden">
                     <div className="flex gap-2">
                         <div className="flex w-full items-center border-b border-text ">
-                            {formats.map((format) => (
+                            {formats.map((format, i) => (
                                 <div
+                                    key={i}
                                     className={twMerge(
-                                        "hover:bg-bg-vis w-full p-2 text-center hover:cursor-pointer",
+                                        "w-full p-2 text-center hover:cursor-pointer hover:bg-bg-vis",
                                         format == selectedFormat
                                             ? "bg-bg-light"
                                             : "bg-bg",
@@ -130,7 +131,7 @@ const DownloadDialog = forwardRef<HTMLDialogElement, Props>(
                             ))}
                         </div>
                         <div
-                            className="bg-bg-vis flex items-center gap-2 rounded-lg p-2 text-text hover:cursor-pointer"
+                            className="flex items-center gap-2 rounded-lg bg-bg-vis p-2 text-text hover:cursor-pointer"
                             onClick={() =>
                                 downloadActivity(output, selectedFormat)
                             }

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import ScheduleItem from "./ScheduleItem";
 import AddSlot from "./AddSlot";
 import { useQuery } from "react-query";
 import { ScheduleValues } from "./AddSlot";
 import { getItem } from "../../utils/localStorage";
+import { ClassesContext } from "../../context/classesContext";
 
 type Day = "M" | "T" | "W" | "F" | "S";
 
@@ -41,6 +42,7 @@ type Props = {
 export default function Schedule({ width, height }: Props) {
     const [selectedDay, setSelectedDay] = useState<string>("Monday");
     const [addSlotOpen, setAddSlotOpen] = useState(false);
+    const classes = useContext(ClassesContext);
 
     const closeAddSlot = () => {
         setAddSlotOpen(false);
@@ -176,7 +178,9 @@ export default function Schedule({ width, height }: Props) {
 
                 slots.classes = [newSlot];
             }
-
+            if (classes) {
+                classes.addClass(data.name);
+            }
             slots.classes.sort(sortClasses());
         }
 
@@ -185,7 +189,7 @@ export default function Schedule({ width, height }: Props) {
         return true;
     };
 
-    const deleteSlot = (id: number, day: string) => {
+    const deleteSlot = (id: number, name: string, day: string) => {
         let schedule: Schedule[] = getItem("schedule");
         const slots = schedule.find((slots) => slots.day == day);
 
@@ -196,11 +200,14 @@ export default function Schedule({ width, height }: Props) {
             }
         }
 
+        if (classes) {
+            classes.deleteClass(name);
+        }
         localStorage.setItem("schedule", JSON.stringify(schedule));
         //! add delay/animation here
         setTimeout(function () {
             refetch();
-        }, 500);
+        }, 100);
     };
 
     const sortClasses = () => {
@@ -227,7 +234,7 @@ export default function Schedule({ width, height }: Props) {
             className="relative flex flex-col gap-2 rounded-lg border-[1px] border-text p-1 text-text"
             style={{ width: width, height: height }}
         >
-            <div className="flex w-full">
+            <div className="flex w-full border-b border-bg-vis">
                 {initialSchedule.map((day, i: number) => (
                     <div
                         key={i}

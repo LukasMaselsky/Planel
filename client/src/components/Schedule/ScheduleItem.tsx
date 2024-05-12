@@ -3,7 +3,7 @@ import { Schedule } from "./Schedule";
 interface Props {
     classes: Schedule["classes"];
     day: string;
-    deleteSlot: (id: number, day: string) => void;
+    deleteSlot: (id: number, name: string, day: string) => void;
 }
 
 export default function ScheduleItem({ classes, day, deleteSlot }: Props) {
@@ -31,7 +31,7 @@ export default function ScheduleItem({ classes, day, deleteSlot }: Props) {
                     <div className="flex justify-between font-light">
                         <p>{c.location}</p>
                         <button
-                            onClick={() => deleteSlot(c.id, day)}
+                            onClick={() => deleteSlot(c.id, c.name, day)}
                             className="rounded-md border-[1px] border-text bg-bg px-1"
                         >
                             Remove

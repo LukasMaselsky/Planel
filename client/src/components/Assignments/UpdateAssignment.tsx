@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import DateInput from "./DateInput";
 import { useState } from "react";
+import InputSelect from "../InputSelect";
 
 interface Props {
     close: () => void;
@@ -128,7 +129,7 @@ export default function UpdateAssignment({
                                     Name
                                 </label>
                                 <input
-                                    className="w-full rounded-lg px-2 py-1 focus:outline-none"
+                                    className="w-full rounded-lg px-2 py-1 text-black focus:outline-none"
                                     placeholder="Name"
                                     id="name"
                                     type="text"
@@ -141,14 +142,26 @@ export default function UpdateAssignment({
                                 <label htmlFor="grade" className="text-sm">
                                     Class
                                 </label>
+
+                                <InputSelect
+                                    className={
+                                        "w-full rounded-lg px-2 py-1 text-black focus:outline-none"
+                                    }
+                                    id="class"
+                                    placeholder="Class"
+                                    disabled={false}
+                                    selectOption={setValue}
+                                    {...register("class")}
+                                />
+                                {/*
                                 <input
-                                    className="w-full rounded-lg px-2 py-1 focus:outline-none"
+                                    className="w-full rounded-lg px-2 py-1 text-black focus:outline-none"
                                     placeholder="Class"
                                     id="class"
                                     type="text"
-                                    disabled={editing}
                                     {...register("class")}
                                 ></input>
+                                */}
                             </div>
                         </div>
                         <AddError

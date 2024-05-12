@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Assignments } from "./Assignments";
 import { AssignmentValues } from "./UpdateAssignment";
-import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { getDate } from "./UpdateAssignment";
 
 interface Props {
     props: Assignments;
-    deleteAssignment: (name: string) => void;
+    deleteAssignment: (name: string, c: string) => void;
     completeAssignment: (name: string) => void;
     setAdding: React.Dispatch<React.SetStateAction<boolean>>;
     setDefaults: React.Dispatch<React.SetStateAction<AssignmentValues>>;
@@ -68,8 +68,10 @@ export default function AssignmentItem({
                         />
                         <FontAwesomeIcon
                             className="cursor-pointer text-sm"
-                            onClick={() => deleteAssignment(props.name)}
-                            icon={faTrash}
+                            onClick={() =>
+                                deleteAssignment(props.name, props.class)
+                            }
+                            icon={faTrashCan}
                         />
                     </div>
                     <p className="flex items-center text-base">

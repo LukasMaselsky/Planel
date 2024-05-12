@@ -7,6 +7,7 @@ import { getCurrentDate } from "../../utils/date";
 import { ActivityContext } from "../../context/activityContext";
 import { dateToString } from "../../utils/date";
 import { getItem } from "../../utils/localStorage";
+import { ClassesContext } from "../../context/classesContext";
 
 export interface Assignments {
     name: string;
@@ -29,6 +30,7 @@ type Props = {
 
 export default function Assignments({ height, width }: Props) {
     const activity = useContext(ActivityContext);
+    const classes = useContext(ClassesContext);
 
     const [adding, setAdding] = useState(false);
     const [defaults, setDefaults] = useState<AssignmentValues>(baseDefaults);
@@ -43,12 +45,19 @@ export default function Assignments({ height, width }: Props) {
         const slot = assignments.find((item) => item.name == data.name);
 
         if (slot && editing) {
+            if (classes) {
+                classes.updateClass(slot.class, data.class);
+            }
+
             assignments[assignments.indexOf(slot)] = data;
             setEditing(false);
             localStorage.setItem("assignments", JSON.stringify(assignments));
         } else {
             if (slot) return false; // not valid
 
+            if (classes) {
+                classes.addClass(data.class);
+            }
             const newGrades = [...assignments, data];
             localStorage.setItem("assignments", JSON.stringify(newGrades));
         }
@@ -81,7 +90,7 @@ export default function Assignments({ height, width }: Props) {
         }, 100);
     };
 
-    const deleteAssignment = (name: string) => {
+    const deleteAssignment = (name: string, c: string) => {
         let assignments: Assignments[] = getItem("assignments");
 
         if (assignments) {
@@ -90,6 +99,9 @@ export default function Assignments({ height, width }: Props) {
             );
         }
 
+        if (classes) {
+            classes.deleteClass(c);
+        }
         localStorage.setItem("assignments", JSON.stringify(assignments));
         //! add delay/animation here
         setTimeout(function () {

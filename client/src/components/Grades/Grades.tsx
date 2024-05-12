@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useQuery } from "react-query";
 import GradeItem from "./GradeItem";
 import UpdateGrade from "./UpdateGrade";
 import { GradeValues } from "./UpdateGrade";
 import { getItem } from "../../utils/localStorage";
+import { ClassesContext } from "../../context/classesContext";
 
 export interface Grades {
     name: string;
@@ -31,6 +32,7 @@ export default function Grades({ width, height }: Props) {
     const [adding, setAdding] = useState(false);
     const [defaults, setDefaults] = useState<GradeValues>(baseDefaults);
     const [editing, setEditing] = useState(false);
+    const classes = useContext(ClassesContext);
 
     const close = () => {
         setAdding(false);
@@ -47,6 +49,9 @@ export default function Grades({ width, height }: Props) {
         } else {
             if (slot) return false; // not valid
 
+            if (classes) {
+                classes.addClass(data.name);
+            }
             const newGrades = [...grades, data];
             localStorage.setItem("grades", JSON.stringify(newGrades));
         }
@@ -61,6 +66,9 @@ export default function Grades({ width, height }: Props) {
             grades = grades.filter((grade) => grade.name != name);
         }
 
+        if (classes) {
+            classes.deleteClass(name);
+        }
         localStorage.setItem("grades", JSON.stringify(grades));
         //! add delay/animation here
         setTimeout(function () {
@@ -83,7 +91,7 @@ export default function Grades({ width, height }: Props) {
 
     return (
         <div
-            className="relative flex flex-col gap-2 rounded-lg border-[1px] border-black p-1"
+            className="relative flex flex-col gap-2 rounded-lg border-[1px] border-text p-1"
             style={{ width: width, height: height }}
         >
             <div className="flex h-full w-full flex-col gap-2 overflow-y-auto pb-1">
@@ -112,7 +120,7 @@ export default function Grades({ width, height }: Props) {
                     </div>
                 ) : null}
             </div>
-            <div className="flex w-full justify-center">
+            <div className="flex w-full justify-center text-text">
                 <button
                     onClick={() => {
                         setEditing(false);

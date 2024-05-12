@@ -86,7 +86,7 @@ export default function UpdateGrade({
     };
 
     return (
-        <div className="absolute left-0 top-0 h-full w-full rounded-lg bg-gray-100 p-2">
+        <div className="absolute left-0 top-0 h-full w-full rounded-lg bg-bg p-2 text-text">
             <form
                 className="grid h-full grid-rows-[1fr_auto_1fr]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -101,10 +101,10 @@ export default function UpdateGrade({
                         <div className="flex w-full justify-between gap-2">
                             <div className="flex flex-col gap-1">
                                 <label htmlFor="name" className="text-sm">
-                                    Name
+                                    Class
                                 </label>
                                 <input
-                                    className="w-full rounded-lg px-2 py-1 focus:outline-none"
+                                    className="w-full rounded-lg px-2 py-1 text-black focus:outline-none"
                                     placeholder="Name of class"
                                     id="name"
                                     type="text"
@@ -118,7 +118,7 @@ export default function UpdateGrade({
                                     Grade
                                 </label>
                                 <input
-                                    className="w-full rounded-lg px-2 py-1 focus:outline-none"
+                                    className="w-full rounded-lg px-2 py-1 text-black focus:outline-none"
                                     placeholder="Grade"
                                     id="grade"
                                     type="text"
@@ -136,7 +136,7 @@ export default function UpdateGrade({
                                 <>
                                     <label className="text-sm">Grade (%)</label>
                                     <input
-                                        className="w-full rounded-lg px-2 py-1 focus:outline-none"
+                                        className="w-full rounded-lg px-2 py-1  focus:outline-none"
                                         type="range"
                                         style={{
                                             accentColor:
@@ -174,7 +174,7 @@ export default function UpdateGrade({
                                             </label>
                                             <input
                                                 placeholder="Minimum pass %"
-                                                className="w-full rounded-lg px-2 py-1 text-center focus:outline-none"
+                                                className="w-full rounded-lg px-2 py-1 text-center text-black focus:outline-none"
                                                 type="text"
                                                 id="pass"
                                                 {...field}
@@ -203,7 +203,7 @@ export default function UpdateGrade({
                                                 Grade (%)
                                             </label>
                                             <input
-                                                className="w-full rounded-lg px-2 py-1 text-center focus:outline-none"
+                                                className="w-full rounded-lg px-2 py-1 text-center text-black focus:outline-none"
                                                 type="text"
                                                 id="gradePercentage"
                                                 placeholder="Grade %"
