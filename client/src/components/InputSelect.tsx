@@ -1,67 +1,79 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { ClassesContext } from "../context/classesContext";
 import { twMerge } from "tailwind-merge";
-import { FieldValues, UseFormSetValue } from "react-hook-form";
-import { AssignmentValues } from "./Assignments/UpdateAssignment";
+import { FieldValues, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { Path, PathValue } from "react-hook-form";
 
 interface Props<T extends FieldValues> {
     className: string;
-    id: keyof T;
+    key: Path<T>;
     disabled: boolean;
     placeholder: string;
     selectOption: UseFormSetValue<T>;
+    register: UseFormRegister<T>;
 }
 
-export default function InputSelect(props: Props<AssignmentValues>) {
+export default function InputSelect<T extends FieldValues>(props: Props<T>) {
+    type Keys = keyof T;
+
     const [value, setValue] = useState("");
     const [open, setOpen] = useState(false);
+    const [options, setOptions] = useState<string[]>([]);
+
     const classes = useContext(ClassesContext);
 
+    useEffect(() => {
+        if (classes) {
+            setOptions(Object.keys(classes.classes));
+        }
+    }, [classes]);
+
     const handleBlur = () => {
-        setOpen(false);
+        setTimeout(function () {
+            setOpen(false);
+        }, 100);
     };
 
     const handleFocus = () => {
         setOpen(true);
     };
 
-    const handle = (l: string) => {
-        console.log("here");
-        props.selectOption(props.id, l);
+    const handle = (value: any) => {
+        props.selectOption(props.key, value);
     };
 
-    const a = ["a", "b", "c", "d", "e", "f"];
-    //const a = ["a"];
     return (
         <div className="relative">
+            <label htmlFor={props.key} className="text-sm">
+                {props.key}
+            </label>
             <input
                 className={props.className}
                 type="text"
-                id={props.id}
+                id={props.key}
                 disabled={props.disabled}
                 placeholder={props.placeholder}
-                onBlur={handleBlur}
                 onFocus={handleFocus}
-                onChange={(e) => setValue(e.target.value)}
+                {...props.register(props.key)}
             ></input>
-            {
+            {open && (
                 <div
                     className={twMerge(
                         props.className,
                         "absolute top-[calc(100%+5px)] z-10 flex h-[300%] flex-col overflow-y-auto overflow-x-hidden bg-white p-0",
                     )}
                 >
-                    {a.map((l, i) => (
+                    {options.map((option, i: number) => (
                         <div
                             key={i}
                             className="w-full cursor-default border-b border-gray-200 px-2 py-1 text-black hover:bg-secondary"
-                            onClick={() => handle(l)}
+                            onClick={() => handle(option)}
                         >
-                            {l}
+                            {option}
                         </div>
                     ))}
                 </div>
-            }
+            )}
         </div>
     );
 }

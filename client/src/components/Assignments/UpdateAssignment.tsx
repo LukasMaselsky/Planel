@@ -1,5 +1,5 @@
 import { Assignments } from "./Assignments";
-import { useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { GithubPicker } from "react-color";
@@ -8,8 +8,9 @@ import Calendar from "../Calendar/Calendar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import DateInput from "./DateInput";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import InputSelect from "../InputSelect";
+import { ClassesContext } from "../../context/classesContext";
 
 interface Props {
     close: () => void;
@@ -96,7 +97,6 @@ export default function UpdateAssignment({
             if (isValid) {
                 close();
             } else {
-                console.log("here");
                 setError("root.exists", {
                     type: "exists",
                     message: "An an assignment of this name already exists",
@@ -139,19 +139,15 @@ export default function UpdateAssignment({
                             </div>
 
                             <div className="flex flex-col gap-1">
-                                <label htmlFor="grade" className="text-sm">
-                                    Class
-                                </label>
-
-                                <InputSelect
+                                <InputSelect<AssignmentValues>
                                     className={
                                         "w-full rounded-lg px-2 py-1 text-black focus:outline-none"
                                     }
-                                    id="class"
+                                    key="class"
                                     placeholder="Class"
                                     disabled={false}
                                     selectOption={setValue}
-                                    {...register("class")}
+                                    register={register}
                                 />
                                 {/*
                                 <input
@@ -197,7 +193,7 @@ export default function UpdateAssignment({
                                     />
                                 </div>
                                 {calendarOpen && (
-                                    <div className="absolute top-[100%] z-[1]">
+                                    <div className="absolute top-[calc(100%+5px)] z-[1]">
                                         <Calendar
                                             date={date}
                                             setDate={setDate}

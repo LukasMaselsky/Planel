@@ -1,6 +1,7 @@
 import ClassesItem from "./ClassesItem";
 import { useState, useContext } from "react";
 import { ClassesContext } from "../../context/classesContext";
+import Empty from "../Empty";
 
 type Props = {
     width: string;
@@ -42,9 +43,7 @@ export default function Classes({ width, height }: Props) {
                     <ClassesItem key={i} name={c} deleteClass={remove} />
                 ))}
             {classes && Object.keys(classes.classes).length == 0 ? (
-                <div className="flex w-full grow items-center justify-center p-2 text-text">
-                    No classes yet
-                </div>
+                <Empty component={"classes"} />
             ) : null}
         </div>
     );

@@ -8,6 +8,7 @@ import { ActivityContext } from "../../context/activityContext";
 import { dateToString } from "../../utils/date";
 import { getItem } from "../../utils/localStorage";
 import { ClassesContext } from "../../context/classesContext";
+import Empty from "../Empty";
 
 export interface Assignments {
     name: string;
@@ -147,9 +148,7 @@ export default function Assignments({ height, width }: Props) {
                     />
                 )}
                 {data && data.length == 0 ? (
-                    <div className="flex w-full grow items-center justify-center p-2 text-text">
-                        No assignments yet
-                    </div>
+                    <Empty component={"assignments"} />
                 ) : null}
             </div>
             <div className="flex w-full justify-center text-text">

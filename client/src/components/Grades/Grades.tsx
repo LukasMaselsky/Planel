@@ -5,6 +5,7 @@ import UpdateGrade from "./UpdateGrade";
 import { GradeValues } from "./UpdateGrade";
 import { getItem } from "../../utils/localStorage";
 import { ClassesContext } from "../../context/classesContext";
+import Empty from "../Empty";
 
 export interface Grades {
     name: string;
@@ -115,9 +116,7 @@ export default function Grades({ width, height }: Props) {
                     />
                 )}
                 {data && data.length == 0 ? (
-                    <div className="flex w-full grow items-center justify-center p-2 text-text">
-                        No grades yet
-                    </div>
+                    <Empty component={"grades"} />
                 ) : null}
             </div>
             <div className="flex w-full justify-center text-text">

@@ -1,3 +1,4 @@
+import Empty from "../Empty";
 import { Schedule } from "./Schedule";
 
 interface Props {
@@ -10,9 +11,7 @@ export default function ScheduleItem({ classes, day, deleteSlot }: Props) {
     return (
         <div className="flex h-full w-full flex-col gap-2 overflow-y-auto pb-1">
             {classes?.length == 0 || !classes ? (
-                <div className="flex h-full w-full items-center justify-center">
-                    <p>No classes yet</p>
-                </div>
+                <Empty component={"classes"} />
             ) : null}
             {classes?.map((c, i: number) => (
                 <div

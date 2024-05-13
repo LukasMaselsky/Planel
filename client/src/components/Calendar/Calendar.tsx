@@ -99,7 +99,7 @@ export default function Calendar({ date, setDate, size }: Props) {
     return (
         <div
             style={{ width: `${size}px` }}
-            className="flex flex-col gap-4 rounded-lg border-[1px] border-black bg-gray-100 p-2"
+            className="flex flex-col gap-4 rounded-lg border-[1px] bg-white p-2 text-black"
         >
             <div className="flex items-center justify-between px-1.5">
                 <div className="">

@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { ActivityContext } from "../../context/activityContext";
 import { getCurrentDate } from "../../utils/date";
 import { getItem } from "../../utils/localStorage";
+import Empty from "../Empty";
 
 type Props = {
     width: string;
@@ -98,11 +99,7 @@ export default function Todo({ width, height }: Props) {
                         updateTodo={updateTodo}
                     />
                 ))}
-            {data && data.length == 0 ? (
-                <div className="flex w-full grow items-center justify-center p-2 text-text">
-                    No todos yet
-                </div>
-            ) : null}
+            {data && data.length == 0 ? <Empty component={"todos"} /> : null}
         </div>
     );
 }

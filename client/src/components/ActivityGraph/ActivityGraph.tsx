@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "react-query";
 import { getTheme } from "../../utils/getTheme";
+import { getItem } from "../../utils/localStorage";
 
 const getGraphData = (
     data: ActivityType[] | undefined,
@@ -61,8 +62,17 @@ const handleDateRangeChange = (dates: string[]) => {
     }
 };
 
+const shiftGraphToCurrentDate = () => {
+    const activity: ActivityType[] = getItem("activity");
+    if (activity.length == 0) return 0;
+
+    const startDate = stringToDate(activity[0].date);
+    const diff = getDayDiff(startDate, new Date());
+    return diff > 7 ? diff - 7 : diff; //* -7 to see past week of activity
+};
+
 export default function ActivityGraph() {
-    const [startIndex, setStartIndex] = useState(0);
+    const [startIndex, setStartIndex] = useState(shiftGraphToCurrentDate());
     const [interval, setInterval] = useState(7); // 1 week
     const [graphType, setGraphType] = useState<"bar" | "line">("line");
     const [dateRange, setDateRange] = useState("");
@@ -76,8 +86,8 @@ export default function ActivityGraph() {
     };
 
     return (
-        <div className="size-[400px]">
-            <div className="flex items-center justify-between p-2">
+        <div className="w-[400px]">
+            <div className="flex items-center justify-between gap-2 p-2">
                 <div className="flex gap-2">
                     <select className="rounded-lg bg-bg-vis px-2 py-1 text-text">
                         <option onClick={() => setInterval(7)}>Week</option>
@@ -91,7 +101,7 @@ export default function ActivityGraph() {
                     </select>
                 </div>
                 <div>
-                    <p>{dateRange}</p>
+                    <p className="text-nowrap">{dateRange}</p>
                 </div>
                 <div className="flex gap-2">
                     <FontAwesomeIcon
@@ -160,6 +170,9 @@ function ActivityGraphWrapper(props: GraphWrapperProps) {
 
     const values = Object.values(data);
     const keys = Object.keys(data);
+
+    if (keys.length == 0) return <div>No activity</div>;
+
     const dataLength = keys.length;
 
     const maxValue = Math.max(5, ...values) + 1; // +1 to leave gap at top
