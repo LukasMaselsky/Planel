@@ -21,9 +21,11 @@ export default function ScheduleItem({ classes, day, deleteSlot }: Props) {
                     }
                     style={{ boxShadow: `0px 3px 0px 0px ${c.color}` }}
                 >
-                    <div className="flex justify-between">
-                        <p className="text-xl">{c.name}</p>
-                        <p className="flex items-center text-base">
+                    <div className="flex items-center justify-between">
+                        <p className="line-clamp-1 text-ellipsis text-xl">
+                            {c.name}
+                        </p>
+                        <p className="line-clamp-1 overflow-hidden text-ellipsis text-base">
                             {c.startTime} - {c.endTime}
                         </p>
                     </div>

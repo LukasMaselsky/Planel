@@ -2,6 +2,9 @@ import CalculatorButton from "./CalculatorButton";
 import { getTheme } from "../../utils/getTheme";
 import { SyntheticEvent, useState } from "react";
 import { calculateTextColor } from "../../utils/calculateTextColor";
+import { copyToClipboard } from "../DownloadActivity/DownloadDialog";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
 
 interface Calc {
     sign: string;
@@ -167,6 +170,7 @@ export default function Calculator() {
                       "=",
             result: newResult,
             number: 0,
+            divideByZero: true,
         });
     };
 
@@ -285,15 +289,30 @@ export default function Calculator() {
     const textColor = calculateTextColor(color);
 
     return (
-        <div className="flex h-[400px] w-[250px] rounded-xl bg-bg-vis p-4">
+        <div className="flex h-[400px] w-[250px] overflow-hidden rounded-xl bg-bg-vis p-4">
             <div className="flex flex-col gap-4">
                 <div
                     className="flex grow flex-col rounded-md p-2"
                     style={{ backgroundColor: color, color: textColor }}
                 >
                     <div className="text-base font-light">{calc.history}</div>
-                    <div className="text-lg">
-                        {!(calc.number == 0) ? calc.number : calc.result}
+                    <div className="flex items-center justify-between gap-1">
+                        <div className="text-lg">
+                            {!(calc.number == 0) ? calc.number : calc.result}
+                        </div>
+                        <div>
+                            <FontAwesomeIcon
+                                icon={faCopy}
+                                className="text-lg hover:cursor-pointer"
+                                onClick={() =>
+                                    copyToClipboard(
+                                        !(calc.number == 0)
+                                            ? String(calc.number)
+                                            : String(calc.result),
+                                    )
+                                }
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className="grid grid-cols-4 grid-rows-5 gap-2">

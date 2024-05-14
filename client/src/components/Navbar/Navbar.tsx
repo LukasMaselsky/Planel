@@ -14,6 +14,7 @@ import {
 import { twMerge } from "tailwind-merge";
 import { Link } from "@tanstack/react-router";
 import { capitalise } from "../../utils/capitalise";
+import logo from "../../assets/logo.png";
 
 export default function Navbar() {
     const icons = [faBook, faCalculator, faClockRotateLeft, faPalette];
@@ -31,12 +32,17 @@ export default function Navbar() {
                 navOpen ? "w-[180px] " : "w-[80px] ",
             )}
         >
-            <div className={twMerge("flex items-center py-2 text-2xl")}>
+            <div className={twMerge("flex items-center gap-4 py-2 text-2xl")}>
                 <FontAwesomeIcon
                     className="cursor-pointer text-text"
                     onClick={toggleNav}
                     icon={navOpen ? faX : faBars}
                 />
+                {navOpen ? (
+                    <div className="w-full">
+                        <img src={logo} className="h-6"></img>
+                    </div>
+                ) : null}
             </div>
             <div className="flex h-full flex-col py-2">
                 {icons.map((icon: IconDefinition, i: number) => (

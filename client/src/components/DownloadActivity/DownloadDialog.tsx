@@ -81,7 +81,7 @@ const downloadActivity = (data: string, format: Formats) => {
     document.removeChild(a);
 };
 
-const copyToClipboard = async (text: string) => {
+export const copyToClipboard = async (text: string) => {
     try {
         await navigator.clipboard.writeText(text);
     } catch (err) {
@@ -121,8 +121,8 @@ const DownloadDialog = forwardRef<HTMLDialogElement, Props>(
                                     className={twMerge(
                                         "w-full p-2 text-center hover:cursor-pointer hover:bg-bg-vis",
                                         format == selectedFormat
-                                            ? "bg-bg-light"
-                                            : "bg-bg",
+                                            ? "bg-bg-light font-medium"
+                                            : "bg-bg font-normal",
                                     )}
                                     onClick={() => setSelectedFormat(format)}
                                 >

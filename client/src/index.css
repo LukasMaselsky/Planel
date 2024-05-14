@@ -39,8 +39,8 @@
 
     :root[data-theme="crimson"] {
         --color-primary: 204 49 40;
-        --color-secondary: 245, 106, 0;
-        --color-accent: 255, 230, 229;
+        --color-secondary: 245 106 0;
+        --color-accent: 255 230 229;
     }
 
     :root[data-theme="forest"] {

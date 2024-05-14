@@ -8,9 +8,10 @@ type Props = {
 type ClassesContextType = {
     classes: Class;
     setClasses: React.Dispatch<React.SetStateAction<Class>>;
-    addClass: (c: string) => void;
-    deleteClass: (c: string) => void;
     updateClass: (old: string, n: string) => void;
+    addClass: (c: string) => void;
+    createClass: (c: string) => void;
+    removeClass: (c: string) => void;
 };
 
 export type Class = {
@@ -27,6 +28,15 @@ Number is only used for tracking this and updating classes component
 export const ClassesContextProvider = ({ children }: Props) => {
     const [classes, setClasses] = useState<Class>({});
 
+    const createClass = (c: string) => {
+        let cs: Class = getItem("classes");
+        if (!(c in cs)) {
+            cs[c] = 0;
+        }
+        localStorage.setItem("classes", JSON.stringify(cs));
+        setClasses(cs);
+    };
+
     const addClass = (c: string) => {
         let cs: Class = getItem("classes");
         cs[c] = (cs[c] || 0) + 1;
@@ -35,7 +45,7 @@ export const ClassesContextProvider = ({ children }: Props) => {
         setClasses(cs);
     };
 
-    const deleteClass = (c: string) => {
+    const removeClass = (c: string) => {
         let cs: Class = getItem("classes");
         if (c in cs) {
             if (cs[c] > 1) {
@@ -51,7 +61,7 @@ export const ClassesContextProvider = ({ children }: Props) => {
 
     const updateClass = (old: string, n: string) => {
         addClass(n);
-        deleteClass(old);
+        removeClass(old);
     };
 
     useEffect(() => {
@@ -63,8 +73,9 @@ export const ClassesContextProvider = ({ children }: Props) => {
             value={{
                 classes: classes,
                 addClass: addClass,
-                deleteClass: deleteClass,
+                removeClass: removeClass,
                 updateClass: updateClass,
+                createClass: createClass,
                 setClasses: setClasses,
             }}
         >

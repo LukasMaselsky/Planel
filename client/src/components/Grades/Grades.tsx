@@ -6,6 +6,8 @@ import { GradeValues } from "./UpdateGrade";
 import { getItem } from "../../utils/localStorage";
 import { ClassesContext } from "../../context/classesContext";
 import Empty from "../Empty";
+import OrganiseWrapper from "../OrganiseWrapper";
+import Loading from "../Loading";
 
 export interface Grades {
     name: string;
@@ -68,7 +70,7 @@ export default function Grades({ width, height }: Props) {
         }
 
         if (classes) {
-            classes.deleteClass(name);
+            classes.removeClass(name);
         }
         localStorage.setItem("grades", JSON.stringify(grades));
         //! add delay/animation here
@@ -84,17 +86,19 @@ export default function Grades({ width, height }: Props) {
         cacheTime: 0,
     });
 
-    if (isLoading) return <div>Loading</div>;
+    if (isLoading)
+        return (
+            <OrganiseWrapper width={width} height={height}>
+                <Loading />
+            </OrganiseWrapper>
+        );
 
     if (error) return <div>Error</div>;
 
     //! weird box shadow not moving horizontally
 
     return (
-        <div
-            className="relative flex flex-col gap-2 rounded-lg border-[1px] border-text p-1"
-            style={{ width: width, height: height }}
-        >
+        <OrganiseWrapper width={width} height={height}>
             <div className="flex h-full w-full flex-col gap-2 overflow-y-auto pb-1">
                 {data &&
                     data.map((item: Grades, i: number) => (
@@ -130,6 +134,6 @@ export default function Grades({ width, height }: Props) {
                     Add grade
                 </button>
             </div>
-        </div>
+        </OrganiseWrapper>
     );
 }

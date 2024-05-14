@@ -14,13 +14,14 @@ export default function Classes({ width, height }: Props) {
 
     const add = () => {
         if (inputValue != "" && classes) {
-            classes.addClass(inputValue);
+            classes.createClass(inputValue);
+            setInputValue("");
         }
     };
 
     const remove = (name: string) => {
         if (classes) {
-            classes.deleteClass(name);
+            classes.removeClass(name);
         }
     };
 
@@ -40,7 +41,7 @@ export default function Classes({ width, height }: Props) {
             ></input>
             {classes &&
                 Object.keys(classes.classes).map((c: string, i: number) => (
-                    <ClassesItem key={i} name={c} deleteClass={remove} />
+                    <ClassesItem key={i} name={c} deleteClass={remove} addedByInput={classes.classes[c] == 0}/>
                 ))}
             {classes && Object.keys(classes.classes).length == 0 ? (
                 <Empty component={"classes"} />

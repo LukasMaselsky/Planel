@@ -57,21 +57,21 @@ export default function AssignmentItem({
             >
                 <div className="flex justify-between">
                     <div className="flex max-w-[60%] items-center gap-1">
-                        <p className="overflow-hidden text-ellipsis text-xl">
+                        <p className="line-clamp-1 overflow-hidden text-ellipsis text-xl">
                             {props.name}
                         </p>
 
-                        <FontAwesomeIcon
-                            className="cursor-pointer text-sm"
-                            onClick={handleEdit}
-                            icon={faPencil}
-                        />
                         <FontAwesomeIcon
                             className="cursor-pointer text-sm"
                             onClick={() =>
                                 deleteAssignment(props.name, props.class)
                             }
                             icon={faTrashCan}
+                        />
+                        <FontAwesomeIcon
+                            className="cursor-pointer text-sm"
+                            onClick={handleEdit}
+                            icon={faPencil}
                         />
                     </div>
                     <p className="flex items-center text-base">

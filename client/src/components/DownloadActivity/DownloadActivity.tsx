@@ -18,15 +18,13 @@ export default function DownloadActivity() {
     return (
         <>
             <div
-                className="bg-bg-vis flex items-center gap-2 rounded-lg p-2 text-text hover:cursor-pointer"
+                className="flex items-center gap-2 rounded-lg bg-bg-vis p-2 text-text hover:cursor-pointer"
                 onClick={handleDialog}
             >
                 <FontAwesomeIcon icon={faDownload} />
-                <p>Download</p>
+                <p className="text-base">Download</p>
             </div>
             <DownloadDialog ref={dialogRef} handleDialog={handleDialog} />
         </>
     );
 }
-
-// TODO: Formats: JSON, CSV, HTML table, XML?

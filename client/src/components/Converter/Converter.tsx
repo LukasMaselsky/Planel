@@ -205,7 +205,7 @@ export default function Converter({ width }: Props) {
 
     return (
         <div
-            className="flex flex-col gap-4 bg-gray-100 p-4"
+            className="flex flex-col gap-4 rounded-lg bg-bg-vis p-4"
             style={{ width: width }}
         >
             <div className="flex justify-center">
@@ -258,7 +258,7 @@ export default function Converter({ width }: Props) {
                 </div>
                 <div className="flex justify-center">
                     <FontAwesomeIcon
-                        className="rotate-90 cursor-pointer text-xl"
+                        className="rotate-90 cursor-pointer text-xl text-text"
                         onClick={swap}
                         icon={faArrowRightArrowLeft}
                     />

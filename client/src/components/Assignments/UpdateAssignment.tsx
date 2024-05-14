@@ -1,5 +1,5 @@
 import { Assignments } from "./Assignments";
-import { Path, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { GithubPicker } from "react-color";
@@ -8,9 +8,8 @@ import Calendar from "../Calendar/Calendar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import DateInput from "./DateInput";
-import { useState, useContext, useEffect } from "react";
+import { useState } from "react";
 import InputSelect from "../InputSelect";
-import { ClassesContext } from "../../context/classesContext";
 
 interface Props {
     close: () => void;
@@ -71,6 +70,7 @@ export default function UpdateAssignment({
     const {
         register,
         handleSubmit,
+        control,
         setValue,
         watch,
         setError,
@@ -80,6 +80,10 @@ export default function UpdateAssignment({
         resolver: zodResolver(schema),
     });
     const color = watch("color");
+
+    const handleClassOption = (option: string) => {
+        setValue("class", option);
+    };
 
     const [date, setDate] = useState<DateValues>({
         day: defaultValues?.dueDate ? defaultValues.dueDate.split("/")[0] : "",
@@ -138,27 +142,13 @@ export default function UpdateAssignment({
                                 ></input>
                             </div>
 
-                            <div className="flex flex-col gap-1">
-                                <InputSelect<AssignmentValues>
-                                    className={
-                                        "w-full rounded-lg px-2 py-1 text-black focus:outline-none"
-                                    }
-                                    key="class"
-                                    placeholder="Class"
-                                    disabled={false}
-                                    selectOption={setValue}
-                                    register={register}
-                                />
-                                {/*
-                                <input
-                                    className="w-full rounded-lg px-2 py-1 text-black focus:outline-none"
-                                    placeholder="Class"
-                                    id="class"
-                                    type="text"
-                                    {...register("class")}
-                                ></input>
-                                */}
-                            </div>
+                            <InputSelect<AssignmentValues>
+                                name={"class"}
+                                label={"Class"}
+                                placeholder={"Class"}
+                                control={control}
+                                handleOptionClick={handleClassOption}
+                            />
                         </div>
                         <AddError
                             error={

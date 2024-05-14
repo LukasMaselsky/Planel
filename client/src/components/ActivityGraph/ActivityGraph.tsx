@@ -14,6 +14,7 @@ import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "react-query";
 import { getTheme } from "../../utils/getTheme";
 import { getItem } from "../../utils/localStorage";
+import Loading from "../Loading";
 
 const getGraphData = (
     data: ActivityType[] | undefined,
@@ -86,14 +87,14 @@ export default function ActivityGraph() {
     };
 
     return (
-        <div className="w-[400px]">
+        <div className="h-full w-[400px] p-2">
             <div className="flex items-center justify-between gap-2 p-2">
-                <div className="flex gap-2">
-                    <select className="rounded-lg bg-bg-vis px-2 py-1 text-text">
+                <div className="flex gap-2 text-base">
+                    <select className="rounded-lg bg-bg-vis px-2 py-2 text-text">
                         <option onClick={() => setInterval(7)}>Week</option>
                         <option onClick={() => setInterval(30)}>Month</option>
                     </select>
-                    <select className="rounded-lg bg-bg-vis px-2 py-1 text-text">
+                    <select className="rounded-lg bg-bg-vis px-2 py-2 text-text">
                         <option onClick={() => setGraphType("line")}>
                             Line
                         </option>
@@ -116,7 +117,7 @@ export default function ActivityGraph() {
                     />
                 </div>
             </div>
-            <div className="flex h-full">
+            <div className="flex">
                 <ActivityGraphWrapper
                     startIndex={startIndex}
                     interval={interval}
@@ -158,7 +159,7 @@ function ActivityGraphWrapper(props: GraphWrapperProps) {
         cacheTime: 0,
     });
 
-    if (isLoading) return <div></div>;
+    if (isLoading) return <Loading />;
 
     if (error) return <div>Error</div>;
 

@@ -45,7 +45,9 @@ export default function GradeItem({
             >
                 <div className="flex justify-between">
                     <div className="flex items-center gap-1">
-                        <p className="text-xl">{props.name}</p>
+                        <p className="line-clamp-1 overflow-hidden text-ellipsis text-xl">
+                            {props.name}
+                        </p>
                         <FontAwesomeIcon
                             className="cursor-pointer text-sm"
                             onClick={() => deleteGrade(props.name)}

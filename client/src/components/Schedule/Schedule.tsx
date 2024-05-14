@@ -5,6 +5,8 @@ import { useQuery } from "react-query";
 import { ScheduleValues } from "./AddSlot";
 import { getItem } from "../../utils/localStorage";
 import { ClassesContext } from "../../context/classesContext";
+import OrganiseWrapper from "../OrganiseWrapper";
+import Loading from "../Loading";
 
 type Day = "M" | "T" | "W" | "F" | "S";
 
@@ -123,8 +125,6 @@ export default function Schedule({ width, height }: Props) {
         return false;
     };
 
-    // TODO: don't close add slot if overlap
-
     const updateSchedule = (data: ScheduleValues): boolean => {
         let schedule: Schedule[] = getItem("schedule");
         const slots = schedule.find((slots) => slots.day == data.day);
@@ -201,7 +201,7 @@ export default function Schedule({ width, height }: Props) {
         }
 
         if (classes) {
-            classes.deleteClass(name);
+            classes.removeClass(name);
         }
         localStorage.setItem("schedule", JSON.stringify(schedule));
         //! add delay/animation here
@@ -225,15 +225,17 @@ export default function Schedule({ width, height }: Props) {
         cacheTime: 0,
     });
 
-    if (isLoading) return <div>Loading</div>;
+    if (isLoading)
+        return (
+            <OrganiseWrapper width={width} height={height}>
+                <Loading />
+            </OrganiseWrapper>
+        );
 
     if (error) return <div>Error</div>;
 
     return (
-        <div
-            className="relative flex flex-col gap-2 rounded-lg border-[1px] border-text p-1 text-text"
-            style={{ width: width, height: height }}
-        >
+        <OrganiseWrapper width={width} height={height}>
             <div className="flex w-full border-b border-bg-vis">
                 {initialSchedule.map((day, i: number) => (
                     <div
@@ -241,7 +243,9 @@ export default function Schedule({ width, height }: Props) {
                         onClick={() => setSelectedDay(day.day)}
                         className={
                             "flex w-[calc(100%/7)] items-center justify-center hover:cursor-pointer " +
-                            (selectedDay == day.day ? "underline" : "")
+                            (selectedDay == day.day
+                                ? "font-bold"
+                                : "font-normal")
                         }
                     >
                         {day.alias}
@@ -270,7 +274,7 @@ export default function Schedule({ width, height }: Props) {
             <div className="flex w-full justify-center">
                 <button onClick={() => setAddSlotOpen(true)}>Add slot</button>
             </div>
-        </div>
+        </OrganiseWrapper>
     );
 }
 

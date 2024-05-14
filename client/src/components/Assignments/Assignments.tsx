@@ -9,6 +9,8 @@ import { dateToString } from "../../utils/date";
 import { getItem } from "../../utils/localStorage";
 import { ClassesContext } from "../../context/classesContext";
 import Empty from "../Empty";
+import Loading from "../Loading";
+import OrganiseWrapper from "../OrganiseWrapper";
 
 export interface Assignments {
     name: string;
@@ -101,7 +103,7 @@ export default function Assignments({ height, width }: Props) {
         }
 
         if (classes) {
-            classes.deleteClass(c);
+            classes.removeClass(c);
         }
         localStorage.setItem("assignments", JSON.stringify(assignments));
         //! add delay/animation here
@@ -117,15 +119,17 @@ export default function Assignments({ height, width }: Props) {
         cacheTime: 0,
     });
 
-    if (isLoading) return <div>Loading</div>;
+    if (isLoading)
+        return (
+            <OrganiseWrapper width={width} height={height}>
+                <Loading />
+            </OrganiseWrapper>
+        );
 
     if (error) return <div>Error</div>;
 
     return (
-        <div
-            className="relative flex flex-col gap-2 rounded-lg border-[1px] border-text p-1"
-            style={{ height: height, width: width }}
-        >
+        <OrganiseWrapper width={width} height={height}>
             <div className="flex h-full w-full flex-col gap-2 overflow-y-auto pb-1">
                 {data &&
                     data.map((item: Assignments, i: number) => (
@@ -162,6 +166,6 @@ export default function Assignments({ height, width }: Props) {
                     Add assignment
                 </button>
             </div>
-        </div>
+        </OrganiseWrapper>
     );
 }
