@@ -12,6 +12,17 @@ type ThemesDict = {
     [key: string]: string;
 };
 
+export const themes: ThemesDict = {
+    crimson: "rgb(204, 49, 40)",
+    ocean: "rgb(112, 138, 255)",
+    forest: "rgb(134, 185, 39)",
+    sun: "rgb(248, 196, 98)",
+    dusk: "rgb(143, 0, 140)",
+    cocoa: "rgb(123, 61, 61)",
+    blossom: "rgb(255, 145, 175)",
+    amber: "rgb(219, 124, 38)",
+};
+
 function Themes() {
     let getTheme = localStorage.getItem("theme");
     if (!getTheme) {
@@ -19,17 +30,6 @@ function Themes() {
     }
 
     const [currentTheme, setCurrentTheme] = useState(getTheme);
-
-    const themes: ThemesDict = {
-        crimson: "rgb(204, 49, 40)",
-        ocean: "rgb(112, 138, 255)",
-        forest: "rgb(134, 185, 39)",
-        sun: "rgb(248, 196, 98)",
-        dusk: "rgb(143, 0, 140)",
-        cocoa: "rgb(123, 61, 61)",
-        blossom: "rgb(255, 145, 175)",
-        amber: "rgb(219, 124, 38)",
-    };
 
     const handleClick = (theme: string) => {
         setCurrentTheme(theme);

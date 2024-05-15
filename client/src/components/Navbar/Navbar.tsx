@@ -5,8 +5,7 @@ import {
     faClockRotateLeft,
     faCalculator,
     faBook,
-    faCircleHalfStroke,
-    faGear,
+    faCircleInfo,
     faBars,
     faX,
     IconDefinition,
@@ -16,9 +15,17 @@ import { Link } from "@tanstack/react-router";
 import { capitalise } from "../../utils/capitalise";
 import logo from "../../assets/logo.png";
 
+export const links = ["/organise", "/tools", "/activity", "/themes", "/about"];
+
+export const icons = [
+    faBook,
+    faCalculator,
+    faClockRotateLeft,
+    faPalette,
+    faCircleInfo,
+];
+
 export default function Navbar() {
-    const icons = [faBook, faCalculator, faClockRotateLeft, faPalette];
-    const links = ["/organise", "/tools", "/activity", "/themes"];
     const [navOpen, setNavOpen] = useState(false);
 
     const toggleNav = () => {
@@ -68,12 +75,6 @@ export default function Navbar() {
                         </Link>
                     </div>
                 ))}
-            </div>
-            <div className={twMerge("flex items-center gap-2 py-2 text-2xl")}>
-                <FontAwesomeIcon
-                    icon={faGear}
-                    className="cursor-pointer text-text"
-                />
             </div>
         </div>
     );

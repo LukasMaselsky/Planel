@@ -16,3 +16,7 @@ body {
     font-family: "Quicksand", sans-serif;
     font-weight: 400;
 }
+
+option:hover {
+    background-color: red !important;
+}
