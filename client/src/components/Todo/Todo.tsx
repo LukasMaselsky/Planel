@@ -6,6 +6,7 @@ import { ActivityContext } from "../../context/activityContext";
 import { getCurrentDate } from "../../utils/date";
 import { getItem } from "../../utils/localStorage";
 import Empty from "../Empty";
+import { AnimatePresence } from "framer-motion";
 
 type Props = {
     width: string;
@@ -48,10 +49,7 @@ export default function Todo({ width, height }: Props) {
             });
         }
 
-        //! add delay/animation here
-        setTimeout(function () {
-            refetch();
-        }, 500);
+        refetch();
     };
 
     const updateTodo = (id: number, text: string) => {
@@ -77,7 +75,7 @@ export default function Todo({ width, height }: Props) {
 
     return (
         <div
-            className="flex flex-col overflow-y-auto rounded-lg border-[1px] border-text p-4"
+            className="flex flex-col overflow-y-auto overflow-x-hidden rounded-lg border-[1px] border-text p-4"
             style={{ height: height, width: width }}
         >
             <input
@@ -89,17 +87,21 @@ export default function Todo({ width, height }: Props) {
                 }}
                 onKeyUp={(e) => e.key === "Enter" && addTodo()}
             ></input>
-            {data &&
-                data.map((todo: Todo) => (
-                    <TodoItem
-                        key={todo.id}
-                        text={todo.text}
-                        id={todo.id}
-                        deleteTodo={deleteTodo}
-                        updateTodo={updateTodo}
-                    />
-                ))}
-            {data && data.length == 0 ? <Empty component={"todos"} /> : null}
+            <AnimatePresence>
+                {data &&
+                    data.map((todo: Todo) => (
+                        <TodoItem
+                            key={todo.id}
+                            text={todo.text}
+                            id={todo.id}
+                            deleteTodo={deleteTodo}
+                            updateTodo={updateTodo}
+                        />
+                    ))}
+            </AnimatePresence>
+            {data && data.length == 0 ? (
+                <Empty component={"todos"} index={0} />
+            ) : null}
         </div>
     );
 }

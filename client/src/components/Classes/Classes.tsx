@@ -2,6 +2,7 @@ import ClassesItem from "./ClassesItem";
 import { useState, useContext } from "react";
 import { ClassesContext } from "../../context/classesContext";
 import Empty from "../Empty";
+import { AnimatePresence } from "framer-motion";
 
 type Props = {
     width: string;
@@ -27,7 +28,7 @@ export default function Classes({ width, height }: Props) {
 
     return (
         <div
-            className="flex flex-col overflow-y-auto rounded-lg border-[1px] border-text p-4"
+            className="flex flex-col overflow-y-auto overflow-x-hidden rounded-lg border-[1px] border-text p-4"
             style={{ height: height, width: width }}
         >
             <input
@@ -39,12 +40,19 @@ export default function Classes({ width, height }: Props) {
                 }}
                 onKeyUp={(e) => e.key === "Enter" && add()}
             ></input>
-            {classes &&
-                Object.keys(classes.classes).map((c: string, i: number) => (
-                    <ClassesItem key={i} name={c} deleteClass={remove} addedByInput={classes.classes[c] == 0}/>
-                ))}
+            <AnimatePresence>
+                {classes &&
+                    Object.keys(classes.classes).map((c: string, i: number) => (
+                        <ClassesItem
+                            key={i}
+                            name={c}
+                            deleteClass={remove}
+                            addedByInput={classes.classes[c] == 0}
+                        />
+                    ))}
+            </AnimatePresence>
             {classes && Object.keys(classes.classes).length == 0 ? (
-                <Empty component={"classes"} />
+                <Empty component={"classes"} index={1} />
             ) : null}
         </div>
     );

@@ -14,6 +14,7 @@ import { twMerge } from "tailwind-merge";
 import { Link } from "@tanstack/react-router";
 import { capitalise } from "../../utils/capitalise";
 import logo from "../../assets/logo.png";
+import { motion } from "framer-motion";
 
 export const links = ["/organise", "/tools", "/activity", "/themes", "/about"];
 
@@ -53,11 +54,14 @@ export default function Navbar() {
             </div>
             <div className="flex h-full flex-col py-2">
                 {icons.map((icon: IconDefinition, i: number) => (
-                    <div
+                    <motion.div
                         key={i}
                         className={twMerge(
                             "flex flex-1 items-center justify-start text-2xl",
                         )}
+                        initial={{ y: "-100%", opacity: 0 }}
+                        animate={{ y: "0%", opacity: 1 }}
+                        transition={{ duration: 0.5, delay: i * 0.1 }}
                     >
                         <Link
                             to={links[i]}
@@ -73,11 +77,9 @@ export default function Navbar() {
                                 </p>
                             )}
                         </Link>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
         </div>
     );
 }
-
-// TODO: move settings together with all other icons and link it to setting page and add "settings" text

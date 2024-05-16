@@ -8,6 +8,7 @@ import { ClassesContext } from "../../context/classesContext";
 import Empty from "../Empty";
 import OrganiseWrapper from "../OrganiseWrapper";
 import Loading from "../Loading";
+import { AnimatePresence } from "framer-motion";
 
 export interface Grades {
     name: string;
@@ -73,10 +74,8 @@ export default function Grades({ width, height }: Props) {
             classes.removeClass(name);
         }
         localStorage.setItem("grades", JSON.stringify(grades));
-        //! add delay/animation here
-        setTimeout(function () {
-            refetch();
-        }, 100);
+
+        refetch();
     };
 
     const { data, isLoading, error, refetch } = useQuery({
@@ -95,22 +94,24 @@ export default function Grades({ width, height }: Props) {
 
     if (error) return <div>Error</div>;
 
-    //! weird box shadow not moving horizontally
+    //! weird box shadow not moving horizontally, maybe overflow property?
 
     return (
         <OrganiseWrapper width={width} height={height}>
-            <div className="flex h-full w-full flex-col gap-2 overflow-y-auto pb-1">
-                {data &&
-                    data.map((item: Grades, i: number) => (
-                        <GradeItem
-                            key={i}
-                            deleteGrade={deleteGrade}
-                            props={item}
-                            setAdding={setAdding}
-                            setDefaults={setDefaults}
-                            setEditing={setEditing}
-                        />
-                    ))}
+            <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden pb-1">
+                <AnimatePresence>
+                    {data &&
+                        data.map((item: Grades, i: number) => (
+                            <GradeItem
+                                key={i}
+                                deleteGrade={deleteGrade}
+                                props={item}
+                                setAdding={setAdding}
+                                setDefaults={setDefaults}
+                                setEditing={setEditing}
+                            />
+                        ))}
+                </AnimatePresence>
                 {adding && (
                     <UpdateGrade
                         defaultValues={defaults}
@@ -120,7 +121,7 @@ export default function Grades({ width, height }: Props) {
                     />
                 )}
                 {data && data.length == 0 ? (
-                    <Empty component={"grades"} />
+                    <Empty component={"grades"} index={1} />
                 ) : null}
             </div>
             <div className="flex w-full justify-center text-text">

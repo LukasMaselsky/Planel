@@ -1,23 +1,41 @@
+import { useContext, useEffect, useState } from "react";
 import otter1 from "../assets/otter1.png";
 import otter2 from "../assets/otter2.png";
 import otter3 from "../assets/otter3.png";
+import otter4 from "../assets/otter4.png";
+import { OtterContext } from "../context/otterContext";
 
 type Props = {
-    width: string;
+    width?: string;
+    height?: string;
     index?: number;
+    random: boolean;
 };
 
-export const otterImages = [otter1, otter2, otter3];
+export default function OtterImage({ width, height, index, random }: Props) {
+    const [src, setSrc] = useState("");
+    const ot = useContext(OtterContext);
 
-export const randomImage = () => {
-    return otterImages[Math.floor(Math.random() * 3)];
-};
+    useEffect(() => {
+        let src = "";
+        if (ot) {
+            if (random) {
+                src = index ? ot.shuffledOtters[index] : ot.shuffledOtters[0];
+            } else {
+                src = index ? ot.otters[index] : ot.otters[0];
+            }
+        }
+        setSrc(src);
+    }, [ot]);
 
-export default function OtterImage({ width, index }: Props) {
     return (
         <img
-            src={index != undefined ? otterImages[index] : randomImage()}
-            style={{ width: width }}
+            src={src}
+            className="object-contain"
+            style={{
+                width: width != undefined ? width : "auto",
+                height: height != undefined ? height : "auto",
+            }}
         ></img>
     );
 }

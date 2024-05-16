@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { MotionConfig } from "framer-motion";
 import "./App.css";
 import "./index.css";
 
@@ -28,7 +29,7 @@ if (!rootElement.innerHTML) {
 }
 
 function App() {
-    //* theme
+    
     const theme = localStorage.getItem("theme");
     if (theme) {
         document.documentElement.setAttribute("data-theme", theme);
@@ -39,9 +40,13 @@ function App() {
         document.documentElement.setAttribute("data-light", lightOrDark);
     }
 
+    
+
     return (
-        <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
-        </QueryClientProvider>
+        <MotionConfig reducedMotion="user">
+            <QueryClientProvider client={queryClient}>
+                <RouterProvider router={router} />
+            </QueryClientProvider>
+        </MotionConfig>
     );
 }

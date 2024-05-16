@@ -5,6 +5,7 @@ import AboutPoint from "./AboutPoint";
 import OtterImage from "../OtterImage";
 import { themes } from "../../routes/themes";
 import { motion } from "framer-motion";
+import AboutTools from "./AboutTools";
 
 export default function AboutPage() {
     return (
@@ -35,14 +36,27 @@ export default function AboutPage() {
                 </AboutItem>
                 <AboutItem>
                     <h1 className="text-xl font-bold transition">Tools</h1>
+                    <AboutTools />
                 </AboutItem>
                 <AboutItem>
                     <p className="select-none transition">Activity</p>
                 </AboutItem>
                 <AboutItem>
                     <h1 className="text-xl font-bold transition">Themes</h1>
-                    <div className="flex h-full w-full items-end gap-6">
-                        <OtterImage width={"100%"} index={2} />
+                    <div className="flex h-full w-full items-end gap-6 overflow-hidden">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex h-full w-full items-end"
+                        >
+                            <OtterImage
+                                width={"100%"}
+                                height={"100%"}
+                                index={3}
+                                random={false}
+                            />
+                        </motion.div>
+
                         <div className="relative grid h-full w-full grid-cols-2 grid-rows-4 gap-1">
                             {Object.keys(themes).map(
                                 (theme: string, i: number) => (
@@ -64,11 +78,44 @@ export default function AboutPage() {
                         </div>
                     </div>
                 </AboutItem>
+
                 <AboutItem>
-                    <p className="select-none transition">About</p>
+                    <h1 className="text-xl font-bold transition">About</h1>
+                    <div className="flex h-full w-full flex-col justify-end">
+                        <p>
+                            Created by{" "}
+                            <a
+                                href="https://github.com/LukasMaselsky"
+                                target="_blank"
+                                className="font-medium"
+                            >
+                                Lukas Maselsky
+                            </a>
+                        </p>
+                        <p>
+                            Icons from{" "}
+                            <a
+                                href="https://fontawesome.com/"
+                                target="_blank"
+                                className="font-medium"
+                            >
+                                Font Awesome
+                            </a>
+                        </p>
+                        <p>
+                            Illustrations from{" "}
+                            <a
+                                href="https://stock.adobe.com/"
+                                target="_blank"
+                                className="font-medium"
+                            >
+                                Adobe Stock
+                            </a>
+                        </p>
+                    </div>
                 </AboutItem>
                 <AboutItem>
-                    <p>INFO ABOUT PAGE</p>
+                    <p className="select-none transition">About</p>
                 </AboutItem>
             </div>
         </div>

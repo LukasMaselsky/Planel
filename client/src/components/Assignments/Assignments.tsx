@@ -11,6 +11,7 @@ import { ClassesContext } from "../../context/classesContext";
 import Empty from "../Empty";
 import Loading from "../Loading";
 import OrganiseWrapper from "../OrganiseWrapper";
+import { AnimatePresence } from "framer-motion";
 
 export interface Assignments {
     name: string;
@@ -87,10 +88,8 @@ export default function Assignments({ height, width }: Props) {
         }
 
         localStorage.setItem("assignments", JSON.stringify(assignments));
-        //! add delay/animation here
-        setTimeout(function () {
-            refetch();
-        }, 100);
+
+        refetch();
     };
 
     const deleteAssignment = (name: string, c: string) => {
@@ -106,10 +105,8 @@ export default function Assignments({ height, width }: Props) {
             classes.removeClass(c);
         }
         localStorage.setItem("assignments", JSON.stringify(assignments));
-        //! add delay/animation here
-        setTimeout(function () {
-            refetch();
-        }, 100);
+
+        refetch();
     };
 
     const { data, isLoading, error, refetch } = useQuery({
@@ -130,19 +127,21 @@ export default function Assignments({ height, width }: Props) {
 
     return (
         <OrganiseWrapper width={width} height={height}>
-            <div className="flex h-full w-full flex-col gap-2 overflow-y-auto pb-1">
-                {data &&
-                    data.map((item: Assignments, i: number) => (
-                        <AssignmentItem
-                            key={i}
-                            deleteAssignment={deleteAssignment}
-                            completeAssignment={completeAssignment}
-                            props={item}
-                            setAdding={setAdding}
-                            setDefaults={setDefaults}
-                            setEditing={setEditing}
-                        />
-                    ))}
+            <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden pb-1">
+                <AnimatePresence>
+                    {data &&
+                        data.map((item: Assignments, i: number) => (
+                            <AssignmentItem
+                                key={i}
+                                deleteAssignment={deleteAssignment}
+                                completeAssignment={completeAssignment}
+                                props={item}
+                                setAdding={setAdding}
+                                setDefaults={setDefaults}
+                                setEditing={setEditing}
+                            />
+                        ))}
+                </AnimatePresence>
                 {adding && (
                     <UpdateAssignment
                         defaultValues={defaults}
@@ -152,7 +151,7 @@ export default function Assignments({ height, width }: Props) {
                     />
                 )}
                 {data && data.length == 0 ? (
-                    <Empty component={"assignments"} />
+                    <Empty component={"assignments"} index={0} />
                 ) : null}
             </div>
             <div className="flex w-full justify-center text-text">

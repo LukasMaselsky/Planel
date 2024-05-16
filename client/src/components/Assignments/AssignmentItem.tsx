@@ -3,6 +3,7 @@ import { Assignments } from "./Assignments";
 import { AssignmentValues } from "./UpdateAssignment";
 import { faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { getDate } from "./UpdateAssignment";
+import MotionDropDiv from "../MotionDropDiv";
 
 interface Props {
     props: Assignments;
@@ -47,13 +48,16 @@ export default function AssignmentItem({
     const timeLeft = calculateTimeLeft(props.dueDate);
 
     return (
-        <div className="flex w-full flex-col gap-2">
+        <MotionDropDiv
+            duration={0.3}
+            multiple={true}
+            className={"flex w-full flex-col gap-2"}
+        >
             <div
                 className={
                     "flex w-full flex-col gap-2 rounded-lg border-[1px] border-text bg-bg px-2 py-1 text-text"
                 }
                 style={{ boxShadow: `0px 3px 0px 0px ${props.color}` }}
-                //style={{ borderColor: props.color }}
             >
                 <div className="flex justify-between">
                     <div className="flex max-w-[60%] items-center gap-1">
@@ -94,6 +98,6 @@ export default function AssignmentItem({
                     </div>
                 </div>
             </div>
-        </div>
+        </MotionDropDiv>
     );
 }

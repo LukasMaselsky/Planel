@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import ScheduleItem from "./ScheduleItem";
+import ScheduleDay from "./ScheduleDay";
 import AddSlot from "./AddSlot";
 import { useQuery } from "react-query";
 import { ScheduleValues } from "./AddSlot";
@@ -204,10 +204,8 @@ export default function Schedule({ width, height }: Props) {
             classes.removeClass(name);
         }
         localStorage.setItem("schedule", JSON.stringify(schedule));
-        //! add delay/animation here
-        setTimeout(function () {
-            refetch();
-        }, 100);
+
+        refetch();
     };
 
     const sortClasses = () => {
@@ -258,7 +256,7 @@ export default function Schedule({ width, height }: Props) {
                     .filter((day: Schedule) => day.day == selectedDay)
                     .map((day: Schedule, i: number) => {
                         return (
-                            <ScheduleItem
+                            <ScheduleDay
                                 key={i}
                                 day={day.day}
                                 classes={day.classes}
@@ -277,5 +275,3 @@ export default function Schedule({ width, height }: Props) {
         </OrganiseWrapper>
     );
 }
-
-// TODO: sort the data by start time
