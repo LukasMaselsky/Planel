@@ -1,9 +1,9 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { getItem } from "../utils/localStorage";
 import otter1 from "../assets/otter1.png";
 import otter2 from "../assets/otter2.png";
 import otter3 from "../assets/otter3.png";
 import otter4 from "../assets/otter4.png";
+import otter5 from "../assets/otter5.png";
 
 type Props = {
     children: ReactNode;
@@ -25,7 +25,7 @@ const shuffleArray = (array: string[]) => {
     return copy;
 };
 
-const otterImages = [otter1, otter2, otter3, otter4];
+const otterImages = [otter1, otter2, otter3, otter4, otter5];
 const emptyOtterImages = [otter1, otter2, otter3]; // used for empty screen
 
 export const OtterContextProvider = ({ children }: Props) => {

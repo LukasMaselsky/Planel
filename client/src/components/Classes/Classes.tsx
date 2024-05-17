@@ -28,7 +28,7 @@ export default function Classes({ width, height }: Props) {
 
     return (
         <div
-            className="flex flex-col overflow-y-auto overflow-x-hidden rounded-lg border-[1px] border-text p-4"
+            className="flex flex-col rounded-lg border-[1px] border-text p-4"
             style={{ height: height, width: width }}
         >
             <input
@@ -40,17 +40,20 @@ export default function Classes({ width, height }: Props) {
                 }}
                 onKeyUp={(e) => e.key === "Enter" && add()}
             ></input>
-            <AnimatePresence>
-                {classes &&
-                    Object.keys(classes.classes).map((c: string, i: number) => (
-                        <ClassesItem
-                            key={i}
-                            name={c}
-                            deleteClass={remove}
-                            addedByInput={classes.classes[c] == 0}
-                        />
-                    ))}
-            </AnimatePresence>
+            {classes && Object.keys(classes.classes).length != 0 && (
+                <div className="h-full w-full overflow-y-auto overflow-x-hidden">
+                    <AnimatePresence>
+                        {Object.keys(classes.classes).map((c: string) => (
+                            <ClassesItem
+                                key={c} //! dont use i, causes exit animation glitch where it jumps to bottom
+                                name={c}
+                                deleteClass={remove}
+                                addedByInput={classes.classes[c] == 0}
+                            />
+                        ))}
+                    </AnimatePresence>
+                </div>
+            )}
             {classes && Object.keys(classes.classes).length == 0 ? (
                 <Empty component={"classes"} index={1} />
             ) : null}

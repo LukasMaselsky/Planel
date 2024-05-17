@@ -3,6 +3,7 @@ import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleHalfStroke } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
 
 export const Route = createFileRoute("/themes")({
     component: Themes,
@@ -55,8 +56,11 @@ function Themes() {
         <div className="flex h-[100vh] w-full items-center bg-bg p-4 transition-colors">
             <div className="relative grid h-full w-full grid-cols-4 grid-rows-2 gap-1">
                 {Object.keys(themes).map((theme: string, i: number) => (
-                    <div
+                    <motion.div
                         key={i}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: i * 0.05 }}
                         className="flex cursor-pointer items-center justify-center overflow-x-hidden rounded-xl p-2 text-lg"
                         style={{ backgroundColor: themes[theme] }}
                         onClick={() => handleClick(theme)}
@@ -70,9 +74,12 @@ function Themes() {
                         >
                             {theme.toUpperCase()}
                         </p>
-                    </div>
+                    </motion.div>
                 ))}
-                <div
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1 }}
                     style={{ containerType: "inline-size" }}
                     className="absolute left-[50%] top-[50%] flex aspect-square w-[clamp(100px,_20%,_300px)] translate-x-[-50%] translate-y-[-50%] items-center justify-center rounded-[50%] bg-bg transition-colors"
                 >
@@ -83,7 +90,7 @@ function Themes() {
                         )}
                         onClick={toggleLightDark}
                     />
-                </div>
+                </motion.div>
             </div>
         </div>
     );

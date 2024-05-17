@@ -5,6 +5,7 @@ import TimeInput from "./TimeInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { GithubPicker } from "react-color";
+import InputSelect from "../InputSelect";
 
 const schema = z.object({
     name: z
@@ -35,6 +36,7 @@ export default function AddSlot({ close, updateSchedule }: Props) {
         handleSubmit,
         setValue,
         watch,
+        control,
         setError,
         formState: { errors },
     } = useForm<ScheduleValues>({
@@ -52,6 +54,10 @@ export default function AddSlot({ close, updateSchedule }: Props) {
     });
     const color = watch("color");
 
+    const handleClassOption = (option: string) => {
+        setValue("name", option);
+    };
+
     const onSubmit = (data: ScheduleValues) => {
         const isValid = updateSchedule(data);
         if (isValid) {
@@ -65,7 +71,7 @@ export default function AddSlot({ close, updateSchedule }: Props) {
     };
 
     return (
-        <div className="absolute left-0 top-0 h-full w-full rounded-lg bg-bg p-2 text-black">
+        <div className="absolute left-0 top-0 h-full w-full overflow-x-hidden rounded-lg bg-bg p-2 text-black">
             <form
                 className="grid h-full grid-rows-[1fr_auto_1fr]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -77,51 +83,79 @@ export default function AddSlot({ close, updateSchedule }: Props) {
                         style={{ backgroundColor: color }}
                     ></div>
                     <div>
-                        <div className="flex w-full justify-between gap-2">
-                            <input
-                                className="w-full rounded-lg px-2 py-1 focus:outline-none"
-                                placeholder="Name of slot"
-                                type="text"
-                                {...register("name")}
-                            ></input>
+                        <div className="flex w-full gap-2">
+                            <div className="flex w-full flex-col gap-1">
+                                <InputSelect<ScheduleValues>
+                                    name={"name"}
+                                    label={"Class"}
+                                    placeholder={"Class"}
+                                    control={control}
+                                    handleOptionClick={handleClassOption}
+                                />
+                            </div>
 
-                            <select
-                                className="w-full rounded-lg bg-white px-2 py-1"
-                                {...register("day")}
-                            >
-                                {days.map((day, i: number) => (
-                                    <option key={i}>{day}</option>
-                                ))}
-                            </select>
+                            <div className="flex w-full flex-col gap-1">
+                                <label htmlFor="day" className="text-sm">
+                                    Day
+                                </label>
+                                <select
+                                    className="h-full w-full rounded-lg bg-white px-2 py-1"
+                                    id="day"
+                                    {...register("day")}
+                                >
+                                    {days.map((day, i: number) => (
+                                        <option key={i}>{day}</option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
                         <AddError error={errors.name} />
                     </div>
                     <div className="flex flex-col">
-                        <div className="flex w-full gap-8">
-                            <div className="flex w-[50%] items-center gap-2">
-                                <TimeInput
-                                    register={register}
-                                    setValue={setValue}
-                                    name="start"
-                                />
+                        <div className="flex w-full gap-6">
+                            <div className="flex w-full flex-col gap-1">
+                                <label htmlFor="startTime" className="text-sm">
+                                    Start time
+                                </label>
+                                <div
+                                    id="startTime"
+                                    className="flex w-full items-center gap-2"
+                                >
+                                    <TimeInput
+                                        register={register}
+                                        setValue={setValue}
+                                        name="start"
+                                    />
+                                </div>
                             </div>
-                            <div className="flex w-[50%] items-center gap-2">
-                                <TimeInput
-                                    register={register}
-                                    setValue={setValue}
-                                    name="end"
-                                />
+                            <div className="flex w-full flex-col gap-1">
+                                <label htmlFor="endTime" className="text-sm">
+                                    End time
+                                </label>
+                                <div className="flex w-full items-center gap-2">
+                                    <TimeInput
+                                        register={register}
+                                        setValue={setValue}
+                                        name="end"
+                                    />
+                                </div>
                             </div>
                         </div>
                         <AddError error={errors.root?.overlap} />
                     </div>
                     <div className="w-full">
-                        <input
-                            className="w-full rounded-lg px-2 py-1 focus:outline-none"
-                            placeholder="Location"
-                            type="text"
-                            {...register("location")}
-                        ></input>
+                        <div className="flex w-full flex-col gap-1">
+                            <label htmlFor="location" className="text-sm">
+                                Location
+                            </label>
+                            <input
+                                className="w-full rounded-lg px-2 py-1 focus:outline-none"
+                                placeholder="Location"
+                                id="location"
+                                type="text"
+                                {...register("location")}
+                            ></input>
+                        </div>
                         <AddError error={errors.location} />
                     </div>
                     <div className="w-full">

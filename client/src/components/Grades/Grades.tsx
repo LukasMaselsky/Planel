@@ -101,9 +101,9 @@ export default function Grades({ width, height }: Props) {
             <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden pb-1">
                 <AnimatePresence>
                     {data &&
-                        data.map((item: Grades, i: number) => (
+                        data.map((item: Grades) => (
                             <GradeItem
-                                key={i}
+                                key={item.name}
                                 deleteGrade={deleteGrade}
                                 props={item}
                                 setAdding={setAdding}

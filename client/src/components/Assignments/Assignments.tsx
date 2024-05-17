@@ -132,7 +132,7 @@ export default function Assignments({ height, width }: Props) {
                     {data &&
                         data.map((item: Assignments, i: number) => (
                             <AssignmentItem
-                                key={i}
+                                key={item.name}
                                 deleteAssignment={deleteAssignment}
                                 completeAssignment={completeAssignment}
                                 props={item}

@@ -2,10 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "@tanstack/react-router";
 import AboutItem from "./AboutItem";
 import AboutPoint from "./AboutPoint";
-import OtterImage from "../OtterImage";
-import { themes } from "../../routes/themes";
-import { motion } from "framer-motion";
 import AboutTools from "./AboutTools";
+import AboutThemes from "./AboutThemes";
 
 export default function AboutPage() {
     return (
@@ -39,44 +37,11 @@ export default function AboutPage() {
                     <AboutTools />
                 </AboutItem>
                 <AboutItem>
-                    <p className="select-none transition">Activity</p>
+                    <h1 className="text-xl font-bold transition">Activity</h1>
                 </AboutItem>
                 <AboutItem>
                     <h1 className="text-xl font-bold transition">Themes</h1>
-                    <div className="flex h-full w-full items-end gap-6 overflow-hidden">
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="flex h-full w-full items-end"
-                        >
-                            <OtterImage
-                                width={"100%"}
-                                height={"100%"}
-                                index={3}
-                                random={false}
-                            />
-                        </motion.div>
-
-                        <div className="relative grid h-full w-full grid-cols-2 grid-rows-4 gap-1">
-                            {Object.keys(themes).map(
-                                (theme: string, i: number) => (
-                                    <motion.div
-                                        key={i}
-                                        className="rounded-xl p-2"
-                                        style={{
-                                            backgroundColor: themes[theme],
-                                        }}
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{
-                                            duration: 2,
-                                            delay: i * 0.2,
-                                        }}
-                                    ></motion.div>
-                                ),
-                            )}
-                        </div>
-                    </div>
+                    <AboutThemes />
                 </AboutItem>
 
                 <AboutItem>
@@ -115,7 +80,7 @@ export default function AboutPage() {
                     </div>
                 </AboutItem>
                 <AboutItem>
-                    <p className="select-none transition">About</p>
+                    <p className="select-none transition"></p>
                 </AboutItem>
             </div>
         </div>

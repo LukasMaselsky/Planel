@@ -15,6 +15,7 @@ import { useQuery } from "react-query";
 import { getTheme } from "../../utils/getTheme";
 import { getItem } from "../../utils/localStorage";
 import Loading from "../Loading";
+import { motion } from "framer-motion";
 
 const getGraphData = (
     data: ActivityType[] | undefined,
@@ -254,7 +255,11 @@ function ActivityGraphWrapper(props: GraphWrapperProps) {
                 ))}
             </g>
             {props.graphType == "line" ? (
-                <ActivityLineGraph graphColor={primary} linePath={linePath} />
+                <ActivityLineGraph
+                    graphColor={primary}
+                    linePath={linePath}
+                    interval={props.interval}
+                />
             ) : (
                 <ActivityBarGraph
                     graphColor={primary}
@@ -272,16 +277,20 @@ function ActivityGraphWrapper(props: GraphWrapperProps) {
 type LineGraphProps = {
     graphColor: string;
     linePath: string;
+    interval: number;
 };
 
 function ActivityLineGraph(props: LineGraphProps) {
     return (
-        <path
+        <motion.path
             fill="none"
             stroke={props.graphColor}
             strokeWidth={1.5}
             d={props.linePath}
-        ></path>
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: props.interval * 0.1 }}
+        ></motion.path>
     );
 }
 
@@ -300,13 +309,16 @@ function ActivityBarGraph(props: BarGraphProps) {
     return (
         <>
             {props.xCoords.map((xCoord, i) => (
-                <rect
+                <motion.rect
                     x={xCoord - props.gap / 2 + space}
                     y={props.yCoords[props.values[i]]}
                     width={props.gap - space * 2}
                     height={props.innerHeight - props.yCoords[props.values[i]]}
                     fill={props.graphColor}
-                ></rect>
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1 }}
+                ></motion.rect>
             ))}
         </>
     );

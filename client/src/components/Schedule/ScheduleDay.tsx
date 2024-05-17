@@ -14,9 +14,9 @@ export default function ScheduleDay({ classes, day, deleteSlot }: Props) {
     return (
         <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden pb-1">
             <AnimatePresence>
-                {classes?.map((c, i: number) => (
+                {classes?.map((c) => (
                     <ScheduleItem
-                        key={i}
+                        key={c.id}
                         color={c.color}
                         day={day}
                         location={c.location}

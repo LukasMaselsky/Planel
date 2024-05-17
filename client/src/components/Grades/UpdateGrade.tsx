@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { GithubPicker } from "react-color";
 import AddError from "../AddError";
+import InputSelect from "../InputSelect";
 
 interface Props {
     close: () => void;
@@ -50,6 +51,10 @@ export default function UpdateGrade({
     const color = watch("color");
     const sliderValue = watch("gradeAsPercentageSlider");
     const passingValue = watch("passingPercentage");
+
+    const handleClassOption = (option: string) => {
+        setValue("name", option);
+    };
 
     const onSubmit = (data: GradeValues) => {
         const clone = (({ gradeAsPercentageSlider, ...o }) => o)(data);
@@ -100,17 +105,13 @@ export default function UpdateGrade({
                     <div>
                         <div className="flex w-full justify-between gap-2">
                             <div className="flex flex-col gap-1">
-                                <label htmlFor="name" className="text-sm">
-                                    Class
-                                </label>
-                                <input
-                                    className="w-full rounded-lg px-2 py-1 text-black focus:outline-none"
-                                    placeholder="Name of class"
-                                    id="name"
-                                    type="text"
-                                    disabled={editing}
-                                    {...register("name")}
-                                ></input>
+                                <InputSelect<GradeValues>
+                                    name={"name"}
+                                    label={"Class"}
+                                    placeholder={"Class"}
+                                    control={control}
+                                    handleOptionClick={handleClassOption}
+                                />
                             </div>
 
                             <div className="flex flex-col gap-1">
