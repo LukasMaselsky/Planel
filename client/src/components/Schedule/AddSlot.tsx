@@ -71,7 +71,7 @@ export default function AddSlot({ close, updateSchedule }: Props) {
     };
 
     return (
-        <div className="absolute left-0 top-0 h-full w-full overflow-x-hidden rounded-lg bg-bg p-2 text-black">
+        <div className="absolute left-0 top-0 h-full w-full overflow-x-hidden rounded-lg bg-bg p-2 text-black text-text">
             <form
                 className="grid h-full grid-rows-[1fr_auto_1fr]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -99,7 +99,7 @@ export default function AddSlot({ close, updateSchedule }: Props) {
                                     Day
                                 </label>
                                 <select
-                                    className="h-full w-full rounded-lg bg-white px-2 py-1"
+                                    className="h-full w-full rounded-lg bg-white px-2 py-1 text-black"
                                     id="day"
                                     {...register("day")}
                                 >
@@ -119,7 +119,7 @@ export default function AddSlot({ close, updateSchedule }: Props) {
                                 </label>
                                 <div
                                     id="startTime"
-                                    className="flex w-full items-center gap-2"
+                                    className="flex w-full items-center gap-2 text-black"
                                 >
                                     <TimeInput
                                         register={register}
@@ -132,7 +132,7 @@ export default function AddSlot({ close, updateSchedule }: Props) {
                                 <label htmlFor="endTime" className="text-sm">
                                     End time
                                 </label>
-                                <div className="flex w-full items-center gap-2">
+                                <div className="flex w-full items-center gap-2 text-black">
                                     <TimeInput
                                         register={register}
                                         setValue={setValue}
@@ -149,7 +149,7 @@ export default function AddSlot({ close, updateSchedule }: Props) {
                                 Location
                             </label>
                             <input
-                                className="w-full rounded-lg px-2 py-1 focus:outline-none"
+                                className="w-full rounded-lg px-2 py-1 text-black focus:outline-none"
                                 placeholder="Location"
                                 id="location"
                                 type="text"

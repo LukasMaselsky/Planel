@@ -1,5 +1,5 @@
 import CalculatorButton from "./CalculatorButton";
-import { getTheme } from "../../utils/getTheme";
+import { getPrimaryColor } from "../../utils/getTheme";
 import { SyntheticEvent, useState } from "react";
 import { calculateTextColor } from "../../utils/calculateTextColor";
 import { copyToClipboard } from "../DownloadActivity/DownloadDialog";
@@ -285,7 +285,7 @@ export default function Calculator() {
         },
     ];
 
-    const color = getTheme("primary");
+    const color = getPrimaryColor();
     const textColor = calculateTextColor(color);
 
     return (

@@ -12,7 +12,7 @@ import { ActivityType } from "../../context/activityContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "react-query";
-import { getTheme } from "../../utils/getTheme";
+import { getPrimaryColor, getTextColor } from "../../utils/getTheme";
 import { getItem } from "../../utils/localStorage";
 import Loading from "../Loading";
 import { motion } from "framer-motion";
@@ -142,8 +142,8 @@ type GraphWrapperProps = {
 };
 
 function ActivityGraphWrapper(props: GraphWrapperProps) {
-    const labelColor = getTheme("text");
-    const primary = getTheme("primary");
+    const labelColor = getTextColor();
+    const primary = getPrimaryColor();
 
     const activity = useContext(ActivityContext);
 

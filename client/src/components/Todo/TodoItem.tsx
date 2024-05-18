@@ -24,7 +24,7 @@ export default function TodoItem({ id, text, deleteTodo, updateTodo }: Props) {
 
     return (
         <MotionDropDiv duration={0.3} multiple={true}>
-            <div className="flex items-center gap-2 overflow-hidden border-b p-2">
+            <div className="flex w-full items-center gap-2 overflow-hidden border-b p-2">
                 <input
                     onClick={() => deleteTodo(id)}
                     type="checkbox"
@@ -32,7 +32,7 @@ export default function TodoItem({ id, text, deleteTodo, updateTodo }: Props) {
                 ></input>
                 <input
                     type="text"
-                    className="flex grow items-center px-2 text-black focus:outline-none"
+                    className="w-full px-2 text-black focus:outline-none"
                     value={todoText}
                     onBlur={handleUpdate}
                     onChange={(e) => setTodoText(e.target.value)}

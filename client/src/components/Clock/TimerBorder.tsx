@@ -1,7 +1,7 @@
 import { useAnimation, motion } from "framer-motion";
 import { useEffect } from "react";
 import { TimerState } from "./Clock";
-import { getTheme } from "../../utils/getTheme";
+import { getPrimaryColor } from "../../utils/getTheme";
 
 type Props = {
     size: number;
@@ -20,7 +20,7 @@ export default function TimerBorder({
 
     const controls = useAnimation();
 
-    const color = getTheme("primary");
+    const color = getPrimaryColor();
 
     const startAnimation = () => {
         controls.start({

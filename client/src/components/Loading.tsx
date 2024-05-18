@@ -1,17 +1,12 @@
 import { BarLoader } from "react-spinners";
-import { getTheme } from "../utils/getTheme";
+import { getPrimaryColor } from "../utils/getTheme";
 
 export default function Loading() {
-    const secondary = getTheme("secondary");
+    const color = getPrimaryColor(700);
 
     return (
         <div className="flex h-full w-full items-center justify-center overflow-hidden px-4 py-2">
-            <BarLoader
-                color={secondary}
-                loading={true}
-                width={"50%"}
-                height={5}
-            />
+            <BarLoader color={color} loading={true} width={"50%"} height={5} />
         </div>
     );
 }

@@ -160,7 +160,7 @@ export default function UpdateAssignment({
                     </div>
                     <div>
                         <div className="flex w-full justify-center gap-2 text-black">
-                            <div className="relative flex w-[70%] flex-col gap-1">
+                            <div className="relative flex w-[100%] flex-col gap-1">
                                 <label
                                     htmlFor="name"
                                     className="text-sm text-text"

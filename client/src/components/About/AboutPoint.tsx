@@ -17,7 +17,7 @@ export default function AboutPoint({ children, index }: Props) {
             transition={{ duration: 0.5, delay: index * 0.1 }}
         >
             <FontAwesomeIcon
-                className="inline pt-[1px] text-secondary"
+                className="text-primary-600 inline pt-[1px]"
                 icon={faAnglesRight}
             />
             {children}

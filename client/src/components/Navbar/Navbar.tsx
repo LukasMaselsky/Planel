@@ -48,7 +48,8 @@ export default function Navbar() {
                 />
                 {navOpen ? (
                     <div className="w-full">
-                        <img src={logo} className="h-6"></img>
+                        <img src={logo} className="h-6"></img> // TODO: dark
+                        mode
                     </div>
                 ) : null}
             </div>
