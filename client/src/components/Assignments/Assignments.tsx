@@ -12,6 +12,7 @@ import Empty from "../Empty";
 import Loading from "../Loading";
 import OrganiseWrapper from "../OrganiseWrapper";
 import { AnimatePresence } from "framer-motion";
+import Error from "../Error";
 
 export interface Assignments {
     name: string;
@@ -123,7 +124,12 @@ export default function Assignments({ height, width }: Props) {
             </OrganiseWrapper>
         );
 
-    if (error) return <div>Error</div>;
+    if (error)
+        return (
+            <OrganiseWrapper width={width} height={height}>
+                <Error />
+            </OrganiseWrapper>
+        );
 
     return (
         <OrganiseWrapper width={width} height={height}>

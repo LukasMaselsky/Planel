@@ -9,6 +9,7 @@ import Empty from "../Empty";
 import OrganiseWrapper from "../OrganiseWrapper";
 import Loading from "../Loading";
 import { AnimatePresence } from "framer-motion";
+import Error from "../Error";
 
 export interface Grades {
     name: string;
@@ -92,7 +93,12 @@ export default function Grades({ width, height }: Props) {
             </OrganiseWrapper>
         );
 
-    if (error) return <div>Error</div>;
+    if (error)
+        return (
+            <OrganiseWrapper width={width} height={height}>
+                <Error />
+            </OrganiseWrapper>
+        );
 
     //! weird box shadow not moving horizontally, maybe overflow property?
 

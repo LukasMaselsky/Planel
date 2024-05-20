@@ -3,7 +3,7 @@ import {
     convertToMillis,
     INTERVAL_IN_MILISECONDS,
 } from "./useTimer";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 export default function useStopwatch() {
     const [on, setOn] = useState(false);
@@ -11,6 +11,8 @@ export default function useStopwatch() {
     const [referenceTime, setReferenceTime] = useState(Date.now());
     const [strTime, setStrTime] = useState(["00", "00", "00"]);
     const [timeElapsed, setTimeElapsed] = useState(convertToMillis(0, 0, 0));
+
+    const upperLimit = useMemo(() => convertToMillis(99, 99, 99), []);
 
     const resetStopwatch = () => {
         setOn(false);
@@ -27,7 +29,10 @@ export default function useStopwatch() {
         if (on) {
             const countUp = () => {
                 setTime((prevTime) => {
-                    // TODO: add upper limit
+                    if (prevTime >= upperLimit) {
+                        resetStopwatch();
+                        return 0;
+                    }
 
                     const now = Date.now();
                     const interval = now - referenceTime;

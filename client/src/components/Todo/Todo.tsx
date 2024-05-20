@@ -7,6 +7,9 @@ import { getCurrentDate } from "../../utils/date";
 import { getItem } from "../../utils/localStorage";
 import Empty from "../Empty";
 import { AnimatePresence } from "framer-motion";
+import Error from "../Error";
+import Loading from "../Loading";
+import OrganiseWrapper from "../OrganiseWrapper";
 
 type Props = {
     width: string;
@@ -69,9 +72,19 @@ export default function Todo({ width, height }: Props) {
         cacheTime: 0,
     });
 
-    if (isLoading) return <div>Loading</div>;
+    if (isLoading)
+        return (
+            <OrganiseWrapper width={width} height={height}>
+                <Loading />
+            </OrganiseWrapper>
+        );
 
-    if (error) return <div>Error</div>;
+    if (error)
+        return (
+            <OrganiseWrapper width={width} height={height}>
+                <Error />
+            </OrganiseWrapper>
+        );
 
     return (
         <div

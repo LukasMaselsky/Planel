@@ -1,9 +1,9 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "@tanstack/react-router";
 import AboutItem from "./AboutItem";
 import AboutPoint from "./AboutPoint";
 import AboutTools from "./AboutTools";
 import AboutThemes from "./AboutThemes";
+import OtterImage from "../OtterImage";
+import { motion } from "framer-motion";
 
 export default function AboutPage() {
     return (
@@ -80,7 +80,21 @@ export default function AboutPage() {
                     </div>
                 </AboutItem>
                 <AboutItem>
-                    <p className="select-none transition"></p>
+                    <motion.div
+                        className="flex h-full w-full items-center justify-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1 }}
+                    >
+                        <div className="w-[90%]">
+                            <OtterImage
+                                width={"100%"}
+                                height={"100%"}
+                                random={false}
+                                index={6}
+                            />
+                        </div>
+                    </motion.div>
                 </AboutItem>
             </div>
         </div>

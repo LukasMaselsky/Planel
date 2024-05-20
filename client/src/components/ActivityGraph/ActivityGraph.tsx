@@ -16,6 +16,8 @@ import { getPrimaryColor, getTextColor } from "../../utils/getTheme";
 import { getItem } from "../../utils/localStorage";
 import Loading from "../Loading";
 import { motion } from "framer-motion";
+import Error from "../Error";
+import OrganiseWrapper from "../OrganiseWrapper";
 
 const getGraphData = (
     data: ActivityType[] | undefined,
@@ -141,6 +143,77 @@ type GraphWrapperProps = {
     setDateRange: React.Dispatch<React.SetStateAction<string>>;
 };
 
+const translateDecimal = (num: number) => {
+    let translation = 1;
+    if (num == 0.1) {
+        translation = 0.1;
+    } else if (num <= 0.2) {
+        translation = 0.2;
+    } else if (num <= 0.25) {
+        translation = 0.25;
+    } else if (num <= 0.3) {
+        translation = 0.3;
+    } else if (num <= 0.4) {
+        translation = 0.4;
+    } else if (num <= 0.5) {
+        translation = 0.5;
+    } else if (num <= 0.6) {
+        translation = 0.6;
+    } else if (num <= 0.7) {
+        translation = 0.7;
+    } else if (num <= 0.75) {
+        translation = 0.75;
+    } else if (num <= 0.8) {
+        translation = 0.8;
+    } else if (num <= 0.9) {
+        translation = 0.9;
+    } else if (num <= 1) {
+        translation = 1;
+    }
+    return translation;
+};
+
+const calculateMaxAndInterval = (trueMax: number, numOfLabels: number) => {
+    if (trueMax <= numOfLabels) {
+        return [trueMax, 1];
+    }
+    /* num of labels excludes 0 */
+    // e.g. 219
+    let tick = trueMax / numOfLabels; // tick = 21.9
+    const power = String(Math.floor(tick)).length; // 2
+    const tenToPower = Math.pow(10, power); // 10^2
+    const decimal = tick / tenToPower;
+    let interval = translateDecimal(decimal);
+    interval = Math.ceil(interval * tenToPower); // ceil to get rid of decimal
+
+    const max = interval * numOfLabels;
+    console.log(max, interval);
+
+    return [max, interval];
+};
+
+const calculateYLabels = (
+    max: number,
+    interval: number,
+    numOfLabels: number,
+    yCoords: number[],
+) => {
+    if (max <= 10) {
+        // no scaling / weird shit needed
+        const yLabels: number[] = [...Array(max + 1)].map((_, i) => i);
+        const yLabelCoords: number[] = yCoords;
+
+        return { yLabels, yLabelCoords };
+    }
+
+    const yLabels: number[] = [...Array(numOfLabels + 1)].map(
+        (_, i) => i * interval,
+    );
+    const yLabelCoords = yCoords.filter((_, i) => i % interval == 0);
+
+    return { yLabels, yLabelCoords };
+};
+
 function ActivityGraphWrapper(props: GraphWrapperProps) {
     const labelColor = getTextColor();
     const primary = getPrimaryColor();
@@ -160,9 +233,27 @@ function ActivityGraphWrapper(props: GraphWrapperProps) {
         cacheTime: 0,
     });
 
-    if (isLoading) return <Loading />;
+    if (isLoading)
+        return (
+            <OrganiseWrapper
+                width={`${props.width}px`}
+                height={`${props.height}px`}
+                border={false}
+            >
+                <Loading />
+            </OrganiseWrapper>
+        );
 
-    if (error) return <div>Error</div>;
+    if (error)
+        return (
+            <OrganiseWrapper
+                width={`${props.width}px`}
+                height={`${props.height}px`}
+                border={false}
+            >
+                <Error />
+            </OrganiseWrapper>
+        );
 
     if (!data) return <div>No data</div>;
 
@@ -173,18 +264,38 @@ function ActivityGraphWrapper(props: GraphWrapperProps) {
     const values = Object.values(data);
     const keys = Object.keys(data);
 
-    if (keys.length == 0) return <div>No activity</div>;
+    if (keys.length == 0)
+        return (
+            <OrganiseWrapper
+                width={`${props.width}px`}
+                height={`${props.height}px`}
+                border={false}
+            >
+                <div>No activity</div>
+            </OrganiseWrapper>
+        );
 
     const dataLength = keys.length;
 
-    const maxValue = Math.max(5, ...values) + 1; // +1 to leave gap at top
+    let maxValue = Math.max(5, ...values);
+    const numOfLabels = 10;
+    const [max, interval] = calculateMaxAndInterval(maxValue, numOfLabels);
+    maxValue = max + interval; // + interval to leave gap on top
 
+    //* since different number division causes labels to not be alligned with coords
+    //* get all y coord points first and base labels on those
     const yCoords: number[] = [];
-    // TODO: swap ygap spacing interval calculation thingy
     const ygap = (props.height - labelSize) / maxValue;
     for (let i = 0; i < maxValue; i++) {
         yCoords.push(ygap * (maxValue - i));
     }
+
+    const { yLabels, yLabelCoords } = calculateYLabels(
+        max,
+        interval,
+        numOfLabels,
+        yCoords,
+    );
 
     const xCoords: number[] = [];
     let linePath = "";
@@ -241,15 +352,15 @@ function ActivityGraphWrapper(props: GraphWrapperProps) {
                     d={`M${labelSize},0V${innerHeight}`}
                     stroke={labelColor}
                 ></path>
-                {[...Array(maxValue)].map((_, i) => (
+                {yLabels.map((label, i) => (
                     <g
                         key={i}
                         opacity="1"
-                        transform={`translate(${labelSize - 6},${yCoords[i]})`}
+                        transform={`translate(${labelSize - 6},${yLabelCoords[i]})`}
                     >
                         <line stroke={labelColor} x2="6"></line>
                         <text fill={labelColor} x="0" y="3" dx="-0.5rem">
-                            {i}
+                            {label}
                         </text>
                     </g>
                 ))}

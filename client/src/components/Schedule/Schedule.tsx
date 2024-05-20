@@ -7,6 +7,7 @@ import { getItem } from "../../utils/localStorage";
 import { ClassesContext } from "../../context/classesContext";
 import OrganiseWrapper from "../OrganiseWrapper";
 import Loading from "../Loading";
+import Error from "../Error";
 
 type Day = "M" | "T" | "W" | "F" | "S";
 
@@ -230,7 +231,12 @@ export default function Schedule({ width, height }: Props) {
             </OrganiseWrapper>
         );
 
-    if (error) return <div>Error</div>;
+    if (error)
+        return (
+            <OrganiseWrapper width={width} height={height}>
+                <Error />
+            </OrganiseWrapper>
+        );
 
     return (
         <OrganiseWrapper width={width} height={height}>

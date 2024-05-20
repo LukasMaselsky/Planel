@@ -292,8 +292,8 @@ export default function Calculator() {
         <div className="flex h-[400px] w-[250px] overflow-hidden rounded-xl bg-bg-vis p-4">
             <div className="flex flex-col gap-4">
                 <div
-                    className="flex grow flex-col rounded-md p-2"
-                    style={{ backgroundColor: color, color: textColor }}
+                    className="flex grow flex-col rounded-md p-2 bg-primary"
+                    style={{ color: textColor }}
                 >
                     <div className="text-base font-light">{calc.history}</div>
                     <div className="flex items-center justify-between gap-1">
@@ -322,7 +322,6 @@ export default function Calculator() {
                             sign={obj.sign}
                             onClick={obj.onClick}
                             off={calc.divideByZero}
-                            color={color}
                             textColor={textColor}
                         />
                     ))}

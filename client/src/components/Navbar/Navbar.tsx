@@ -13,8 +13,8 @@ import {
 import { twMerge } from "tailwind-merge";
 import { Link } from "@tanstack/react-router";
 import { capitalise } from "../../utils/capitalise";
-import logo from "../../assets/logo.png";
 import { motion } from "framer-motion";
+import Logo from "./Logo";
 
 export const links = ["/organise", "/tools", "/activity", "/themes", "/about"];
 
@@ -47,10 +47,7 @@ export default function Navbar() {
                     icon={navOpen ? faX : faBars}
                 />
                 {navOpen ? (
-                    <div className="w-full">
-                        <img src={logo} className="h-6"></img> // TODO: dark
-                        mode
-                    </div>
+                    <Logo />
                 ) : null}
             </div>
             <div className="flex h-full flex-col py-2">

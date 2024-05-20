@@ -11,6 +11,11 @@ interface Props<T extends FieldValues> {
     handleOptionClick: (option: string) => void;
 }
 
+type Options = {
+    options: string[];
+    allOptions: string[];
+};
+
 export default function InputSelect<T extends FieldValues>({
     name,
     control,
@@ -19,13 +24,19 @@ export default function InputSelect<T extends FieldValues>({
     handleOptionClick,
 }: Props<T>) {
     const [optionsOpen, setOptionsOpen] = useState(false);
-    const [options, setOptions] = useState<string[]>([]);
+    const [options, setOptions] = useState<Options>({
+        allOptions: [],
+        options: [],
+    });
     const classes = useContext(ClassesContext);
 
-    // TODO: broken on delete
     useEffect(() => {
         if (classes) {
-            setOptions(Object.keys(classes.classes));
+            const opts = Object.keys(classes.classes);
+            setOptions({
+                options: opts,
+                allOptions: opts,
+            });
         }
     }, [classes]);
 
@@ -41,12 +52,11 @@ export default function InputSelect<T extends FieldValues>({
 
     const resetOptions = () => {
         if (classes) {
-            setOptions(Object.keys(classes.classes));
+            setOptions({ ...options, options: options.allOptions });
         }
     };
 
     const matchInput = (value: string, opts: string[]) => {
-        console.log(value, opts);
         return opts.filter((opt) =>
             opt.toLowerCase().includes(value.toLowerCase()),
         );
@@ -56,7 +66,10 @@ export default function InputSelect<T extends FieldValues>({
         if (value == "") {
             resetOptions();
         } else {
-            setOptions((prev) => matchInput(value, prev));
+            setOptions({
+                ...options,
+                options: matchInput(value, options.allOptions),
+            });
         }
     };
 
@@ -84,17 +97,21 @@ export default function InputSelect<T extends FieldValues>({
                             onBlur={handleBlur}
                         ></input>
                     </div>
-                    {optionsOpen && options.length > 0 && (
+                    {optionsOpen && options.options.length > 0 && (
                         <div className="absolute top-[calc(100%+5px)] z-10 flex max-h-[200%] w-full flex-col overflow-y-auto overflow-x-hidden rounded-lg bg-white p-0 text-black">
-                            {options.map((option: string, i: number) => (
-                                <div
-                                    key={i}
-                                    className="hover:bg-primary-100 w-full cursor-default border-b border-gray-200 px-2 py-1 text-black"
-                                    onClick={() => handleOptionClick(option)}
-                                >
-                                    {option}
-                                </div>
-                            ))}
+                            {options.options.map(
+                                (option: string, i: number) => (
+                                    <div
+                                        key={i}
+                                        className="w-full cursor-default border-b border-gray-200 px-2 py-1 text-black hover:bg-primary-100"
+                                        onClick={() =>
+                                            handleOptionClick(option)
+                                        }
+                                    >
+                                        {option}
+                                    </div>
+                                ),
+                            )}
                         </div>
                     )}
                 </div>
