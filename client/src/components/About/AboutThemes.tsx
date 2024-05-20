@@ -30,8 +30,8 @@ export default function AboutThemes() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{
-                            duration: 2,
-                            delay: i * 0.2,
+                            duration: 0.9,
+                            delay: i * 0.1,
                         }}
                     ></motion.div>
                 ))}

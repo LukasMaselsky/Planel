@@ -4,8 +4,14 @@ import AboutTools from "./AboutTools";
 import AboutThemes from "./AboutThemes";
 import OtterImage from "../OtterImage";
 import { motion } from "framer-motion";
+import AboutActivity from "./AboutActivity";
+import { useState } from "react";
 
 export default function AboutPage() {
+    const [dark, _] = useState(
+        localStorage.getItem("mode") == "dark" ? true : false,
+    );
+
     return (
         <div className="flex h-[100vh] w-full items-center bg-bg p-4 text-text transition-colors">
             <div className="relative grid h-full w-full grid-cols-3 grid-rows-2 gap-1">
@@ -34,10 +40,11 @@ export default function AboutPage() {
                 </AboutItem>
                 <AboutItem>
                     <h1 className="text-xl font-bold transition">Tools</h1>
-                    <AboutTools />
+                    <AboutTools dark={dark} />
                 </AboutItem>
                 <AboutItem>
                     <h1 className="text-xl font-bold transition">Activity</h1>
+                    <AboutActivity width={300} height={200} dark={dark} />
                 </AboutItem>
                 <AboutItem>
                     <h1 className="text-xl font-bold transition">Themes</h1>

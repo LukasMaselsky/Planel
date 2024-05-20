@@ -1,12 +1,11 @@
-import { useState } from "react";
 import OtterImage from "../OtterImage";
 import { motion } from "framer-motion";
 
-export default function AboutTools() {
-    const [dark, setDark] = useState(
-        localStorage.getItem("mode") == "dark" ? true : false,
-    );
+type Props = {
+    dark: boolean;
+};
 
+export default function AboutTools({ dark }: Props) {
     return (
         <div className="flex h-full w-full items-center justify-center overflow-hidden">
             <motion.div
