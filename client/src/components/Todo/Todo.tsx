@@ -49,6 +49,7 @@ export default function Todo({ width, height }: Props) {
             activity.updateActivity({
                 name: todo[0].text,
                 date: getCurrentDate(),
+                type: "todo",
             });
         }
 

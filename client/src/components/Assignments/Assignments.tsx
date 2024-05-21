@@ -80,6 +80,7 @@ export default function Assignments({ height, width }: Props) {
                 activity.updateActivity({
                     name: assignment[0].name,
                     date: getCurrentDate(),
+                    type: "assignment",
                 });
             }
 

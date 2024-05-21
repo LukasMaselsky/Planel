@@ -62,6 +62,7 @@ export default function Timer({ setTimerState, setTimerDuration }: Props) {
                 activity.updateActivity({
                     name: `${h}:${m}:${s}`,
                     date: getCurrentDate(),
+                    type: "time",
                 });
             }
         }

@@ -18,6 +18,7 @@ import Loading from "../Loading";
 import { motion } from "framer-motion";
 import Error from "../Error";
 import OrganiseWrapper from "../OrganiseWrapper";
+import Empty from "../Empty";
 
 const getGraphData = (
     data: ActivityType[] | undefined,
@@ -271,7 +272,7 @@ function ActivityGraphWrapper(props: GraphWrapperProps) {
                 height={`${props.height}px`}
                 border={false}
             >
-                <div>No activity</div>
+                <Empty component="activity" index={0} />
             </OrganiseWrapper>
         );
 
@@ -427,7 +428,9 @@ function ActivityBarGraph(props: BarGraphProps) {
                     height={props.innerHeight - props.yCoords[props.values[i]]}
                     fill={props.graphColor}
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    animate={{
+                        opacity: 1,
+                    }}
                     transition={{ duration: 1 }}
                 ></motion.rect>
             ))}

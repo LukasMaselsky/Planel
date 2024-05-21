@@ -1,8 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import otter1 from "../assets/otter1.png";
-import otter2 from "../assets/otter2.png";
-import otter3 from "../assets/otter3.png";
-import otter4 from "../assets/otter4.png";
 import { OtterContext } from "../context/otterContext";
 
 type Props = {

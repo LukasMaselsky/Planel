@@ -8,6 +8,7 @@ type Props = {
 export type ActivityType = {
     name: string;
     date: string;
+    type: "assignment" | "todo" | "time";
 };
 
 type ActivityContextType = {

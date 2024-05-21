@@ -13,7 +13,7 @@ const formats = ["JSON", "CSV", "XML"] as const;
 type Formats = (typeof formats)[number];
 
 const JSONtoCSV = (data: ActivityType[]) => {
-    const header = ["name", "date"] as const;
+    const header = ["name", "date", "type"] as const;
     const csv = [
         header.join(","), // header row first
         ...data.map((row) =>
@@ -26,7 +26,7 @@ const JSONtoCSV = (data: ActivityType[]) => {
 
 const JSONtoXML = (data: ActivityType[]) => {
     let xml = "<root>\n";
-    const keys = ["name", "date"] as const;
+    const keys = ["name", "date", "type"] as const;
     for (let i = 0; i < data.length; i++) {
         const obj = data[i];
 

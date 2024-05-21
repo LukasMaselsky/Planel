@@ -12,12 +12,13 @@ export default function Stopwatch() {
     const reset = () => {
         resetStopwatch();
         //* save activity
-        if (activity) {
+        if (activity && timeElapsed != 0) {
             const [h, m, s] = convertFromMillis(timeElapsed);
 
             activity.updateActivity({
                 name: `${h}:${m}:${s}`,
                 date: getCurrentDate(),
+                type: "time",
             });
         }
     };
