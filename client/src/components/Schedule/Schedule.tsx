@@ -8,6 +8,7 @@ import { ClassesContext } from "../../context/classesContext";
 import OrganiseWrapper from "../OrganiseWrapper";
 import Loading from "../Loading";
 import Error from "../Error";
+import Empty from "../Empty";
 
 type Day = "M" | "T" | "W" | "F" | "S";
 
@@ -271,6 +272,9 @@ export default function Schedule({ width, height }: Props) {
                         );
                     })}
 
+            {data.length == 0 || !data ? (
+                <Empty component={"classes"} index={2} />
+            ) : null}
             {addSlotOpen ? (
                 <AddSlot close={closeAddSlot} updateSchedule={updateSchedule} />
             ) : null}
