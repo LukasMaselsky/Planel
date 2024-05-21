@@ -137,7 +137,7 @@ export default function Assignments({ height, width }: Props) {
             <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden pb-1">
                 <AnimatePresence>
                     {data &&
-                        data.map((item: Assignments, i: number) => (
+                        data.map((item: Assignments) => (
                             <AssignmentItem
                                 key={item.name}
                                 deleteAssignment={deleteAssignment}

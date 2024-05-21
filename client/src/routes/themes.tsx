@@ -41,7 +41,7 @@ function Themes() {
         localStorage.setItem("theme", theme);
     };
 
-    const [darkMode, setDarkMode] = useState(
+    const [_, setDarkMode] = useState(
         localStorage.getItem("mode") == "dark" ? true : false,
     );
 

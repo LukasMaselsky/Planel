@@ -1,7 +1,6 @@
 import Empty from "../Empty";
 import { Schedule } from "./Schedule";
 import { AnimatePresence } from "framer-motion";
-import MotionDropDiv from "../MotionDropDiv";
 import ScheduleItem from "./ScheduleItem";
 
 interface Props {

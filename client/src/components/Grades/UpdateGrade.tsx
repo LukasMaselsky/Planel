@@ -34,7 +34,6 @@ export default function UpdateGrade({
     close,
     updateGrade,
     defaultValues,
-    editing,
 }: Props) {
     const {
         register,
