@@ -3,7 +3,7 @@ import text from "../../assets/logo-text.png";
 import { useState } from "react";
 
 export default function Logo() {
-    const [dark, setDark] = useState(
+    const [dark, _] = useState(
         localStorage.getItem("mode") == "dark" ? true : false,
     );
 
