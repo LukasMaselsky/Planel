@@ -16,4 +16,4 @@ A dashboard that contains tools and interfaces and activity tracking to help stu
 
 ## Database
 
-No traditional database is used, instead the user data is stored in Local Storage. This removes the need for user authentication, authorization and a backend. Inspired by [https://excalidraw.com/](Excalidraw).
+No traditional database is used, instead the user data is stored in Local Storage. This removes the need for user authentication, authorization and a backend. Inspired by [Excalidraw](https://excalidraw.com/).
