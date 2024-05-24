@@ -26,6 +26,7 @@ const getGraphData = (
     interval: number,
     setDateRange: React.Dispatch<React.SetStateAction<string>>,
 ) => {
+    console.log(data);
     if (!data) return {};
     if (data && data.length == 0) return {};
 
@@ -73,7 +74,7 @@ const shiftGraphToCurrentDate = () => {
 
     const startDate = stringToDate(activity[0].date);
     const diff = getDayDiff(startDate, new Date());
-    return diff > 7 ? diff - 7 : diff; //* -7 to see past week of activity
+    return diff > 4 ? diff - 4 : 0; //* -4 to see past week of activity b starting in "middle"
 };
 
 export default function ActivityGraph() {

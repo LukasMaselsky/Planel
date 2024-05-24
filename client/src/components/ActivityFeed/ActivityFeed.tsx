@@ -22,9 +22,8 @@ export default function ActivityFeed() {
 
     useEffect(() => {
         if (activity) {
-            setData(
-                descending ? activity.completed.reverse() : activity.completed,
-            );
+            let reversed = [...activity.completed].reverse();
+            setData(descending ? reversed : activity.completed);
         }
     }, [activity]);
 
