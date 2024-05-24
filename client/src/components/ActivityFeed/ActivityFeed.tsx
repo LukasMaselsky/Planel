@@ -1,12 +1,32 @@
-import { useContext } from "react";
-import { ActivityContext } from "../../context/activityContext";
+import { useContext, useEffect, useState } from "react";
+import { ActivityContext, ActivityType } from "../../context/activityContext";
 import DownloadActivity from "../DownloadActivity/DownloadActivity";
 import OrganiseWrapper from "../OrganiseWrapper";
 import Empty from "../Empty";
 import ActivityItem from "./ActivityItem";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faArrowUpWideShort,
+    faArrowDownWideShort,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function ActivityFeed() {
+    const [data, setData] = useState<ActivityType[]>([]);
+    const [descending, setDescending] = useState(true);
     const activity = useContext(ActivityContext);
+
+    const reorder = () => {
+        setDescending((prev) => !prev);
+        setData((prev) => prev.reverse());
+    };
+
+    useEffect(() => {
+        if (activity) {
+            setData(
+                descending ? activity.completed.reverse() : activity.completed,
+            );
+        }
+    }, [activity]);
 
     return (
         <div className="flex h-full w-[400px] flex-col bg-bg px-4 py-2 text-text">
@@ -14,10 +34,23 @@ export default function ActivityFeed() {
                 <h1 className="text-ellipsis text-nowrap text-lg font-bold">
                     My activity
                 </h1>
-                <DownloadActivity />
+                {data.length != 0 && (
+                    <div className="flex items-center gap-2">
+                        <FontAwesomeIcon
+                            className="text-2xl text-text"
+                            onClick={reorder}
+                            icon={
+                                descending
+                                    ? faArrowDownWideShort
+                                    : faArrowUpWideShort
+                            }
+                        />
+                        <DownloadActivity />
+                    </div>
+                )}
             </div>
             <div className="relative flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden pb-2">
-                {activity?.completed.map((item, i) => (
+                {data.map((item, i) => (
                     <ActivityItem
                         key={i}
                         name={item.name}
@@ -26,7 +59,7 @@ export default function ActivityFeed() {
                         index={i}
                     />
                 ))}
-                {activity && activity.completed.length == 0 ? (
+                {data.length == 0 ? (
                     <OrganiseWrapper
                         width={`100%`}
                         height={`100%`}
