@@ -142,7 +142,6 @@ export default function Calculator() {
         const newResult = compute(calc.sign);
 
         if (newResult == "Can't divide by 0") {
-            console.log("here");
             setCalc({
                 ...calc,
                 history: newResult,
@@ -292,7 +291,7 @@ export default function Calculator() {
         <div className="flex h-[400px] w-[250px] overflow-hidden rounded-xl bg-bg-vis p-4">
             <div className="flex flex-col gap-4">
                 <div
-                    className="flex grow flex-col rounded-md p-2 bg-primary"
+                    className="flex grow flex-col rounded-md bg-primary p-2"
                     style={{ color: textColor }}
                 >
                     <div className="text-base font-light">{calc.history}</div>

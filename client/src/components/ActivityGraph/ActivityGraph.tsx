@@ -26,7 +26,6 @@ const getGraphData = (
     interval: number,
     setDateRange: React.Dispatch<React.SetStateAction<string>>,
 ) => {
-    console.log(data);
     if (!data) return {};
     if (data && data.length == 0) return {};
 
@@ -189,7 +188,6 @@ const calculateMaxAndInterval = (trueMax: number, numOfLabels: number) => {
     interval = Math.ceil(interval * tenToPower); // ceil to get rid of decimal
 
     const max = interval * numOfLabels;
-    console.log(max, interval);
 
     return [max, interval];
 };
