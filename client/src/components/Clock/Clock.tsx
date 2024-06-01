@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Time from "./Time";
 import Timer from "./Timer";
 import Stopwatch from "./Stopwatch";
@@ -15,6 +15,11 @@ export default function Clock({ size }: Props) {
     const [timerState, setTimerState] = useState<TimerState>();
     const [timerDuration, setTimerDuration] = useState(0);
 
+    const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        event.preventDefault();
+        setSelect(event.target.value);
+    };
+
     return (
         <div className="relative" style={{ height: size, width: size }}>
             <TimerBorder
@@ -26,16 +31,13 @@ export default function Clock({ size }: Props) {
 
             <div className="absolute z-10 grid h-[100%] w-[100%] grid-rows-[1fr_auto_1fr] rounded-[50%]">
                 <div className="flex items-center justify-center">
-                    <select className="w-25 h-10 rounded-lg border-black bg-bg-vis p-2 text-text hover:cursor-pointer">
-                        <option onClick={() => setSelect("clock")}>
-                            Clock
-                        </option>
-                        <option onClick={() => setSelect("timer")}>
-                            Timer
-                        </option>
-                        <option onClick={() => setSelect("stopwatch")}>
-                            Stopwatch
-                        </option>
+                    <select
+                        onChange={handleChange}
+                        className="w-25 h-10 rounded-lg border-black bg-bg-vis p-2 text-text hover:cursor-pointer"
+                    >
+                        <option value="clock">Clock</option>
+                        <option value="timer">Timer</option>
+                        <option value="stopwatch">Stopwatch</option>
                     </select>
                 </div>
                 {select == "clock" ? <Time /> : null}

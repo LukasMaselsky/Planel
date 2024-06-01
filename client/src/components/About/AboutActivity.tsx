@@ -52,6 +52,7 @@ export default function AboutActivity({ width, height, dark }: Props) {
                         if (i != 0 && i != coordinates.length - 1) {
                             return (
                                 <circle
+                                    key={i}
                                     cx={coord.x}
                                     cy={coord.y}
                                     r="7"
